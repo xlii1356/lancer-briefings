@@ -5,11 +5,14 @@
   "defaultTitle": "SILVERSHARD COLONY |",
   "icon": "/faction-logos/msmc.svg",
   "header": {
-    "planet": "Ceres Bay-9",
+    "planet": "CB-9",
     "year": "5016u",
+    "system": "Ceres Bay",
+    "gate": "N/A",
+    "ring": "Long Rim",
     "headerTitle": "SILVERSHARD",
     "headerSubtitle": "Colony Defense",
-    "subheaderTitle": "Tarcking System",
+    "subheaderTitle": "Tracking System",
     "subheaderSubtitle": "Sierra-Whiskey-Alpha-Golf"
   },
   "pilotSpecialInfo": {}
