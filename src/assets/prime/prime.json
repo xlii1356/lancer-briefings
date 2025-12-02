@@ -10,7 +10,7 @@
     "status": "Active"
   },
     {
-    "alias": "",
+    "alias": "MATRIARCH",
     "echo": "GRAN GRAN",
     "status": "Deceased"
   },
@@ -20,7 +20,7 @@
     "status": "Active"
   },
       {
-    "alias": "",
+    "alias": "MORDRED",
     "echo": "MERLIN",
     "status": "Unknown"
   },
@@ -40,13 +40,13 @@
     "status": "Neutralized"
   },
     {
-    "alias": "",
+    "alias": "LEGION",
     "echo": "LEGION",
     "status": "Deceased"
     },
       {
-    "alias": "PRISMIC",
-    "echo": "DIAMOND",
+    "alias": "ALDERMAN",
+    "echo": "ILLUMEN",
     "status": "Active"
   }
 ]
