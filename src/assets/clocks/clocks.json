@@ -1,12 +1,7 @@
-"clocks": [
-    {
-        "name": "Reinforcements",
-        "val": 1,
-        "max": 4
-    },
-    {
-        "name": "Extraction Arrives",
-        "val": 3,
-        "max": 6
-    }
-],
+[
+  {
+    "name": "Reactor Meltdown",
+    "val": 5,
+    "max": 8
+  }
+]
