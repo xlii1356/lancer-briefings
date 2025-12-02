@@ -1,0 +1,17 @@
+[
+  {
+    "alias": "PRISMIC",
+    "echo": "DIAMOND",
+    "status": "Active"
+  },
+  {
+    "alias": "PETARD",
+    "echo": "HUBRIS",
+    "status": "Deceased"
+  },
+  {
+    "alias": "Null Pointer",
+    "echo": "ERR//NULL",
+    "status": "Unknown"
+  }
+]
