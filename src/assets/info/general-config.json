@@ -3,7 +3,7 @@
   "planetPath": "/disc_spin.webm",
   "animate": true,
   "defaultTitle": "SILVERSHARD COLONY |",
-  "icon": "/faction-logos/msmc.svg",
+  "icon": "/faction-logos/orbital.svg",
   "header": {
     "planet": "CB-9",
     "year": "5016u",
@@ -13,7 +13,7 @@
     "headerTitle": "SILVERSHARD",
     "headerSubtitle": "Colony Defense",
     "subheaderTitle": "Tracking System",
-    "subheaderSubtitle": "Sierra-Whiskey-Alpha-Golf"
+    "subheaderSubtitle": "ARGENTUM RESEARCH COLLECTIVE"
   },
   "pilotSpecialInfo": {}
 }
