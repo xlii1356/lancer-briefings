@@ -69,4 +69,21 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+/* Add this to your style block */
+.title {
+	display: flex; /* Ensures the logo and text sit side-by-side */
+	align-items: center; 
+}
+
+.logo {
+	/* These lines prevent squishing */
+	height: 80px;       /* Set a fixed height matching your header design */
+	width: auto;        /* Let width calculate automatically based on height */
+	object-fit: contain; /* Ensures the image scales correctly within bounds */
+	flex-shrink: 0;     /* Tells flexbox NOT to shrink this item if space is tight */
+	
+	/* Optional spacing */
+	margin-right: 15px; 
+}
+</style>
