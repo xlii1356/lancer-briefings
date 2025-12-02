@@ -1,47 +1,52 @@
 [
-  {
-    "alias": "ALDERMAN",
-    "echo": "ILLUMEN",
-    "status": "Active"
+    {
+    "alias": "APEXX",
+    "echo": "AIMBOT",
+    "status": "Neutralized"
   },
   {
     "alias": "PRISMIC",
     "echo": "DIAMOND",
     "status": "Active"
   },
-  {
-    "alias": "",
-    "echo": "STHENO",
-    "status": "Active"
-  },
-  {
-    "alias": "FAKER",
-    "echo": "REIKO",
-    "status": "Active"
-  },
-{
-    "alias": "APEXX",
-    "echo": "AIMBOT",
-    "status": "Neutralized"
-  },
     {
+    "alias": "",
+    "echo": "GRAN GRAN",
+    "status": "Deceased"
+  },
+      {
+    "alias": "PETARD",
+    "echo": "HUBRIS",
+    "status": "Active"
+  },
+      {
     "alias": "",
     "echo": "MERLIN",
     "status": "Unknown"
   },
     {
-    "alias": "PETARD",
-    "echo": "HUBRIS",
+    "alias": "FAKER",
+    "echo": "REIKO",
     "status": "Active"
   },
+    {
+    "alias": "CETO",
+    "echo": "STHENO",
+    "status": "Unknown"
+  },
   {
-    "alias": "",
-    "echo": "GRAN GRAN",
-    "status": "Deceased"
+    "alias": "PARAGON",
+    "echo": "TRIGGER",
+    "status": "Neutralized"
   },
     {
     "alias": "",
     "echo": "LEGION",
     "status": "Deceased"
-    }
+    },
+      {
+    "alias": "PRISMIC",
+    "echo": "DIAMOND",
+    "status": "Active"
+  }
 ]
