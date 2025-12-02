@@ -185,3 +185,25 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+/* Allow the systems list to wrap to a new line */
+.mech-system {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px; /* Adds a small space between wrapped items */
+}
+
+/* Ensure the items don't stretch weirdly when wrapped */
+.system {
+  flex: 0 1 auto; /* Allows items to size based on content but not grow indefinitely */
+  margin-bottom: 5px; /* Spacing for the new rows */
+}
+
+/* Optional: Add a scrollbar if the wrapping makes the list too tall for the modal */
+.mech-column {
+  overflow-y: auto;
+  max-height: 100%; /* Or a specific pixel height if the modal is fixed */
+  scrollbar-width: thin; /* For Firefox */
+}
+</style>
