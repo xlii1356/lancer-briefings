@@ -18,8 +18,8 @@
 					<span>Pilots</span>
 				</router-link>
 				<router-link class="clipped-bottom-right" to="/events">
-					<img src="/icons/events.svg" />
-					<span>Logs</span>
+					<img src="/faction-logos/barony.svg" />
+					<span>Factions</span>
 				</router-link>
 			</o-sidebar>
 		</section>
