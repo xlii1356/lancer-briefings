@@ -48,5 +48,10 @@
     "alias": "ALDERMAN",
     "echo": "ILLUMEN",
     "status": "Active"
-  }
+  },
+      {
+    "alias": "MIRYOI",
+    "echo": "SOPHIST",
+    "status": "Neutralized"
+    }
 ]
