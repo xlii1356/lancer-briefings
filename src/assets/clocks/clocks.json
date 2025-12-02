@@ -1,7 +1,10 @@
 [
   {
-    "name": "Reactor Meltdown",
-    "val": 5,
-    "max": 8
+    "name": "Global Alert",
+    "condition": "Active"
+  },
+  {
+    "name": "Reinforcements",
+    "condition": "Inbound"
   }
 ]
