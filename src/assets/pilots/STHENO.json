@@ -753,8 +753,11 @@
             "rank": 1
         },
         {
-            "id": "Defend",
-            "rank": 3
+            "id": "sk_defend",
+            "rank": 3,
+            "custom": true,
+            "custom_desc": "Act in defense of another individual or group of people, either by stopping the threat before it comes to pass or taking on the incoming harm yourself.",
+            "custom_detail": ""
         },
         {
             "id": "sk_get_somewhere_quickly",
