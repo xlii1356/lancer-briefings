@@ -73,7 +73,6 @@ import Mission from "@/components/Mission.vue";
 import Event from "@/components/Event.vue";
 import Reserve from "@/components/Reserve.vue";
 
-// 1. IMPORT THE JSON FILE
 import primeDataList from '@/assets/prime/prime.json';
 
 export default {
@@ -99,7 +98,6 @@ export default {
       animationDelay: "1.75s",
       clockAnimationDelay: "2500",
       missionMarkdown: "",
-      // 2. Register data
       primeData: primeDataList,
     };
   },
@@ -116,11 +114,11 @@ export default {
     }
   },
   methods: {
-    // 3. Helper method to determine CSS class
     getStatusClass(status) {
       const s = status.toLowerCase();
       if (s === 'active') return 'status-active';
       if (s === 'deceased') return 'status-deceased';
+      if (s === 'neutralized') return 'status-neutralized'; // <--- ADDED HERE
       if (s === 'unknown') return 'status-unknown';
       return '';
     },
@@ -167,7 +165,7 @@ export default {
 
 .row-line {
   margin-bottom: 2px;
-  font-family: 'Rubik', sans-serif; /* Ensuring standard Lancer font */
+  font-family: 'Rubik', sans-serif;
 }
 
 .label {
@@ -185,15 +183,21 @@ export default {
 /* --- STATUS COLORS --- */
 
 .status-active {
-  color: #00ff00; /* Bright Green */
+  color: #00ff00; /* Green */
   font-weight: bold;
   text-shadow: 0 0 5px #00ff00;
 }
 
 .status-deceased {
-  color: #ff0000; /* Bright Red */
+  color: #ff0000; /* Red */
   font-weight: bold;
   text-shadow: 0 0 5px #ff0000;
+}
+
+.status-neutralized {
+  color: #FFC107; /* Yellow / Amber */
+  font-weight: bold;
+  text-shadow: 0 0 5px #FFC107;
 }
 
 /* --- GLITCH EFFECT --- */

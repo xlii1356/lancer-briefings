@@ -1,17 +1,47 @@
 [
   {
+    "alias": "ALDERMAN",
+    "echo": "ILLUMEN",
+    "status": "Active"
+  },
+  {
     "alias": "PRISMIC",
     "echo": "DIAMOND",
     "status": "Active"
   },
   {
-    "alias": "PETARD",
-    "echo": "HUBRIS",
-    "status": "Deceased"
+    "alias": "",
+    "echo": "STHENO",
+    "status": "Active"
   },
   {
-    "alias": "Null Pointer",
-    "echo": "ERR//NULL",
+    "alias": "FAKER",
+    "echo": "REIKO",
+    "status": "Active"
+  },
+{
+    "alias": "APEXX",
+    "echo": "AIMBOT",
+    "status": "Neutralized"
+  },
+    {
+    "alias": "",
+    "echo": "MERLIN",
     "status": "Unknown"
-  }
+  },
+    {
+    "alias": "PETARD",
+    "echo": "HUBRIS",
+    "status": "Active"
+  },
+  {
+    "alias": "",
+    "echo": "GRAN GRAN",
+    "status": "Deceased"
+  },
+    {
+    "alias": "",
+    "echo": "LEGION",
+    "status": "Deceased"
+    }
 ]
