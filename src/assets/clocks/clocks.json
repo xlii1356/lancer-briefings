@@ -1,2 +1,12 @@
 [
+  {
+    "name": "Reinforcements",
+    "val": 2,
+    "max": 4
+  },
+  {
+    "name": "Reactor Meltdown",
+    "val": 5,
+    "max": 8
+  }
 ]
