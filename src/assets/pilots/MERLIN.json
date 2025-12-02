@@ -663,6 +663,13 @@
             "rank": 3
         },
         {
+            "id": "Augment",
+            "rank": 3,
+            "custom": true,
+            "custom_desc": "Repair, install, identify Cybernetics ",
+            "custom_detail": ""
+        },
+        {
             "id": "sk_hack_or_fix",
             "rank": 1
         },

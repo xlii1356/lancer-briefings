@@ -293,16 +293,26 @@ export default {
 
       return response;
     },
-    getSkill(skill) {
+  getSkill(skill) {
+      // Try to find the skill in the database
       let sk = this.skills.find((x) => x.id == skill.id);
-      return sk.name + " +" + (skill.rank * 2)
+      
+      // If found, use the official name. 
+      // If NOT found (custom skill), use the ID from the JSON as the name.
+      const skillName = sk ? sk.name : skill.id; 
+      
+      return skillName + " +" + (skill.rank * 2);
     },
+
     getTalent(id, value) {
       let talent = this.talents.find((x) => x.id == id);
-      let response = talent.name + " "
+      
+      // Fallback: If talent is missing, use the ID so the UI doesn't crash
+      let name = talent ? talent.name : id; 
+      let response = name + " ";
 
       for (let i = 0; i < value; i++) {
-        response += "I"
+        response += "I";
       }
       return response;
     },
