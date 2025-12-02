@@ -755,7 +755,7 @@
         {
             "id": "Defend",
             "rank": 3,
-            "custom": true,
+            "custom": false,
             "custom_desc": "Act in defense of another individual or group of people, either by stopping the threat before it comes to pass or taking on the incoming harm yourself.",
             "custom_detail": ""
         },
