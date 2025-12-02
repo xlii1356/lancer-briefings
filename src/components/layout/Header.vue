@@ -69,7 +69,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 /* Add this to your style block */
 .title {
 	display: flex; /* Ensures the logo and text sit side-by-side */
