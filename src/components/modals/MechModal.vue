@@ -191,7 +191,7 @@ export default {
 .mech-system {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px; /* Adds a small space between wrapped items */
+  gap: 10px; /* Adds a small space between wrapped items */
 }
 
 /* Ensure the items don't stretch weirdly when wrapped */
