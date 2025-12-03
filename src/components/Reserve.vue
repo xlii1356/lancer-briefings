@@ -4,9 +4,7 @@
       <h1>{{ reserve.type }}</h1>
       <h2>{{ reserve.name }}</h2>
     </div>
-    <div class="description">
-      {{ reserve.description }}
-    </div>
+    <div class="description" v-html="reserve.description"></div>
     <div v-if="reserve.callsign" class="pilot">
       <img :src="ownerImage" class="portrait" />
       <div class="name">
