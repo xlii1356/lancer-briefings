@@ -42,4 +42,4 @@ def update_squad_file(mission_slug, pilot_name):
 
 # Example: Toggle 'TRIGGER' for Mission '001'
 # If Trigger is there, they will be removed. If not, they will be added.
-update_squad_file("001", "TRIGGER")
+update_squad_file("001", "MERLIN")
