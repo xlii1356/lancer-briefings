@@ -44,7 +44,7 @@
             "core_active": false,
             "cc_ver": "ERR",
             "portrait": "",
-            "cloud_portrait": "",
+            "cloud_portrait": "https://raw.githubusercontent.com/xlii1356/lancer-briefings/refs/heads/master/public/pilots/DIAMOND.webp",
             "loadouts": [
                 {
                     "id": "3ed67a56-4070-403f-8ad9-9fc41caa3714",
