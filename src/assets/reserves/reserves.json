@@ -15,7 +15,7 @@
     "name": "BOOSTED SERVOS",
     "type": "Mech Upgrade",
     "callsign": "AIMBOT",
-    "description": "Communications with the Pro-Aimbot elements within the Hegemony have netted a temporary upgrade to AIMBOT’s mech - boosted servos (immunity to slowed) to keep joints from freezing up from the cold.<br> <b>DELAYED:</b><br> <i>This reserve was hastily loaded onboard and will take time to install on arrival</i>"
+    "description": "Communications with the Pro-Aimbot elements within the Hegemony have netted a temporary upgrade to AIMBOT’s mech - boosted servos (immunity to slowed) to keep joints from freezing up from the cold.<br> <b>DELAYED</b><br> <i>This reserve was hastily loaded onboard and will take time to install on arrival</i>"
   },
     {
     "name": "NHP ASSISTANT",
@@ -27,6 +27,6 @@
     "name": "AUGMENTATION",
     "type": "Physical Improvment",
     "callsign": "MERLIN",
-    "description": "Studies into practical application of [VAGRANT]-type technology have allowed MERLIN to upgrade his own body, altering his physical capabilities.<br><b>INCOMPLETE:</b><br> <i>This reserve is unfinished, and requires 1. More sophisticated coolant, and 2. Knowledge to complete installation.</i>"
+    "description": "Studies into practical application of [VAGRANT]-type technology have allowed MERLIN to upgrade his own body, altering his physical capabilities.<br><b>INCOMPLETE</b><br> <i>This reserve is unfinished, and requires 1. More sophisticated coolant, and 2. Knowledge to complete installation.</i>"
   }
 ]
