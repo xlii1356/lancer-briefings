@@ -2,7 +2,7 @@
 
 # Lancer Briefings
 
-**[Live Demo](https://lancer.kuenaimaku.com/)**
+**[Live Demo](https://silvershard-briefing.netlify.app/status)**
 
 Go over mission briefings within the LANCER Universe in style by showing your players a fully animated mission briefing screen, with a Mirrorsmoke Mercenary Company theme.
 
