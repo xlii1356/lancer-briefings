@@ -15,5 +15,10 @@
     "subheaderTitle": "Tracking System",
     "subheaderSubtitle": "ARGENTUM RESEARCH"
   },
-  "pilotSpecialInfo": {}
+  "pilotSpecialInfo": {
+    "DIAMOND": {
+          "cloud_portrait": "https://raw.githubusercontent.com/xlii1356/lancer-briefings/refs/heads/master/public/pilots/DIAMOND.webp"
+        }
+
+  }
 }
