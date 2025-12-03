@@ -8,7 +8,7 @@
       </div>
       <div class="section-content-container">
         <div class="mission-list-container">
-          <Mission v-for="item in missions" :key="item.slug" :mission="item" :selected="missionSlug"
+          <Mission v-for="item in sortedMissions" :key="item.slug" :mission="item" :selected="missionSlug"
             @click="selectMission(item.slug)" />
         </div>
       </div>
@@ -90,6 +90,11 @@ export default {
     pilots: { type: Array, required: true },
     clocks: { type: Array, required: true },
     reserves: { type: Array, required: true },
+  },
+  computed: {
+  sortedMissions() {
+    return [...this.missions].sort((a, b) => Number(a.slug) - Number(b.slug));
+  }
   },
   data() {
     return {
