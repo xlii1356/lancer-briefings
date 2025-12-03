@@ -1690,3 +1690,60 @@ div.markdown ol li {
 	line-height:11px;
 	text-align: justify;
 }
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media screen and (max-width: 768px) {
+
+  /* 1. Un-fix the layout */
+  .page-wrapper {
+    height: auto; /* Allow scrolling */
+    overflow-y: auto;
+  }
+
+  /* 2. Hide the desktop sidebar and header video to save space */
+  .sidebar-layout {
+    display: none; 
+  }
+  header video {
+    display: none;
+  }
+
+  /* 3. Stack content vertically instead of side-by-side */
+  div .content-container {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* 4. Make all cards fluid width (100% of screen) */
+  section.section-container,
+  section.section-container#assignment,
+  section.section-container#events-logs,
+  section.section-container#reserves,
+  section.section-container#clocks {
+    width: 100% !important;
+    height: auto !important;
+    margin: 10px 0 !important;
+  }
+
+  /* 5. Adjust text sizes for small screens */
+  .section-content-container {
+    height: auto !important;
+    max-height: 400px; /* Internal scrolling if too long */
+  }
+  
+  /* 6. Fix Header Size */
+  header {
+    height: auto;
+    flex-direction: column;
+    padding: 10px;
+  }
+  .title {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .planet-location-container {
+    position: relative;
+    right: auto;
+    width: 100%;
+  }
+}
