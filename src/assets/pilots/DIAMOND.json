@@ -283,7 +283,7 @@
             "cc_ver": "ERR",
             "lastModified": "Wed Apr 09 2025 21:24:19 GMT-0400 (Eastern Daylight Time)",
             "portrait": "",
-            "cloud_portrait": "",
+            "cloud_portrait": "https://raw.githubusercontent.com/xlii1356/lancer-briefings/refs/heads/master/public/pilots/DIAMOND.webp",
             "loadouts": [
                 {
                     "id": "9d6e0d47-5e40-49ad-87d9-dd84da613cb5",
@@ -537,7 +537,7 @@
             "expireTime": "",
             "deleteTime": "",
             "portrait": "",
-            "cloud_portrait": "",
+            "cloud_portrait": "https://raw.githubusercontent.com/xlii1356/lancer-briefings/refs/heads/master/public/pilots/DIAMOND.webp",
             "loadouts": [
                 {
                     "id": "faf2ac36-995a-457d-b972-2cd2f9e4c669",
@@ -912,7 +912,7 @@
     "group": "",
     "sort_index": -1,
     "portrait": "",
-    "cloud_portrait": "",
+    "cloud_portrait": "https://raw.githubusercontent.com/xlii1356/lancer-briefings/refs/heads/master/public/pilots/DIAMOND.webp",
     "loadout": {
         "id": "2a1475ef-6d8d-4914-941f-b7f5b9767e11",
         "name": "Primary",
