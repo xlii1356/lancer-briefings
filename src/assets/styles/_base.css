@@ -1695,7 +1695,6 @@ div.markdown ol li {
 @media screen and (max-width: 1024px) {
 
   /* 1. FIX THE GAP */
-  /* Remove the forced height so the wrapper only takes up the size of the Header */
   .page-wrapper {
     min-height: 0 !important;
     height: auto !important;
@@ -1703,8 +1702,7 @@ div.markdown ol li {
     padding-bottom: 0 !important;
   }
 
-  /* 2. FIX THE GLOBE (BACKGROUND) */
-  /* Make the app container transparent so we can see the canvas behind it */
+  /* 2. BACKGROUND & CANVAS */
   #app {
     background-color: transparent !important; 
     overflow: visible !important;
@@ -1712,35 +1710,34 @@ div.markdown ol li {
     min-height: 100vh;
   }
 
-  /* Force the Vanta Canvas to stick to the screen */
   canvas {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    z-index: 0 !important; /* Bring it forward slightly (from -1) */
+    z-index: 0 !important;
     pointer-events: none;
     display: block !important;
   }
 
-  /* Ensure your actual content sits ON TOP of the globe */
+  /* Ensure content sits ON TOP of the globe */
   div#router-view-container, header, .sidebar-layout {
     position: relative;
-    z-index: 2; /* Higher than the canvas (0) */
+    z-index: 2; 
   }
 
-  /* 3. UN-FIX THE MAIN CONTAINER POSITIONING */
+  /* 3. MAIN CONTAINER POSITIONS */
   div#router-view-container {
     top: 0 !important;
     left: 0 !important;
     width: 100% !important;
     padding: 10px;
-    padding-bottom: 80px; /* Space for the bottom nav bar */
+    padding-bottom: 80px; /* Space for bottom bar */
     overflow-x: hidden;
   }
 
-  /* 4. STACK COLUMNS VERTICALLY */
+  /* 4. STACK COLUMNS */
   div .content-container {
     display: flex;
     flex-direction: column !important;
@@ -1748,7 +1745,7 @@ div.markdown ol li {
     height: auto !important;
   }
 
-  /* 5. FLUID CARD SIZES */
+  /* 5. FLUID CARD SIZES (Fixes wide assignment box) */
   section.section-container,
   section.section-container#assignment,
   section.section-container#events-logs,
@@ -1760,11 +1757,10 @@ div.markdown ol li {
     margin: 0 0 20px 0 !important;
   }
 
-  /* 6. FIX INTERNAL SCROLLING */
+  /* 6. SCROLLING & TEXT */
   .section-content-container,
   .mission-list-container,
   .reserves-list-container,
-  .clocks-list-container,
   .prime-list-container, 
   .events-list-container {
     height: auto !important;
@@ -1772,7 +1768,6 @@ div.markdown ol li {
     overflow-y: auto;
   }
 
-  /* 7. FIX MARKDOWN TEXT */
   div.markdown,
   #events .markdown,
   #assignment div.markdown {
@@ -1782,7 +1777,7 @@ div.markdown ol li {
     box-sizing: border-box;
   }
 
-  /* 8. FIX HEADER LAYOUT */
+  /* 7. HEADER */
   header {
     height: auto !important;
     flex-direction: column;
@@ -1803,21 +1798,23 @@ div.markdown ol li {
     justify-content: center;
   }
 
-  /* 9. BOTTOM NAVIGATION BAR */
+  /* 8. BOTTOM NAVIGATION BAR (FIXED) */
   .sidebar-layout {
     display: flex !important;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+    position: fixed !important; /* Force fixed positioning */
+    bottom: 0 !important;       /* Force to bottom */
+    left: 0 !important;
+    right: 0 !important;        /* Stretch full width */
+    width: 100% !important;
     height: 60px !important;
-    min-height: 0 !important;
+    min-height: 0 !important;   /* Override desktop minimums */
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
     background-color: var(--secondary-color);
     border-top: 2px solid var(--primary-color);
     box-shadow: 0 -4px 10px rgba(0,0,0,0.5);
+    z-index: 9999 !important;   /* Ensure it is on top of everything */
   }
 
   .o-side__content {
@@ -1854,7 +1851,7 @@ div.markdown ol li {
     display: none; 
   }
 
-  /* 10. Misc Fixes */
+  /* 9. Misc */
   .clipped-medium-backward,
   .clipped-medium-backward-events-logs {
     clip-path: none !important;

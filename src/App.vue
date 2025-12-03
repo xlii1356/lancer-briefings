@@ -1,8 +1,30 @@
 <template>
-	<div class="page-wrapper">
-		<Header :planet-path="planetPath" :class="{ animate: animate }" :header="header" />
-		<Sidebar :animate="animate" :class="{ animate: animate }" />
-	</div>
+  <div class="page-wrapper">
+    <Header :planet-path="planetPath" :class="{ animate: animate }" :header="header" />
+  </div>
+
+  <Sidebar :animate="animate" :class="{ animate: animate }" />
+
+  <div id="router-view-container">
+    <router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :events="events"
+      :pilots="pilots" :clocks="clocks" :reserves="reserves" />
+  </div>
+
+  <svg style="visibility: hidden; position: absolute" width="0" height="0" xmlns="http://www.w3.org/2000/svg"
+    version="1.1">
+    <defs>
+      <filter id="round">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -5"
+          result="goo" />
+        <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+      </filter>
+    </defs>
+  </svg>
+  <audio autoplay>
+    <source src="/startup.ogg" type="audio/ogg" />
+  </audio>
+</template>
 	<div id="router-view-container">
 		<router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :events="events"
 			:pilots="pilots" :clocks="clocks" :reserves="reserves" />
