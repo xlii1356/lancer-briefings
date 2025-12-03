@@ -1,15 +1,7 @@
 <template>
 	<div class="section-content-container" :class="{ animate: animateView }" :style="{ 'animation-delay': animationDelay }" id="pilots">
 		<div class="pilot-list-container">
-			<!-- Added draggable property and dragStart handler to make pilots available for assignment -->
-			<Pilot 
-				v-for="item in pilots" 
-				:key="item.callsign" 
-				:pilot="item" 
-				:animate="animate" 
-				draggable="true" 
-				@dragstart="dragStart($event, item.callsign)"
-			/>
+			<Pilot v-for="item in pilots" :key="item.callsign" :pilot="item" :animate="animate" />
 		</div>
 	</div>
 </template>
@@ -52,34 +44,36 @@ export default {
 			}
 			if (statusAnimated === null) {
 				window.sessionStorage.setItem("statusAnimated", true);
-				this.animationDelay = "1500ms";
 			}
-		},
-		
-		// Method to make pilots draggable (moved from PilotAssignment.vue)
-		dragStart(event, callsign) {
-			event.dataTransfer.setData("pilotCallsign", callsign);
-			event.dataTransfer.effectAllowed = "move";
-		},
-	},
-	watch: {
-		animate() {
-			this.setAnimate();
-		},
-	},
-	created() {
-		this.setAnimate();
-	},
+		}
+	}
 };
 </script>
 
 <style scoped>
-/* Existing styles */
 .pilot-list-container {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 15px;
-	justify-content: space-evenly;
-	padding: 10px;
+	padding: 1em;
+	gap: 1em;
+}
+
+.grid-item {
+	flex: 45%;
+}
+
+.pilot-list-container {
+	height:calc(100vh - 96px);
+}
+
+.section-content-container {
+	border: 0px solid transparent;
+}
+
+section.section-container#pilots {
+	display: flex;
+	flex-direction: column;
+	margin: 50px 30px;
+	width: 1755px;
 }
 </style>
