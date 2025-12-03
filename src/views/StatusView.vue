@@ -27,8 +27,11 @@
         <img src="/icons/deployable.svg" />
         <h1>Current Assignment</h1>
       </div>
-      <div class="section-content-container" style="overflow: hidden;"> <Transition name="slide-fade" mode="out-in">
-          <div :key="missionSlug" class="markdown-wrapper">
+      
+      <div class="section-content-container" style="overflow: hidden; position: relative;">
+        
+        <Transition name="slide-right" mode="out-in">
+          <div :key="missionSlug" class="assignment-content">
             <vue-markdown-it :source="missionMarkdown || 'No mission selected.'" class="markdown" />
           </div>
         </Transition>
@@ -173,29 +176,29 @@ export default {
 </script>
 
 <style scoped>
-/* --- SLIDE ANIMATION STYLES --- */
+/* --- ANIMATION STYLES (MOVE RIGHT) --- */
 
-/* During the transition */
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all 0.3s ease-out;
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth ease */
 }
 
-/* Starting state for entering element (Starts off-screen RIGHT) */
-.slide-fade-enter-from {
-  transform: translateX(30px);
+/* ENTER: Starts from the LEFT (-50px) */
+.slide-right-enter-from {
+  transform: translateX(-50px);
   opacity: 0;
 }
 
-/* Ending state for leaving element (Moves slightly LEFT) */
-.slide-fade-leave-to {
-  transform: translateX(-30px);
+/* LEAVE: Exits to the RIGHT (50px) */
+.slide-right-leave-to {
+  transform: translateX(50px);
   opacity: 0;
 }
 
-/* Wrapper to ensure smooth transition */
-.markdown-wrapper {
+/* Wrapper ensures the content takes up full size during animation */
+.assignment-content {
   width: 100%;
+  height: 100%;
 }
 
 /* --- EXISTING STYLES --- */
