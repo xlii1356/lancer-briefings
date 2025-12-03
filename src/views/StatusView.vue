@@ -7,7 +7,6 @@
         <h1>Mission Log</h1>
       </div>
       <div class="section-content-container">
-        <PilotSelector :pilots="pilots" />
         <div class="mission-list-container">
           <Mission v-for="item in sortedMissions" :key="item.slug" :mission="item" :selected="missionSlug" :pilots="pilots"
             @click="selectMission(item.slug)" />
