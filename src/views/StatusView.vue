@@ -8,26 +8,8 @@
       </div>
       <div class="section-content-container">
         <div class="mission-list-container">
-          <!-- Mission component wrapper now includes drag/drop handlers -->
-          <div v-for="item in missionAssignmentsData.missionsWithPilots" :key="item.slug" 
-               @dragover.prevent="missionAssignmentsData.allowDrop"
-               @drop="missionAssignmentsData.drop($event, item.slug)"
-               class="mission-drop-target"
-          >
-            <!-- Display assigned pilots inside the mission -->
-            <div class="assigned-pilots-list">
-                <div v-for="pilot in item.assignedPilots" :key="pilot.callsign" class="assigned-pilot-tag"
-                     @click="missionAssignmentsData.drop(createSyntheticDropEvent(pilot.callsign), 'unassign')"
-                     :title="'Click to unassign ' + pilot.callsign"
-                >
-                    <img :src="pilot.portraitUrl" :alt="pilot.callsign" class="assigned-pilot-portrait" />
-                    {{ pilot.callsign }}
-                </div>
-            </div>
-            
-            <Mission :mission="item" :selected="missionSlug"
-              @click="selectMission(item.slug)" />
-          </div>
+          <Mission v-for="item in missions" :key="item.slug" :mission="item" :selected="missionSlug"
+            @click="selectMission(item.slug)" />
         </div>
       </div>
     </section>
@@ -82,19 +64,14 @@
         </div>
       </section>
     </div>
-    
-    <!-- PILOT ASSIGNMENT SECTION (NEW) -->
-    <PilotAssignment ref="pilotAssignment" :missions="missions" :pilots="pilots" />
-
   </div>
 </template>
 
 <script>
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import Mission from "@/components/Mission.vue";
-import Event from "@/components/Event.vue"; // Not used but kept for context
-import Reserve from "@/components/Reserve.vue"; // Not used but kept for context
-import PilotAssignment from "./PilotAssignment.vue"; // Import the new component
+import Event from "@/components/Event.vue";
+import Reserve from "@/components/Reserve.vue";
 
 import primeDataList from '@/assets/prime/prime.json';
 
@@ -104,7 +81,6 @@ export default {
     Mission,
     Event,
     Reserve,
-    PilotAssignment, // Register the new component
   },
   props: {
     animate: { type: Boolean, required: true },
@@ -125,25 +101,12 @@ export default {
       primeData: primeDataList,
     };
   },
-  computed: {
-    // Expose the PilotAssignment component's data/methods for use in the mission template
-    missionAssignmentsData() {
-        // Access the component's reactive data and methods using $refs
-        const ref = this.$refs.pilotAssignment;
-        return {
-            missionsWithPilots: ref ? ref.missionsWithPilots : this.missions.map(m => ({ ...m, assignedPilots: [] })),
-            allowDrop: ref ? ref.allowDrop : () => {},
-            drop: ref ? ref.drop : () => {},
-        };
-    }
-  },
   created() {
     this.setAnimate();
     this.setClockAnimateDelay();
   },
   beforeUpdate() {
-    // Ensure we select the mission based on the slug, even with the new structure
-    this.selectMission(this.missionSlug); 
+    this.selectMission(this.missionSlug);
   },
   mounted() {
     if (this.missions.length > 0) {
@@ -151,28 +114,6 @@ export default {
     }
   },
   methods: {
-    // Utility to simulate a drop event for click-to-unassign
-    createSyntheticDropEvent(callsign) {
-        // We only need to provide the pilot data in the application/json format
-        const pilot = this.pilots.find(p => p.callsign.toUpperCase() === callsign);
-        const dataTransferMock = {
-            getData: (type) => {
-                if (type === 'application/json') {
-                    return JSON.stringify({
-                        callsign: pilot.callsign.toUpperCase(),
-                        name: pilot.name,
-                        portraitUrl: pilot.portrait_url || pilot.image_url || 'https://placehold.co/80x80/2C3E50/FFFFFF?text=P',
-                    });
-                }
-                return null;
-            }
-        };
-        return {
-            preventDefault: () => {},
-            dataTransfer: dataTransferMock
-        };
-    },
-
     getStatusClass(status) {
       const s = status.toLowerCase();
       if (s === 'active') return 'status-active';
@@ -208,63 +149,12 @@ export default {
 </script>
 
 <style scoped>
-/* Mission Drop Target Styles */
-.mission-drop-target {
-    position: relative;
-    /* Optional: Add visual cue for drop zone */
-    border: 1px solid transparent; 
-    padding: 5px 0;
-    transition: all 0.2s;
-}
-.mission-drop-target:hover {
-    border: 1px dashed #00ffc1;
-    background-color: rgba(0, 255, 193, 0.05);
-}
-
-.assigned-pilots-list {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    display: flex;
-    gap: 5px;
-    z-index: 10;
-}
-
-.assigned-pilot-tag {
-    background-color: #2C3E50;
-    color: #00ffc1;
-    border: 1px solid #00ffc1;
-    border-radius: 12px;
-    padding: 2px 8px 2px 2px;
-    font-size: 0.7em;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    transition: background-color 0.1s;
-}
-
-.assigned-pilot-tag:hover {
-    background-color: #00ffc1;
-    color: #1a1a1a;
-}
-
-.assigned-pilot-portrait {
-    width: 18px;
-    height: 18px;
-    object-fit: cover;
-    border-radius: 50%;
-    margin-right: 4px;
-    border: 1px solid #00ffc1;
-}
-
-/* Existing styles below */
 .prime-list-container {
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
-/* ... (remaining styles unchanged) ... */
 
 .prime-row {
   border-left: 2px solid #555;
@@ -389,19 +279,5 @@ export default {
   90% { clip: rect(69px, 9999px, 57px, 0); transform: skew(0.55deg); }
   95% { clip: rect(34px, 9999px, 5px, 0); transform: skew(0.81deg); }
   100% { clip: rect(24px, 9999px, 78px, 0); transform: skew(0.43deg); }
-}
-
-@keyframes glitch-skew {
-  0% { transform: skew(0deg); }
-  10% { transform: skew(0.5deg); }
-  20% { transform: skew(-0.5deg); }
-  30% { transform: skew(0deg); }
-  40% { transform: skew(0.5deg); }
-  50% { transform: skew(-0.5deg); }
-  60% { transform: skew(0deg); }
-  70% { transform: skew(0.5deg); }
-  80% { transform: skew(-0.5deg); }
-  90% { transform: skew(0deg); }
-  100% { transform: skew(0.5deg); }
 }
 </style>
