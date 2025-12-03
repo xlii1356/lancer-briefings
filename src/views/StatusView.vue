@@ -7,6 +7,7 @@
         <h1>Mission Log</h1>
       </div>
       <div class="section-content-container">
+        <PilotSelector :pilots="pilots" />
         <div class="mission-list-container">
           <Mission v-for="item in sortedMissions" :key="item.slug" :mission="item" :selected="missionSlug"
             @click="selectMission(item.slug)" />
@@ -72,6 +73,7 @@ import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import Mission from "@/components/Mission.vue";
 import Event from "@/components/Event.vue";
 import Reserve from "@/components/Reserve.vue";
+import PilotSelector from "@/components/PilotSelector.vue";
 
 import primeDataList from '@/assets/prime/prime.json';
 
@@ -81,6 +83,7 @@ export default {
     Mission,
     Event,
     Reserve,
+    PilotSelector,
   },
   props: {
     animate: { type: Boolean, required: true },
