@@ -1,6 +1,7 @@
 <template>
   <div id="status" :class="{ animate: animateView }" :style="{ 'animation-delay': animationDelay }"
     class="content-container">
+    
     <section id="missions" class="section-container" :style="{ 'animation-delay': animationDelay }">
       <div class="section-header clipped-medium-backward">
         <img src="/icons/campaign.svg" />
@@ -8,20 +9,33 @@
       </div>
       <div class="section-content-container">
         <div class="mission-list-container">
-          <Mission v-for="item in sortedMissions" :key="item.slug" :mission="item" :selected="missionSlug" :pilots="pilots" :locked-squad="getSquadForMission(item.slug)"
-            @click="selectMission(item.slug)" />
+          <Mission 
+            v-for="item in sortedMissions" 
+            :key="item.slug" 
+            :mission="item" 
+            :selected="missionSlug"
+            :pilots="pilots"
+            :locked-squad="getSquadForMission(item.slug)" 
+            @click="selectMission(item.slug)" 
+          />
         </div>
       </div>
     </section>
+
     <section id="assignment" class="section-container" :style="{ 'animation-delay': animationDelay }">
       <div class="section-header clipped-medium-backward">
         <img src="/icons/deployable.svg" />
         <h1>Current Assignment</h1>
       </div>
-      <div class="section-content-container">
-        <vue-markdown-it :source="missionMarkdown" class="markdown" />
+      <div class="section-content-container" style="overflow: hidden;"> <Transition name="slide-fade" mode="out-in">
+          <div :key="missionSlug" class="markdown-wrapper">
+            <vue-markdown-it :source="missionMarkdown || 'No mission selected.'" class="markdown" />
+          </div>
+        </Transition>
+
       </div>
     </section>
+
     <div>
       <section id="reserves" class="section-container" :style="{ 'animation-delay': animationDelay }">
         <div class="section-header clipped-medium-backward">
@@ -30,7 +44,8 @@
         </div>
         <div class="section-content-container">
           <div class="reserves-list-container">
-            <Reserve v-for="item in reserves" :key="item.name" :reserve="item" :pilots="pilots" />
+            <Reserve v-for="item in reserves" :key="item.name" :reserve="item" :pilots="pilots"
+              v-if="item && item.name !== 'Skill Point'" />
           </div>
         </div>
       </section>
@@ -42,7 +57,6 @@
         </div>
         <div class="section-content-container">
           <div class="prime-list-container">
-            
             <div v-for="(item, index) in primeData" :key="index" class="prime-row">
               <div class="row-line">
                 <span class="label">Current Alias:</span> 
@@ -59,7 +73,6 @@
                 </span>
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -72,10 +85,9 @@ import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import Mission from "@/components/Mission.vue";
 import Event from "@/components/Event.vue";
 import Reserve from "@/components/Reserve.vue";
-import PilotSelector from "@/components/PilotSelector.vue";
-import missionSquads from '@/assets/missions/squads.json'
 
 import primeDataList from '@/assets/prime/prime.json';
+import missionSquads from '@/assets/missions/squads.json';
 
 export default {
   components: {
@@ -83,7 +95,6 @@ export default {
     Mission,
     Event,
     Reserve,
-    PilotSelector,
   },
   props: {
     animate: { type: Boolean, required: true },
@@ -95,9 +106,9 @@ export default {
     reserves: { type: Array, required: true },
   },
   computed: {
-  sortedMissions() {
-    return [...this.missions].sort((a, b) => Number(a.slug) - Number(b.slug));
-  }
+    sortedMissions() {
+      return [...this.missions].sort((a, b) => Number(a.slug) - Number(b.slug));
+    }
   },
   data() {
     return {
@@ -107,7 +118,7 @@ export default {
       clockAnimationDelay: "2500",
       missionMarkdown: "",
       primeData: primeDataList,
-      squadData: missionSquads,
+      squadData: missionSquads, 
     };
   },
   created() {
@@ -123,18 +134,22 @@ export default {
     }
   },
   methods: {
+    getSquadForMission(slug) {
+      const record = this.squadData.find(s => s.missionSlug === slug);
+      return record ? record.pilots : null;
+    },
     getStatusClass(status) {
       const s = status.toLowerCase();
       if (s === 'active') return 'status-active';
       if (s === 'deceased') return 'status-deceased';
-      if (s === 'neutralized') return 'status-neutralized'; // <--- ADDED HERE
+      if (s === 'neutralized') return 'status-neutralized';
       if (s === 'unknown') return 'status-unknown';
       return '';
     },
     selectMission(slug) {
       this.missionSlug = slug;
       let m = this.missions.find(x => x.slug === this.missionSlug);
-      this.missionMarkdown = m.content;
+      if(m) this.missionMarkdown = m.content;
     },
     setAnimate() {
       if (this.animate) {
@@ -153,15 +168,38 @@ export default {
       let finalClockDelay = delayToFloat * 600 + 600;
       this.clockAnimationDelay = finalClockDelay.toString();
     },
-    getSquadForMission(slug) {
-      const record = this.squadData.find(s => s.missionSlug === slug);
-      return record ? record.pilots : null;
-    }
   },
 };
 </script>
 
 <style scoped>
+/* --- SLIDE ANIMATION STYLES --- */
+
+/* During the transition */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+/* Starting state for entering element (Starts off-screen RIGHT) */
+.slide-fade-enter-from {
+  transform: translateX(30px);
+  opacity: 0;
+}
+
+/* Ending state for leaving element (Moves slightly LEFT) */
+.slide-fade-leave-to {
+  transform: translateX(-30px);
+  opacity: 0;
+}
+
+/* Wrapper to ensure smooth transition */
+.markdown-wrapper {
+  width: 100%;
+}
+
+/* --- EXISTING STYLES --- */
+
 .prime-list-container {
   padding: 10px;
   display: flex;
@@ -196,19 +234,19 @@ export default {
 /* --- STATUS COLORS --- */
 
 .status-active {
-  color: #00ff00; /* Green */
+  color: #00ff00;
   font-weight: bold;
   text-shadow: 0 0 5px #00ff00;
 }
 
 .status-deceased {
-  color: #ff0000; /* Red */
+  color: #ff0000;
   font-weight: bold;
   text-shadow: 0 0 5px #ff0000;
 }
 
 .status-neutralized {
-  color: #FFC107; /* Yellow / Amber */
+  color: #FFC107;
   font-weight: bold;
   text-shadow: 0 0 5px #FFC107;
 }
