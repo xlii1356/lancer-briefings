@@ -1,27 +1,10 @@
 [
   {
-    "name": "Rented Gear",
-    "owner": "STHENO",
+    "name": "PLASMA TORCH",
+    "type": "Rented Gear",
+    "pilot": "STHENO",
     "description": "Has bribed Rumble with a passing grade in exchange for access to her plasma torch (out of combat only unless installed)."
   },
-        {
-            "id": "reserve_custom",
-            "type": "Resource",
-            "name": "PORTABLE SUN",
-            "label": "PORTABLE SUN",
-            "description": "BURST 2, REPELS GHOULS",
-            "resource_name": "",
-            "resource_note": "",
-            "resource_cost": "",
-            "used": false,
-            "bonuses": [],
-            "actions": [],
-            "synergies": [],
-            "deployables": [],
-            "counters": [],
-            "integrated": [],
-            "special_equipment": []
-        },
   {
     "name": "Unit 3",
     "...": "other reserve properties"
