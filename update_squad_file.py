@@ -15,9 +15,6 @@ def update_squad_file(mission_slug, pilot_name):
 
     mission = next((item for item in squad_list if item["missionSlug"] == mission_slug), None)
 
-    repo = Repo('.')
-    repo.index.add([file_path])
-
     if mission:
         # Check if pilot exists to determine Add vs Remove
         if pilot_name in mission["pilots"]:
@@ -31,6 +28,10 @@ def update_squad_file(mission_slug, pilot_name):
         with open(file_path, 'w') as f:
             json.dump(squad_list, f, indent=2)
         print(msg)
+
+        repo = Repo('.')
+        repo.index.add([file_path])
+
         repo.index.commit(msg)
         origin = repo.remote(name='origin')
         origin.push()
