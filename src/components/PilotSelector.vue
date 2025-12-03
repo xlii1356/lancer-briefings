@@ -1,23 +1,3 @@
-<template>
-  <div class="pilot-selector" :class="{ 'is-locked': isLocked }">
-    <div 
-      v-for="pilot in sortedPilots" 
-      :key="pilot.callsign" 
-      class="pilot-token"
-      :class="{ active: isSelected(pilot.callsign) }"
-      @click.stop="togglePilot(pilot.callsign)"
-    >
-      <div class="image-wrapper">
-        <img :src="pilot.cloud_portrait" :alt="pilot.callsign" />
-        <div v-if="isLocked && isSelected(pilot.callsign)" class="lock-indicator">
-          <i class="fas fa-lock"></i>
-        </div>
-      </div>
-      <span class="callsign">{{ pilot.callsign }}</span>
-    </div>
-  </div>
-</template>
-
 <script>
 export default {
   name: "PilotSelector",
@@ -46,7 +26,6 @@ export default {
       return `squad_selection_${this.missionId}`;
     },
     isLocked() {
-      // Returns true if this mission is controlled by the JSON file
       return this.lockedSquad && this.lockedSquad.length > 0;
     },
     sortedPilots() {
@@ -54,16 +33,12 @@ export default {
         const aSelected = this.isSelected(a.callsign);
         const bSelected = this.isSelected(b.callsign);
         
-        // If both selected or both unselected, sort alphabetically or keep order
         if (aSelected === bSelected) return 0;
-        
-        // Selected pilots move to the front (-1)
         return aSelected ? -1 : 1;
       });
     }
   },
   watch: {
-    // If the mission or the JSON data changes, reload the state
     missionId: 'loadSelection',
     lockedSquad: 'loadSelection'
   },
@@ -71,18 +46,19 @@ export default {
     this.loadSelection();
   },
   methods: {
+    // --- FIX START ---
     isSelected(callsign) {
-      return this.selectedCallsigns.includes(callsign);
+      // Compare both strings in Uppercase so "Reiko" matches "REIKO"
+      return this.selectedCallsigns.some(c => c.toUpperCase() === callsign.toUpperCase());
     },
+    // --- FIX END ---
+
     loadSelection() {
-      // PRIORITY 1: Check if this mission has a hard-coded squad in JSON
       if (this.isLocked) {
-        // Clone the array to avoid reference issues
         this.selectedCallsigns = [...this.lockedSquad];
         return; 
       }
 
-      // PRIORITY 2: Check Local Storage (User preferences)
       const saved = localStorage.getItem(this.storageKey);
       if (saved) {
         try {
@@ -95,33 +71,53 @@ export default {
       }
     },
     togglePilot(callsign) {
-      // If locked via JSON, do not allow user changes
       if (this.isLocked) return;
 
       if (this.isSelected(callsign)) {
-        this.selectedCallsigns = this.selectedCallsigns.filter(c => c !== callsign);
+        // Remove pilot (Case insensitive filter)
+        this.selectedCallsigns = this.selectedCallsigns.filter(c => c.toUpperCase() !== callsign.toUpperCase());
       } else {
         this.selectedCallsigns.push(callsign);
       }
       
-      // Save the user's choice to browser memory
       localStorage.setItem(this.storageKey, JSON.stringify(this.selectedCallsigns));
     }
   }
 };
 </script>
 
+<template>
+  <div class="pilot-selector" :class="{ 'is-locked': isLocked }">
+    <div 
+      v-for="pilot in sortedPilots" 
+      :key="pilot.callsign" 
+      class="pilot-token"
+      :class="{ active: isSelected(pilot.callsign) }"
+      @click.stop="togglePilot(pilot.callsign)"
+    >
+      <div class="image-wrapper">
+        <img :src="pilot.cloud_portrait" :alt="pilot.callsign" />
+        <div v-if="isLocked && isSelected(pilot.callsign)" class="lock-indicator">
+          <i class="fas fa-lock"></i>
+        </div>
+      </div>
+      <span class="callsign">{{ pilot.callsign }}</span>
+    </div>
+  </div>
+</template>
+
 <style scoped>
+/* Same CSS as before */
 .pilot-selector {
   display: flex;
-  flex-wrap: nowrap; /* Keep them in a single row */
+  flex-wrap: nowrap;
   gap: 8px;
   padding: 8px 5px;
   margin-top: 5px;
-  overflow-x: auto; /* Allow scrolling if too many pilots */
+  overflow-x: auto;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   
-  /* Hide scrollbar for cleanliness */
+  /* Scrollbar hiding logic */
   scrollbar-width: none; 
   -ms-overflow-style: none;
 }
@@ -129,7 +125,6 @@ export default {
   display: none; 
 }
 
-/* Change cursor if the list is locked vs editable */
 .pilot-selector.is-locked .pilot-token {
   cursor: default;
 }
@@ -143,22 +138,20 @@ export default {
   opacity: 0.4;
   filter: grayscale(100%);
   transform: scale(0.9);
-  flex-shrink: 0; /* Prevent squishing */
+  flex-shrink: 0;
   width: 45px; 
 }
 
-/* HOVER STATE (Only if not locked) */
 .pilot-selector:not(.is-locked) .pilot-token:hover {
   opacity: 0.8;
   transform: scale(1.0);
 }
 
-/* ACTIVE (SELECTED) STATE */
 .pilot-token.active {
   opacity: 1;
   filter: grayscale(0%);
   transform: scale(1.05);
-  order: -1; /* Flexbox sorting visual helper */
+  order: -1; 
 }
 
 .image-wrapper {
@@ -177,7 +170,7 @@ export default {
 }
 
 .pilot-token.active img {
-  border-color: #FFC107; /* Lancer Gold */
+  border-color: #FFC107;
   box-shadow: 0 0 5px rgba(255, 193, 7, 0.6);
 }
 
