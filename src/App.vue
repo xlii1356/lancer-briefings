@@ -96,7 +96,6 @@ export default {
 				event["content"] = content.split("\n").splice(4).join("\n");
 				this.events = [...this.events, event];
 			});
-			this.events = this.events.reverse();
 		},
 		async importClocks(files) {
 			let filePromises = Object.keys(files).map(path => files[path]());
