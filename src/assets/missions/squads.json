@@ -1,10 +1,17 @@
 [
   {
     "missionSlug": "001",
-    "pilots": ["STHENO","REIKO"]
+    "pilots": [
+      "STHENO",
+      "REIKO"
+    ]
   },
   {
     "missionSlug": "002",
-    "pilots": ["AIMBOT", "DIAMOND", "MERLIN"]
+    "pilots": [
+      "AIMBOT",
+      "DIAMOND",
+      "MERLIN"
+    ]
   }
 ]
