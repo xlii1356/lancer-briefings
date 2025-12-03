@@ -1,18 +1,21 @@
 <template>
   <div class="mission" :class="[{ active: isActive }, mission.status]">
-    <div class="name">
-      <h1>Mission // {{ mission.slug }}</h1>
-      <h2>{{ mission.name }}</h2>
-    </div>
     
+    <div class="mission-header">
+      <div class="name">
+        <h1>Mission // {{ mission.slug }}</h1>
+        <h2>{{ mission.name }}</h2>
+      </div>
+      <div class="status" :class="mission.status">
+        {{ missionStatus }}
+        <img :src="icon" />
+      </div>
+    </div>
+
     <div class="squad-container">
       <PilotSelector :pilots="pilots" :mission-id="mission.slug" />
     </div>
 
-    <div class="status" :class="mission.status">
-      {{ missionStatus }}
-      <img :src="icon" />
-    </div>
   </div>
 </template>
 
@@ -32,7 +35,6 @@ export default {
       type: String,
       required: true,
     },
-    // New Prop to receive pilot data
     pilots: {
       type: Array,
       required: true,
@@ -57,10 +59,35 @@ export default {
 </script>
 
 <style scoped>
-/* Optional: Ensure the selector doesn't break the layout */
+/* 1. Force the main container to stack vertically */
+.mission {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  height: auto !important; /* Allow box to grow */
+  padding-bottom: 10px; /* Extra space at bottom */
+}
+
+/* 2. Keep the Header (Name + Status) in a horizontal row */
+.mission-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* 3. Style the Squad Container */
 .squad-container {
   width: 100%;
   margin-top: 5px;
-  margin-bottom: 5px;
+  /* Optional: Indent slightly to align with text */
+  padding-left: 10px; 
+  padding-right: 10px;
+}
+
+/* Ensure Name takes up available space in the header row */
+.name {
+  flex-grow: 1;
 }
 </style>
