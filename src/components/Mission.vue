@@ -1,4 +1,5 @@
 <template>
+
   <div class="mission" :class="[{ active: isActive }, mission.status]">
     
     <div class="mission-header">
@@ -13,7 +14,11 @@
     </div>
 
     <div class="squad-container">
-      <PilotSelector :pilots="pilots" :mission-id="mission.slug" />
+      <PilotSelector 
+    :pilots="pilots" 
+    :mission-id="mission.slug" 
+    :locked-squad="lockedSquad" 
+      />
     </div>
 
   </div>
@@ -38,6 +43,11 @@ export default {
     pilots: {
       type: Array,
       required: true,
+    },
+    lockedSquad: {
+      type: Array,
+      default: () => null,
+      required: false
     }
   },
   computed: {

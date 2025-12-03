@@ -1,0 +1,10 @@
+[
+  {
+    "missionSlug": "001",
+    "pilots": ["REIKO", "MERLIN", "TRIGGER"]
+  },
+  {
+    "missionSlug": "002",
+    "pilots": ["AIMBOT", "DIAMOND"]
+  }
+]

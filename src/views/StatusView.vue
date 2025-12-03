@@ -8,7 +8,7 @@
       </div>
       <div class="section-content-container">
         <div class="mission-list-container">
-          <Mission v-for="item in sortedMissions" :key="item.slug" :mission="item" :selected="missionSlug" :pilots="pilots"
+          <Mission v-for="item in sortedMissions" :key="item.slug" :mission="item" :selected="missionSlug" :pilots="pilots" :locked-squad="getSquadForMission(item.slug)"
             @click="selectMission(item.slug)" />
         </div>
       </div>
@@ -73,6 +73,7 @@ import Mission from "@/components/Mission.vue";
 import Event from "@/components/Event.vue";
 import Reserve from "@/components/Reserve.vue";
 import PilotSelector from "@/components/PilotSelector.vue";
+import missionSquads from '@/assets/missions/squads.json'
 
 import primeDataList from '@/assets/prime/prime.json';
 
@@ -106,6 +107,7 @@ export default {
       clockAnimationDelay: "2500",
       missionMarkdown: "",
       primeData: primeDataList,
+      squadData: missionSquads,
     };
   },
   created() {
@@ -151,6 +153,10 @@ export default {
       let finalClockDelay = delayToFloat * 600 + 600;
       this.clockAnimationDelay = finalClockDelay.toString();
     },
+    getSquadForMission(slug) {
+      const record = this.squadData.find(s => s.missionSlug === slug);
+      return record ? record.pilots : null;
+    }
   },
 };
 </script>
