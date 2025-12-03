@@ -29,13 +29,11 @@
       </div>
       
       <div class="section-content-container" style="overflow: hidden; position: relative;">
-        
         <Transition name="slide-right" mode="out-in">
           <div :key="missionSlug" class="assignment-content">
             <vue-markdown-it :source="missionMarkdown || 'No mission selected.'" class="markdown" />
           </div>
         </Transition>
-
       </div>
     </section>
 
@@ -47,8 +45,12 @@
         </div>
         <div class="section-content-container">
           <div class="reserves-list-container">
-            <Reserve v-for="item in reserves" :key="item.name" :reserve="item" :pilots="pilots"
-              v-if="item && item.name !== 'Skill Point'" />
+            <Reserve 
+              v-for="item in visibleReserves" 
+              :key="item.name" 
+              :reserve="item" 
+              :pilots="pilots" 
+            />
           </div>
         </div>
       </section>
@@ -111,6 +113,11 @@ export default {
   computed: {
     sortedMissions() {
       return [...this.missions].sort((a, b) => Number(a.slug) - Number(b.slug));
+    },
+    // FIX: Filter the reserves here instead of in the HTML
+    visibleReserves() {
+      if (!this.reserves) return [];
+      return this.reserves.filter(item => item && item.name !== 'Skill Point');
     }
   },
   data() {
@@ -177,77 +184,62 @@ export default {
 
 <style scoped>
 /* --- ANIMATION STYLES (MOVE RIGHT) --- */
-
 .slide-right-enter-active,
 .slide-right-leave-active {
-  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth ease */
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-
-/* ENTER: Starts from the LEFT (-50px) */
 .slide-right-enter-from {
   transform: translateX(-50px);
   opacity: 0;
 }
-
-/* LEAVE: Exits to the RIGHT (50px) */
 .slide-right-leave-to {
   transform: translateX(50px);
   opacity: 0;
 }
-
-/* Wrapper ensures the content takes up full size during animation */
 .assignment-content {
   width: 100%;
   height: 100%;
 }
 
 /* --- EXISTING STYLES --- */
-
 .prime-list-container {
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
-
 .prime-row {
   border-left: 2px solid #555;
   padding-left: 10px;
   background: rgba(0, 0, 0, 0.2);
   padding: 10px;
 }
-
 .row-line {
   margin-bottom: 2px;
   font-family: 'Rubik', sans-serif;
 }
-
 .label {
   color: #888;
   margin-right: 8px;
   font-size: 0.9em;
   text-transform: uppercase;
 }
-
 .value {
   color: white;
   font-weight: bold;
 }
 
 /* --- STATUS COLORS --- */
-
 .status-active {
   color: #00ff00;
   font-weight: bold;
   text-shadow: 0 0 5px #00ff00;
 }
-
 .status-deceased {
   color: #ff0000;
   font-weight: bold;
   text-shadow: 0 0 5px #ff0000;
 }
-
 .status-neutralized {
   color: #FFC107;
   font-weight: bold;
@@ -262,7 +254,6 @@ export default {
   display: inline-block;
   animation: glitch-skew 1s infinite linear alternate-reverse;
 }
-
 .status-unknown::before,
 .status-unknown::after {
   content: "UNKNOWN";
@@ -272,14 +263,12 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 .status-unknown::before {
   left: 2px;
   text-shadow: -1px 0 #ff00c1;
   clip: rect(44px, 450px, 56px, 0);
   animation: glitch-anim 5s infinite linear alternate-reverse;
 }
-
 .status-unknown::after {
   left: -2px;
   text-shadow: -1px 0 #00fff9;
