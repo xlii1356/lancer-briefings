@@ -1853,4 +1853,20 @@ div.markdown ol li {
     max-width: 100%;
     height: auto;
   }
+  
+  /* Fallback color: Makes the "white" space dark so it matches the theme */
+  body, html, #app {
+    background-color: #161c1d !important; /* Use your theme's dark color */
+  }
+
+  /* Force the Vanta Canvas to stick to the screen background */
+  canvas {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: -1 !important; /* Puts it behind the text */
+    pointer-events: none;   /* Ensures you can still scroll/click things */
+  }
 }
