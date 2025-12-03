@@ -1,6 +1,7 @@
 import json
 
-def update_squad_file(file_path, mission_slug, pilot_name):
+def update_squad_file(mission_slug, pilot_name):
+    file_path = 'src/assets/missions/squads.json' 
     try:
         with open(file_path, 'r') as f:
             squad_list = json.load(f)
@@ -29,8 +30,7 @@ def update_squad_file(file_path, mission_slug, pilot_name):
         
     else:
         print(f"Mission {mission_slug} not found in the file.")
-file_path = 'src/assets/missions/squads.json' 
 
 # Example: Toggle 'TRIGGER' for Mission '001'
 # If Trigger is there, they will be removed. If not, they will be added.
-update_squad_file(file_path, "001", "TRIGGER")
+# update_squad_file("001", "TRIGGER")
