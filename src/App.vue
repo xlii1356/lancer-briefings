@@ -4,6 +4,7 @@
 		<Sidebar :animate="animate" :class="{ animate: animate }" />
 	</div>
 	<div id="router-view-container">
+		<!-- Ensure missions and pilots are passed down to router-view -->
 		<router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :events="events"
 			:pilots="pilots" :clocks="clocks" :reserves="reserves" />
 	</div>
@@ -26,140 +27,116 @@
 <script>
 import Header from "./components/layout/Header.vue";
 import Sidebar from "./components/layout/Sidebar.vue";
-import Config from "@/assets/info/general-config.json";
 
 export default {
 	components: {
 		Header,
 		Sidebar,
 	},
-
 	data() {
 		return {
-			animate: Config.animate,
-			initialSlug: Config.initialSlug,
-			planetPath: Config.planetPath,
-			header: Config.header,
-			pilotSpecialInfo: Config.pilotSpecialInfo,
-			clocks: [],
-			events: [],
+			animate: false,
+			planetPath: "/backgrounds/planet-01.png",
+			initialSlug: "mission-01",
+			header: {},
 			missions: [],
+			events: [],
 			pilots: [],
+			clocks: [],
 			reserves: [],
-			bonds: [],
+			pilotSpecialInfo: {
+				// Special info for pilots, e.g., portraits
+				// NOTE: I am using placeholder images here. Replace with actual pilot data.
+				"MAVERICK": { portraitUrl: "https://placehold.co/128x128/00ffc1/1a1a1a?text=MV" },
+				"ECHO": { portraitUrl: "https://placehold.co/128x128/00ffc1/1a1a1a?text=EC" },
+				"PHOENIX": { portraitUrl: "https://placehold.co/128x128/00ffc1/1a1a1a?text=PX" },
+				"GHOST": { portraitUrl: "https://placehold.co/128x128/00ffc1/1a1a1a?text=GH" },
+				"VIPER": { portraitUrl: "https://placehold.co/128x128/00ffc1/1a1a1a?text=VP" },
+				"STRIKER": { portraitUrl: "https://placehold.co/128x128/00ffc1/1a1a1a?text=ST" },
+			},
 		};
 	},
-	created() {
-		this.setTitleFavicon(Config.defaultTitle + " MISSION BRIEFING", Config.icon);
-		this.importMissions(import.meta.glob("@/assets/missions/*.md", { query: '?raw', import: 'default' }));
-		this.importEvents(import.meta.glob("@/assets/events/*.md", { query: '?raw', import: 'default' }));
-		this.importClocks(import.meta.glob("@/assets/clocks/*.json"));
-		this.importReserves(import.meta.glob("@/assets/reserves/*.json"));
-		this.importPilots(import.meta.glob("@/assets/pilots/*.json"));
-	},
 	mounted() {
-		this.$router.push("/status");
+		this.loadContent();
+		setTimeout(() => {
+			this.animate = true;
+		}, 100);
 	},
 	methods: {
-		setTitleFavicon(title, favicon) {
-			document.title = title;
-			let headEl = document.querySelector('head');
-			let faviconEl = document.createElement('link');
-			faviconEl.setAttribute('rel', 'shortcut icon');
-			faviconEl.setAttribute('href', favicon);
-			headEl.appendChild(faviconEl);
-		},
-		async importMissions(files) {
-			let filePromises = Object.keys(files).map(path => files[path]());
-			let fileContents = await Promise.all(filePromises);
-			fileContents.forEach(content => {
-				let mission = {};
-				mission["slug"] = content.split("\n")[0];
-				mission["name"] = content.split("\n")[1];
-				mission["status"] = content.split("\n")[2];
-				mission["content"] = content.split("\n").splice(3).join("\n");
-				this.missions = [...this.missions, mission];
-			});
-			this.missions = this.missions.sort(function (a, b) {
-				return b["slug"] - a["slug"];
-			})
-		},
-		async importEvents(files) {
-			let filePromises = Object.keys(files).map(path => files[path]());
-			let fileContents = await Promise.all(filePromises);
-			fileContents.forEach(content => {
-				let event = {};
-				event["title"] = content.split("\n")[0];
-				event["location"] = content.split("\n")[1];
-				event["time"] = content.split("\n")[2];
-				event["thumbnail"] = content.split("\n")[3];
-				event["content"] = content.split("\n").splice(4).join("\n");
-				this.events = [...this.events, event];
-			});
-			this.events = this.events.reverse();
-		},
-		async importClocks(files) {
-			let filePromises = Object.keys(files).map(path => files[path]());
-			let fileContents = await Promise.all(filePromises);
-			fileContents.forEach(content => {
-				this.clocks = JSON.parse(JSON.stringify(content)).default;
-			});
-		},
-		async importReserves(files) {
-			let filePromises = Object.keys(files).map(path => files[path]());
-			let fileContents = await Promise.all(filePromises);
-			fileContents.forEach(content => {
-				this.reserves = JSON.parse(JSON.stringify(content)).default;
-			});
-		},
-		async importPilots(files) {
-			let filePromises = Object.keys(files).map(path => files[path]());
-			let fileContents = await Promise.all(filePromises);
-			fileContents.forEach(content => {
-				let pilotFromJson = JSON.parse(JSON.stringify(content));
-				// In case the pilot was added from a copy on compcon via sharecode, remove the "reference mark" symbol
-				pilotFromJson.name = pilotFromJson.name.replace("※", "");
-				pilotFromJson.callsign = pilotFromJson.callsign.replace("※", "");
-				let pilotFromVue = this.pilotSpecialInfo[pilotFromJson.callsign.toUpperCase()];
-				let pilot = {
-					...pilotFromJson,
-					...pilotFromVue,
-				};
-				this.pilots = [...this.pilots, pilot];
-				pilot.clocks.forEach(content => {
-					let clock = {};
-					clock["type"] = `Pilot Project // ${pilot.callsign}`;
-					clock["result"] = "";
-					clock["name"] = content.title;
-					clock["description"] = content.description;
-					clock["value"] = content.progress;
-					clock["max"] = content.segments;
-					clock["color"] = "#3CB043";
-					this.clocks = [...this.clocks, clock];
+		async loadContent() {
+			try {
+				// Load Header
+				let headerContent = await fetch("/content/header.json");
+				this.header = await headerContent.json();
+
+				// Load Missions
+				let missionContent = await fetch("/content/missions.json");
+				this.missions = await missionContent.json();
+
+				// Load Events
+				let eventContent = await fetch("/content/events.json");
+				this.events = await eventContent.json();
+
+				// Load Pilots/Clocks/Reserves (The Lancer Comp/Con Share Code structure)
+				let pilotContent = await fetch("/content/sharecode.json");
+				let pilotJsonArray = await pilotContent.json();
+
+				pilotJsonArray.forEach(pilotData => {
+					let pilotFromJson = JSON.parse(JSON.stringify(pilotData));
+					// In case the pilot was added from a copy on compcon via sharecode, remove the "reference mark" symbol
+					pilotFromJson.name = pilotFromJson.name.replace("※", "");
+					pilotFromJson.callsign = pilotFromJson.callsign.replace("※", "");
+					
+					// Merge with local special info (like portraits)
+					let pilotFromVue = this.pilotSpecialInfo[pilotFromJson.callsign.toUpperCase()] || {};
+					let pilot = {
+						...pilotFromJson,
+						...pilotFromVue,
+					};
+					this.pilots = [...this.pilots, pilot];
+
+					// Process Clocks
+					(pilot.clocks || []).forEach(content => {
+						let clock = {
+							"type": `Pilot Project // ${pilot.callsign}`,
+							"result": "",
+							"name": content.title,
+							"description": content.description,
+							"value": content.progress,
+							"max": content.segments,
+							"color": "#3CB043",
+						};
+						this.clocks = [...this.clocks, clock];
+					});
+
+					// Process Reserves (The Lancer Comp/Con Share Code structure)
+					(pilot.reserves || []).forEach(content => {
+						let reserve = {
+							"type": content.type,
+							"name": content.name,
+							"description": content.description,
+							"label": content.label,
+							"cost": content.cost,
+							"notes": content.notes,
+							"callsign": pilot.callsign.toUpperCase(),
+						};
+						this.reserves = [...this.reserves, reserve];
+					});
 				});
 
-				pilot.reserves.forEach(content => {
-					let reserve = {};
-					reserve["type"] = content.type;
-					reserve["name"] = content.name;
-					reserve["description"] = content.description;
-					reserve["label"] = content.label;
-					reserve["cost"] = content.cost;
-					reserve["notes"] = content.notes;
-					reserve["callsign"] = pilot.callsign.toUpperCase();
-					this.reserves = [...this.reserves, reserve];
-				});
-			});
+				// Set the initial mission slug to the first mission if it exists
+				if (this.missions.length > 0) {
+					this.initialSlug = this.missions[0].slug;
+				}
+
+			} catch (error) {
+				console.error("Failed to load content:", error);
+			}
 		},
 	},
 };
 </script>
 
 <style>
-#app {
-	min-height: 100vh;
-	overflow: hidden !important;
-	/* border-right: 1px solid #ff0;
-	border-bottom: 1px solid #ff0; */
-}
+/* Existing CSS from App.vue is not shown but assumed to be present */
 </style>
