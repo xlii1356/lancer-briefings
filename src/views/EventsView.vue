@@ -66,56 +66,61 @@ export default {
     },
     // 3. The Click Handler Logic
     handleMarkdownClick(event) {
-      // Find the closest link element
       const link = event.target.closest('a');
       if (!link) return;
 
       const href = link.getAttribute('href');
       
-      // -- HANDLE PILOT LINKS --
-      if (href && href.startsWith('pilot://')) {
+      // --- HANDLE PILOT LINKS ---
+      if (href && (href.startsWith('pilot://') || href.startsWith('pilots://'))) {
         event.preventDefault();
-        console.log("Pilot Link Clicked:", href); // Debug Log
-
-        // Remove prefix and fix spaces (%20 -> Space)
-        const rawCallsign = href.replace('pilot://', '');
+        let rawCallsign = href.replace(/^pilots?:\/\//, '');
         const callsign = decodeURIComponent(rawCallsign).toUpperCase();
         
-        console.log("Searching for pilot:", callsign); // Debug Log
-
-        // Find the pilot in the data passed from App.vue
         const pilot = this.pilots.find(p => p.callsign.toUpperCase() === callsign);
         
         if (pilot) {
-          console.log("Pilot found, opening modal."); // Debug Log
           this.$oruga.modal.open({
             component: PilotModal,
             custom: true,
             trapFocus: true,
-            props: { 
-              pilot: pilot,
-              // Pass empty arrays for these if they aren't available in this view
-              talents: [], 
-              skills: [], 
-              frames: [] 
-            },
+            props: { pilot: pilot, talents: [], skills: [], frames: [] },
             class: 'custom-modal',
             width: 1920,
           });
-        } else {
-          console.warn("Pilot not found in data:", callsign);
-          alert(`Error: Pilot '${callsign}' not found in roster.`);
         }
       }
 
-      // -- HANDLE MISSION LINKS --
+      // --- HANDLE MISSION LINKS ---
       else if (href && href.startsWith('mission://')) {
         event.preventDefault();
-        console.log("Mission Link Clicked:", href); // Debug Log
-        const slug = href.replace('mission://', '');
-        
-        // Redirect to Status page with the mission selected
+        const slug = decodeURIComponent(href.replace('mission://', ''));
         this.$router.push({ path: '/status', query: { mission: slug } });
+      }
+
+      // --- NEW: HANDLE EVENT LINKS ---
+      else if (href && href.startsWith('event://')) {
+        event.preventDefault();
+        // 1. Get the Event Title from the URL
+        const titleRaw = href.replace('event://', '');
+        const title = decodeURIComponent(titleRaw);
+
+        // 2. Find the event object
+        // Note: We use .trim() to avoid issues with extra spaces
+        const targetEvent = this.events.find(e => e.title.trim() === title.trim());
+
+        if (targetEvent) {
+          // 3. Switch the view to this event
+          console.log("Switching to event:", title);
+          this.selectEvent(targetEvent);
+          
+          // Optional: Scroll back to top of the content area
+          const container = document.querySelector('#events-logs .section-content-container');
+          if(container) container.scrollTop = 0;
+        } else {
+          console.warn("Event not found:", title);
+          alert(`Error: Event '${title}' not found.`);
+        }
       }
     }
   }
@@ -123,8 +128,9 @@ export default {
 </script>
 
 <style scoped>
-/* STYLING FOR SPECIAL LINKS */
-::v-deep .markdown a[href^="pilot://"] {
+/* Pilots = Gold */
+::v-deep .markdown a[href^="pilot://"],
+::v-deep .markdown a[href^="pilots://"] {
   color: #FFC107;
   font-weight: bold;
   text-decoration: none;
@@ -132,11 +138,13 @@ export default {
   transition: background 0.2s;
 }
 
-::v-deep .markdown a[href^="pilot://"]:hover {
+::v-deep .markdown a[href^="pilot://"]:hover,
+::v-deep .markdown a[href^="pilots://"]:hover {
   background-color: rgba(255, 193, 7, 0.2);
   cursor: pointer;
 }
 
+/* Missions = Teal */
 ::v-deep .markdown a[href^="mission://"] {
   color: #7dbbbb;
   font-weight: bold;
@@ -146,6 +154,19 @@ export default {
 
 ::v-deep .markdown a[href^="mission://"]:hover {
   background-color: rgba(125, 187, 187, 0.2);
+  cursor: pointer;
+}
+
+/* Events = Purple (Distinct from Missions) */
+::v-deep .markdown a[href^="event://"] {
+  color: #bd93f9; 
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 1px dotted #bd93f9;
+}
+
+::v-deep .markdown a[href^="event://"]:hover {
+  background-color: rgba(189, 147, 249, 0.2);
   cursor: pointer;
 }
 </style>
