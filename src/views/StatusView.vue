@@ -139,11 +139,16 @@ export default {
     this.selectMission(this.missionSlug);
   },
   mounted() {
-    // Check if we came from a link with a mission query
-    if (this.$route.query.mission) {
-      this.selectMission(this.$route.query.mission);
-    } else if (this.missions.length > 0) {
-      this.selectMission(this.missions[0].slug);
+    // 1. Existing Mission Select Logic
+    if (this.missions.length > 0) {
+      // Keep your existing priority check (Link vs Default)
+      const queryMission = this.$route.query.mission;
+      this.selectMission(queryMission || this.missions[0].slug);
+    }
+
+    // 2. NEW: Handle Scrolling to Prime Status
+    if (this.$route.query.target === 'prime') {
+      this.scrollToPrime();
     }
   },
   methods: {
@@ -180,6 +185,20 @@ export default {
       let delayToFloat = parseFloat(this.animationDelay.replace("s", ""));
       let finalClockDelay = delayToFloat * 600 + 600;
       this.clockAnimationDelay = finalClockDelay.toString();
+    },
+    scrollToPrime() {
+      // Use setTimeout to wait for the DOM to be ready
+      setTimeout(() => {
+        const element = document.getElementById('clocks'); // This ID matches your template
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          
+          // Optional: Add a flash effect to draw attention
+          element.style.transition = "box-shadow 0.5s";
+          element.style.boxShadow = "0 0 20px #FFC107";
+          setTimeout(() => { element.style.boxShadow = "none"; }, 1000);
+        }
+      }, 500);
     },
   },
 };

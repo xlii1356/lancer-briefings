@@ -122,6 +122,11 @@ export default {
           alert(`Error: Event '${title}' not found.`);
         }
       }
+	  else if (href && href.startsWith('prime://')) {
+        event.preventDefault();
+        // Go to Status View with a "target" query parameter
+        this.$router.push({ path: '/status', query: { target: 'prime' } });
+      }
     }
   }
 };
