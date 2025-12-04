@@ -9,5 +9,5 @@ Our own pilot GRAN GRAN, as it turns out, was the original founder of the SHEPHE
 ## Notable Locations
 - The Shrine Of The Matriarch
 - Whitebrim Mountain
-- # TOWN_NAME.lcn CORRUPTED. PLEASE RESTORE FROM BACKUP
+- # <<TOWN_NAME.lcn CORRUPTED. PLEASE RESTORE FROM BACKUP>>
 - The Matriarch's fortified treehouse
