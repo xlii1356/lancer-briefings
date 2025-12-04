@@ -1,9 +1,3 @@
-import PilotModal from '@/components/modals/PilotModal.vue';
-// IMPORT NEW MODAL
-import PrimeModal from '@/components/modals/PrimeModal.vue'; 
-// IMPORT DATA TO SEARCH
-import primeDataList from '@/assets/prime/prime.json';
-
 <template>
   <div id="eventsView" :class="{ animate: animateView }" :style="{ 'animation-delay': animationDelay }" class="content-container">
     <section id="events" :class="{ animate: animate }" class="section-container">
@@ -48,7 +42,11 @@ import primeDataList from '@/assets/prime/prime.json';
 <script>
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import Event from "@/components/Event.vue";
-import PilotModal from '@/components/modals/PilotModal.vue'; // 1. Import the Modal
+import PilotModal from '@/components/modals/PilotModal.vue';
+import PrimeModal from '@/components/modals/PrimeModal.vue';
+
+// --- THIS IMPORT WAS MISSING ---
+import primeDataList from '@/assets/prime/prime.json';
 
 export default {
   components: {
@@ -58,20 +56,19 @@ export default {
   props: {
     animate: { type: Boolean, required: true },
     events: { type: Array, required: true },
-    // 2. THIS WAS MISSING: Allow the view to receive pilot data
     pilots: { type: Array, required: true, default: () => [] }, 
   },
   data() {
-  return {
-    selectedEvent: { type: Object },
-    primeData: primeDataList // Make data available to the component
-  };
-},
+    return {
+      selectedEvent: { type: Object },
+      // --- THIS DATA REGISTRATION WAS MISSING ---
+      primeData: primeDataList 
+    };
+  },
   methods: {
     selectEvent(event) {
       this.selectedEvent = event;
     },
-    // 3. The Click Handler Logic
     handleMarkdownClick(event) {
       const link = event.target.closest('a');
       if (!link) return;
@@ -105,57 +102,42 @@ export default {
         this.$router.push({ path: '/status', query: { mission: slug } });
       }
 
-      // --- NEW: HANDLE EVENT LINKS ---
+      // --- HANDLE EVENT LINKS ---
       else if (href && href.startsWith('event://')) {
         event.preventDefault();
-        // 1. Get the Event Title from the URL
         const titleRaw = href.replace('event://', '');
         const title = decodeURIComponent(titleRaw);
-
-        // 2. Find the event object
-        // Note: We use .trim() to avoid issues with extra spaces
         const targetEvent = this.events.find(e => e.title.trim() === title.trim());
 
         if (targetEvent) {
-          // 3. Switch the view to this event
-          console.log("Switching to event:", title);
           this.selectEvent(targetEvent);
-          
-          // Optional: Scroll back to top of the content area
           const container = document.querySelector('#events-logs .section-content-container');
           if(container) container.scrollTop = 0;
-        } else {
-          console.warn("Event not found:", title);
-          alert(`Error: Event '${title}' not found.`);
         }
       }
-	  // --- HANDLE PRIME LINKS ---
+
+      // --- HANDLE PRIME LINKS ---
       else if (href && href.startsWith('prime://')) {
         event.preventDefault();
         
-        // 1. Get the Alias from the URL (e.g., "Wandering%20Saint")
         const rawAlias = href.replace('prime://', '');
         const targetAlias = decodeURIComponent(rawAlias).toUpperCase();
 
-        // 2. Find the object in the JSON
-        // We use .includes to allow partial matches or looser typing
         const primeEntry = this.primeData.find(p => 
           p.alias.toUpperCase() === targetAlias
         );
 
         if (primeEntry) {
-          // 3. Open the Modal
           this.$oruga.modal.open({
             component: PrimeModal,
             custom: true,
             trapFocus: true,
             props: { prime: primeEntry },
-            class: 'custom-modal', // Ensures it uses your base CSS styling
+            class: 'custom-modal',
             width: 1920,
           });
         } else {
           console.warn("Prime entry not found:", targetAlias);
-          alert(`Error: Prime Alias '${targetAlias}' not found.`);
         }
       }
     }
@@ -164,7 +146,7 @@ export default {
 </script>
 
 <style scoped>
-/* Pilots = Gold */
+/* Link Styles */
 ::v-deep .markdown a[href^="pilot://"],
 ::v-deep .markdown a[href^="pilots://"] {
   color: #FFC107;
@@ -173,36 +155,42 @@ export default {
   border-bottom: 1px dotted #FFC107;
   transition: background 0.2s;
 }
-
 ::v-deep .markdown a[href^="pilot://"]:hover,
 ::v-deep .markdown a[href^="pilots://"]:hover {
   background-color: rgba(255, 193, 7, 0.2);
   cursor: pointer;
 }
 
-/* Missions = Teal */
 ::v-deep .markdown a[href^="mission://"] {
   color: #7dbbbb;
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted #7dbbbb;
 }
-
 ::v-deep .markdown a[href^="mission://"]:hover {
   background-color: rgba(125, 187, 187, 0.2);
   cursor: pointer;
 }
 
-/* Events = Purple (Distinct from Missions) */
 ::v-deep .markdown a[href^="event://"] {
   color: #bd93f9; 
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted #bd93f9;
 }
-
 ::v-deep .markdown a[href^="event://"]:hover {
   background-color: rgba(189, 147, 249, 0.2);
+  cursor: pointer;
+}
+
+::v-deep .markdown a[href^="prime://"] {
+  color: #ff5555; 
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 1px dotted #ff5555;
+}
+::v-deep .markdown a[href^="prime://"]:hover {
+  background-color: rgba(255, 85, 85, 0.2);
   cursor: pointer;
 }
 </style>
