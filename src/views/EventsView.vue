@@ -69,10 +69,16 @@ export default {
 
       const href = link.getAttribute('href');
       
-      // Handle Pilot Links
+      // -- HANDLE PILOT LINKS --
       if (href && href.startsWith('pilot://')) {
         event.preventDefault();
-        const callsign = href.replace('pilot://', '').toUpperCase();
+        
+        // 1. Remove the prefix
+        let rawCallsign = href.replace('pilot://', '');
+        
+        // 2. DECODE THE URL (Turns "GRAN%20GRAN" back into "GRAN GRAN")
+        const callsign = decodeURIComponent(rawCallsign).toUpperCase();
+        
         const pilot = this.pilots.find(p => p.callsign.toUpperCase() === callsign);
         
         if (pilot) {
@@ -80,20 +86,36 @@ export default {
             component: PilotModal,
             custom: true,
             trapFocus: true,
-            props: { pilot: pilot },
+            props: {
+              pilot: pilot,
+              talents: this.$root.talents || [],
+              skills: this.$root.skills || [],
+              frames: this.$root.frames || []
+            },
             class: 'custom-modal',
             width: 1920,
           });
+        } else {
+          console.warn("Pilot not found:", callsign);
         }
       }
-      // Handle Status/Mission Links (Redirect to Status Page)
+
+      // -- HANDLE MISSION LINKS --
       else if (href && href.startsWith('mission://')) {
         event.preventDefault();
-        // Since we are on Events View, we need to route to Status View first
-        // Ideally, pass the mission slug as a query param or global state
-        this.$router.push({ path: '/status', query: { mission: href.replace('mission://', '') } });
+        // Decode mission slugs just in case they have weird characters too
+        const slug = decodeURIComponent(href.replace('mission://', ''));
+        
+        // If we are already on StatusView, just select it
+        if (this.selectMission) {
+           this.selectMission(slug);
+        } 
+        // If we are on EventsView, route to StatusView
+        else {
+           this.$router.push({ path: '/status', query: { mission: slug } });
+        }
       }
-    }
+    },
   }
 };
 </script>
