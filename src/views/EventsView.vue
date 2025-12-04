@@ -25,6 +25,7 @@
         </div>
         <div class="rhombus-back">&nbsp;</div>
       </div>
+      
       <div class="section-content-container extra-margins" @click="handleMarkdownClick">
         <div class="event" v-if="selectedEvent.title">
           <div class="name">
@@ -41,7 +42,7 @@
 <script>
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import Event from "@/components/Event.vue";
-import PilotModal from '@/components/modals/PilotModal.vue'; // 1. Import Modal
+import PilotModal from '@/components/modals/PilotModal.vue'; // 1. Import the Modal
 
 export default {
   components: {
@@ -51,7 +52,8 @@ export default {
   props: {
     animate: { type: Boolean, required: true },
     events: { type: Array, required: true },
-    pilots: { type: Array, required: true }, // Ensure this prop exists in App.vue passed down
+    // 2. THIS WAS MISSING: Allow the view to receive pilot data
+    pilots: { type: Array, required: true, default: () => [] }, 
   },
   data() {
     return {
@@ -62,8 +64,9 @@ export default {
     selectEvent(event) {
       this.selectedEvent = event;
     },
-    // 2. Add the Click Handler
+    // 3. The Click Handler Logic
     handleMarkdownClick(event) {
+      // Find the closest link element
       const link = event.target.closest('a');
       if (!link) return;
 
@@ -72,64 +75,77 @@ export default {
       // -- HANDLE PILOT LINKS --
       if (href && href.startsWith('pilot://')) {
         event.preventDefault();
-        
-        // 1. Remove the prefix
-        let rawCallsign = href.replace('pilot://', '');
-        
-        // 2. DECODE THE URL (Turns "GRAN%20GRAN" back into "GRAN GRAN")
+        console.log("Pilot Link Clicked:", href); // Debug Log
+
+        // Remove prefix and fix spaces (%20 -> Space)
+        const rawCallsign = href.replace('pilot://', '');
         const callsign = decodeURIComponent(rawCallsign).toUpperCase();
         
+        console.log("Searching for pilot:", callsign); // Debug Log
+
+        // Find the pilot in the data passed from App.vue
         const pilot = this.pilots.find(p => p.callsign.toUpperCase() === callsign);
         
         if (pilot) {
+          console.log("Pilot found, opening modal."); // Debug Log
           this.$oruga.modal.open({
             component: PilotModal,
             custom: true,
             trapFocus: true,
-            props: {
+            props: { 
               pilot: pilot,
-              talents: this.$root.talents || [],
-              skills: this.$root.skills || [],
-              frames: this.$root.frames || []
+              // Pass empty arrays for these if they aren't available in this view
+              talents: [], 
+              skills: [], 
+              frames: [] 
             },
             class: 'custom-modal',
             width: 1920,
           });
         } else {
-          console.warn("Pilot not found:", callsign);
+          console.warn("Pilot not found in data:", callsign);
+          alert(`Error: Pilot '${callsign}' not found in roster.`);
         }
       }
 
       // -- HANDLE MISSION LINKS --
       else if (href && href.startsWith('mission://')) {
         event.preventDefault();
-        // Decode mission slugs just in case they have weird characters too
-        const slug = decodeURIComponent(href.replace('mission://', ''));
+        console.log("Mission Link Clicked:", href); // Debug Log
+        const slug = href.replace('mission://', '');
         
-        // If we are already on StatusView, just select it
-        if (this.selectMission) {
-           this.selectMission(slug);
-        } 
-        // If we are on EventsView, route to StatusView
-        else {
-           this.$router.push({ path: '/status', query: { mission: slug } });
-        }
+        // Redirect to Status page with the mission selected
+        this.$router.push({ path: '/status', query: { mission: slug } });
       }
-    },
+    }
   }
 };
 </script>
 
 <style scoped>
-/* Link Styles */
+/* STYLING FOR SPECIAL LINKS */
 ::v-deep .markdown a[href^="pilot://"] {
   color: #FFC107;
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted #FFC107;
+  transition: background 0.2s;
 }
+
 ::v-deep .markdown a[href^="pilot://"]:hover {
   background-color: rgba(255, 193, 7, 0.2);
+  cursor: pointer;
+}
+
+::v-deep .markdown a[href^="mission://"] {
+  color: #7dbbbb;
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 1px dotted #7dbbbb;
+}
+
+::v-deep .markdown a[href^="mission://"]:hover {
+  background-color: rgba(125, 187, 187, 0.2);
   cursor: pointer;
 }
 </style>
