@@ -139,7 +139,10 @@ export default {
     this.selectMission(this.missionSlug);
   },
   mounted() {
-    if (this.missions.length > 0) {
+    // Check if we came from a link with a mission query
+    if (this.$route.query.mission) {
+      this.selectMission(this.$route.query.mission);
+    } else if (this.missions.length > 0) {
       this.selectMission(this.missions[0].slug);
     }
   },
