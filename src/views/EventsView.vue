@@ -1,3 +1,9 @@
+import PilotModal from '@/components/modals/PilotModal.vue';
+// IMPORT NEW MODAL
+import PrimeModal from '@/components/modals/PrimeModal.vue'; 
+// IMPORT DATA TO SEARCH
+import primeDataList from '@/assets/prime/prime.json';
+
 <template>
   <div id="eventsView" :class="{ animate: animateView }" :style="{ 'animation-delay': animationDelay }" class="content-container">
     <section id="events" :class="{ animate: animate }" class="section-container">
@@ -56,10 +62,11 @@ export default {
     pilots: { type: Array, required: true, default: () => [] }, 
   },
   data() {
-    return {
-      selectedEvent: { type: Object }
-    };
-  },
+  return {
+    selectedEvent: { type: Object },
+    primeData: primeDataList // Make data available to the component
+  };
+},
   methods: {
     selectEvent(event) {
       this.selectedEvent = event;
@@ -122,10 +129,34 @@ export default {
           alert(`Error: Event '${title}' not found.`);
         }
       }
-	  else if (href && href.startsWith('prime://')) {
+	  // --- HANDLE PRIME LINKS ---
+      else if (href && href.startsWith('prime://')) {
         event.preventDefault();
-        // Go to Status View with a "target" query parameter
-        this.$router.push({ path: '/status', query: { target: 'prime' } });
+        
+        // 1. Get the Alias from the URL (e.g., "Wandering%20Saint")
+        const rawAlias = href.replace('prime://', '');
+        const targetAlias = decodeURIComponent(rawAlias).toUpperCase();
+
+        // 2. Find the object in the JSON
+        // We use .includes to allow partial matches or looser typing
+        const primeEntry = this.primeData.find(p => 
+          p.alias.toUpperCase() === targetAlias
+        );
+
+        if (primeEntry) {
+          // 3. Open the Modal
+          this.$oruga.modal.open({
+            component: PrimeModal,
+            custom: true,
+            trapFocus: true,
+            props: { prime: primeEntry },
+            class: 'custom-modal', // Ensures it uses your base CSS styling
+            width: 1920,
+          });
+        } else {
+          console.warn("Prime entry not found:", targetAlias);
+          alert(`Error: Prime Alias '${targetAlias}' not found.`);
+        }
       }
     }
   }
