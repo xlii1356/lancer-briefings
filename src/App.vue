@@ -1,26 +1,30 @@
 <template>
-	<div class="page-wrapper">
-		<Header :planet-path="planetPath" :class="{ animate: animate }" :header="header" />
-		<Sidebar :animate="animate" :class="{ animate: animate }" />
-	</div>
-	<div id="router-view-container">
-		<router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :events="events"
-			:pilots="pilots" :clocks="clocks" :reserves="reserves" />
-	</div>
-	<svg style="visibility: hidden; position: absolute" width="0" height="0" xmlns="http://www.w3.org/2000/svg"
-		version="1.1">
-		<defs>
-			<filter id="round">
-				<feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
-				<feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -5"
-					result="goo" />
-				<feComposite in="SourceGraphic" in2="goo" operator="atop" />
-			</filter>
-		</defs>
-	</svg>
-	<audio autoplay>
-		<source src="/startup.ogg" type="audio/ogg" />
-	</audio>
+    <div class="page-wrapper">
+        <Header :planet-path="planetPath" :class="{ animate: animate }" :header="header" />
+        <Sidebar :animate="animate" :class="{ animate: animate }" />
+    </div>
+    <div class="header-countdown-box">
+        <span class="label">NEXT DEPLOYMENT:</span>
+        <span class="value">{{ countdownDisplay }}</span>
+    </div>
+    <div id="router-view-container">
+        <router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :events="events"
+            :pilots="pilots" :clocks="clocks" :reserves="reserves" />
+    </div>
+    <svg style="visibility: hidden; position: absolute" width="0" height="0" xmlns="http://www.w3.org/2000/svg"
+        version="1.1">
+        <defs>
+            <filter id="round">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -5"
+                    result="goo" />
+                <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+            </filter>
+        </defs>
+    </svg>
+    <audio autoplay>
+        <source src="/startup.ogg" type="audio/ogg" />
+    </audio>
 </template>
 
 <script>
@@ -29,137 +33,239 @@ import Sidebar from "./components/layout/Sidebar.vue";
 import Config from "@/assets/info/general-config.json";
 
 export default {
-	components: {
-		Header,
-		Sidebar,
-	},
+    components: {
+        Header,
+        Sidebar,
+    },
 
-	data() {
-		return {
-			animate: Config.animate,
-			initialSlug: Config.initialSlug,
-			planetPath: Config.planetPath,
-			header: Config.header,
-			pilotSpecialInfo: Config.pilotSpecialInfo,
-			clocks: [],
-			events: [],
-			missions: [],
-			pilots: [],
-			reserves: [],
-			bonds: [],
-		};
-	},
-	created() {
-		this.setTitleFavicon(Config.defaultTitle + " MISSION BRIEFING", Config.icon);
-		this.importMissions(import.meta.glob("@/assets/missions/*.md", { query: '?raw', import: 'default' }));
-		this.importEvents(import.meta.glob("@/assets/events/*.md", { query: '?raw', import: 'default' }));
-		this.importClocks(import.meta.glob("@/assets/clocks/*.json"));
-		this.importReserves(import.meta.glob("@/assets/reserves/*.json"));
-		this.importPilots(import.meta.glob("@/assets/pilots/*.json"));
-	},
-	mounted() {
-		this.$router.push("/status");
-	},
-	methods: {
-		setTitleFavicon(title, favicon) {
-			document.title = title;
-			let headEl = document.querySelector('head');
-			let faviconEl = document.createElement('link');
-			faviconEl.setAttribute('rel', 'shortcut icon');
-			faviconEl.setAttribute('href', favicon);
-			headEl.appendChild(faviconEl);
-		},
-		async importMissions(files) {
-			let filePromises = Object.keys(files).map(path => files[path]());
-			let fileContents = await Promise.all(filePromises);
-			fileContents.forEach(content => {
-				let mission = {};
-				mission["slug"] = content.split("\n")[0];
-				mission["name"] = content.split("\n")[1];
-				mission["status"] = content.split("\n")[2];
-				mission["content"] = content.split("\n").splice(3).join("\n");
-				this.missions = [...this.missions, mission];
-			});
-			this.missions = this.missions.sort(function (a, b) {
-				return b["slug"] - a["slug"];
-			})
-		},
-		async importEvents(files) {
-			let filePromises = Object.keys(files).map(path => files[path]());
-			let fileContents = await Promise.all(filePromises);
-			fileContents.forEach(content => {
-				let event = {};
-				event["title"] = content.split("\n")[0];
-				event["location"] = content.split("\n")[1];
-				event["time"] = content.split("\n")[2];
-				event["thumbnail"] = content.split("\n")[3];
-				event["content"] = content.split("\n").splice(4).join("\n");
-				this.events = [...this.events, event];
-			});
+    data() {
+        return {
+            animate: Config.animate,
+            initialSlug: Config.initialSlug,
+            planetPath: Config.planetPath,
+            header: Config.header,
+            pilotSpecialInfo: Config.pilotSpecialInfo,
+            clocks: [],
+            events: [],
+            missions: [],
+            pilots: [],
+            reserves: [],
+            bonds: [],
+            // NEW: Countdown Data
+            countdownDisplay: 'CALCULATING...',
+            countdownInterval: null,
+        };
+    },
+    created() {
+        this.setTitleFavicon(Config.defaultTitle + " MISSION BRIEFING", Config.icon);
+        this.importMissions(import.meta.glob("@/assets/missions/*.md", { query: '?raw', import: 'default' }));
+        this.importEvents(import.meta.glob("@/assets/events/*.md", { query: '?raw', import: 'default' }));
+        this.importClocks(import.meta.glob("@/assets/clocks/*.json"));
+        this.importReserves(import.meta.glob("@/assets/reserves/*.json"));
+        this.importPilots(import.meta.glob("@/assets/pilots/*.json"));
+    },
+    mounted() {
+        this.$router.push("/status");
+        // NEW: Start the countdown timer
+        this.updateCountdown();
+        this.countdownInterval = setInterval(this.updateCountdown, 1000);
+    },
+    // NEW: Clean up the timer when the app is destroyed
+    beforeUnmount() {
+        if (this.countdownInterval) clearInterval(this.countdownInterval);
+    },
+    methods: {
+        // NEW: Countdown Logic (using local time)
+        updateCountdown() {
+            const now = new Date();
+            const currentDay = now.getDay();
+            let daysUntilTuesday = 2 - currentDay;
 
-		},
-		async importClocks(files) {
-			let filePromises = Object.keys(files).map(path => files[path]());
-			let fileContents = await Promise.all(filePromises);
-			fileContents.forEach(content => {
-				this.clocks = JSON.parse(JSON.stringify(content)).default;
-			});
-		},
-		async importReserves(files) {
-			let filePromises = Object.keys(files).map(path => files[path]());
-			let fileContents = await Promise.all(filePromises);
-			fileContents.forEach(content => {
-				this.reserves = JSON.parse(JSON.stringify(content)).default;
-			});
-		},
-		async importPilots(files) {
-			let filePromises = Object.keys(files).map(path => files[path]());
-			let fileContents = await Promise.all(filePromises);
-			fileContents.forEach(content => {
-				let pilotFromJson = JSON.parse(JSON.stringify(content));
-				// In case the pilot was added from a copy on compcon via sharecode, remove the "reference mark" symbol
-				pilotFromJson.name = pilotFromJson.name.replace("※", "");
-				pilotFromJson.callsign = pilotFromJson.callsign.replace("※", "");
-				let pilotFromVue = this.pilotSpecialInfo[pilotFromJson.callsign.toUpperCase()];
-				let pilot = {
-					...pilotFromJson,
-					...pilotFromVue,
-				};
-				this.pilots = [...this.pilots, pilot];
-				pilot.clocks.forEach(content => {
-					let clock = {};
-					clock["type"] = `Pilot Project // ${pilot.callsign}`;
-					clock["result"] = "";
-					clock["name"] = content.title;
-					clock["description"] = content.description;
-					clock["value"] = content.progress;
-					clock["max"] = content.segments;
-					clock["color"] = "#3CB043";
-					this.clocks = [...this.clocks, clock];
-				});
+            // If it's already past Tuesday (e.g. Wednesday), cycle to the next week
+            if (daysUntilTuesday < 0) {
+                daysUntilTuesday += 7;
+            }
+            
+            // Set the target time to 7:00 PM (19:00:00) in local time
+            const targetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilTuesday, 19, 0, 0);
 
-				pilot.reserves.forEach(content => {
-					let reserve = {};
-					reserve["type"] = content.type;
-					reserve["name"] = content.name;
-					reserve["description"] = content.description;
-					reserve["label"] = content.label;
-					reserve["cost"] = content.cost;
-					reserve["notes"] = content.notes;
-					reserve["callsign"] = pilot.callsign.toUpperCase();
-					this.reserves = [...this.reserves, reserve];
-				});
-			});
-		},
-	},
+            // Special check: If it IS Tuesday but AFTER 7 PM, target next week
+            if (targetTime < now) {
+                targetTime.setDate(targetTime.getDate() + 7);
+            }
+
+            const distance = targetTime - now;
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            const pad = (n) => String(n).padStart(2, '0');
+
+            this.countdownDisplay = `${days}D ${pad(hours)}H ${pad(minutes)}M ${pad(seconds)}S`;
+        },
+        setTitleFavicon(title, favicon) {
+            document.title = title;
+            let headEl = document.querySelector('head');
+            let faviconEl = document.createElement('link');
+            faviconEl.setAttribute('rel', 'shortcut icon');
+            faviconEl.setAttribute('href', favicon);
+            headEl.appendChild(faviconEl);
+        },
+        async importMissions(files) {
+            let filePromises = Object.keys(files).map(path => files[path]());
+            let fileContents = await Promise.all(filePromises);
+            fileContents.forEach(content => {
+                let mission = {};
+                mission["slug"] = content.split("\n")[0];
+                mission["name"] = content.split("\n")[1];
+                mission["status"] = content.split("\n")[2];
+                mission["content"] = content.split("\n").splice(3).join("\n");
+                this.missions = [...this.missions, mission];
+            });
+            this.missions = this.missions.sort(function (a, b) {
+                return b["slug"] - a["slug"];
+            })
+        },
+        async importEvents(files) {
+            let filePromises = Object.keys(files).map(path => files[path]());
+            let fileContents = await Promise.all(filePromises);
+            fileContents.forEach(content => {
+                let event = {};
+                event["title"] = content.split("\n")[0];
+                event["location"] = content.split("\n")[1];
+                event["time"] = content.split("\n")[2];
+                event["thumbnail"] = content.split("\n")[3];
+                event["content"] = content.split("\n").splice(4).join("\n");
+                this.events = [...this.events, event];
+            });
+
+        },
+        async importClocks(files) {
+            let filePromises = Object.keys(files).map(path => files[path]());
+            let fileContents = await Promise.all(filePromises);
+            fileContents.forEach(content => {
+                this.clocks = JSON.parse(JSON.stringify(content)).default;
+            });
+        },
+        async importReserves(files) {
+            let filePromises = Object.keys(files).map(path => files[path]());
+            let fileContents = await Promise.all(filePromises);
+            fileContents.forEach(content => {
+                this.reserves = JSON.parse(JSON.stringify(content)).default;
+            });
+        },
+        async importPilots(files) {
+            let filePromises = Object.keys(files).map(path => files[path]());
+            let fileContents = await Promise.all(filePromises);
+            fileContents.forEach(content => {
+                let pilotFromJson = JSON.parse(JSON.stringify(content));
+                // In case the pilot was added from a copy on compcon via sharecode, remove the "reference mark" symbol
+                pilotFromJson.name = pilotFromJson.name.replace("※", "");
+                pilotFromJson.callsign = pilotFromJson.callsign.replace("※", "");
+                let pilotFromVue = this.pilotSpecialInfo[pilotFromJson.callsign.toUpperCase()];
+                let pilot = {
+                    ...pilotFromJson,
+                    ...pilotFromVue,
+                };
+                this.pilots = [...this.pilots, pilot];
+                pilot.clocks.forEach(content => {
+                    let clock = {};
+                    clock["type"] = `Pilot Project // ${pilot.callsign}`;
+                    clock["result"] = "";
+                    clock["name"] = content.title;
+                    clock["description"] = content.description;
+                    clock["value"] = content.progress;
+                    clock["max"] = content.segments;
+                    clock["color"] = "#3CB043";
+                    this.clocks = [...this.clocks, clock];
+                });
+
+                pilot.reserves.forEach(content => {
+                    let reserve = {};
+                    reserve["type"] = content.type;
+                    reserve["name"] = content.name;
+                    reserve["description"] = content.description;
+                    reserve["label"] = content.label;
+                    reserve["cost"] = content.cost;
+                    reserve["notes"] = content.notes;
+                    reserve["callsign"] = pilot.callsign.toUpperCase();
+                    this.reserves = [...this.reserves, reserve];
+                });
+            });
+        },
+    },
 };
 </script>
 
 <style>
+/* --- CRITICAL LAYOUT FIXES (To prevent boxes from being empty/collapsed) --- */
 #app {
 	min-height: 100vh;
 	overflow: hidden !important;
-	/* border-right: 1px solid #ff0;
-	border-bottom: 1px solid #ff0; */
+    display: block; 
+}
+
+.page-wrapper {
+    /* Locks Header/Sidebar in place */
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 100%; 
+    z-index: 100;
+}
+
+#router-view-container {
+    /* Offsets content away from the fixed sidebar and header */
+    margin-left: 100px; /* ASSUMPTION: Adjust this to your Sidebar width */
+    padding-top: 50px;  /* ASSUMPTION: Adjust this to your Header height */
+
+    position: relative;
+    height: 100vh; /* Takes full viewport height */
+    width: auto; 
+    overflow-y: auto; 
+}
+/* --- END CRITICAL LAYOUT FIXES --- */
+
+
+/* --- CENTERED COUNTDOWN STYLE --- */
+.header-countdown-box {
+    /* Positioning for Centering */
+    position: absolute; 
+    top: 10px; /* Vertical position */
+    left: 50%; 
+    transform: translateX(-50%); /* True centering */
+    z-index: 999; /* Ensure it is rendered on top */
+
+    /* Compact Size and Look */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 30px; 
+    padding: 0 12px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #333;
+    border-left: 2px solid #39ff14; 
+}
+
+.header-countdown-box .label {
+    font-family: 'Rubik', sans-serif;
+    color: #888;
+    font-size: 0.7rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.header-countdown-box .value {
+    font-family: 'Fragment Mono', monospace;
+    color: #39ff14;
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    min-width: 130px; 
+    text-align: right;
+    text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
 }
 </style>
