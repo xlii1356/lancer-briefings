@@ -44,4 +44,15 @@ export default {
 };
 </script>
 
-<!-- <style></style> -->
+<style scoped>
+.sidebar-page,
+.sidebar-layout {
+	pointer-events: none;
+	height: 100%; /* Ensure it doesn't collapse but allows clicks through */
+	width: 100%;
+}
+
+#sidebar {
+	pointer-events: auto;
+}
+</style>

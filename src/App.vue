@@ -117,9 +117,9 @@ export default {
             let fileContents = await Promise.all(filePromises);
             fileContents.forEach(content => {
                 let mission = {};
-                mission["slug"] = content.split("\n")[0];
-                mission["name"] = content.split("\n")[1];
-                mission["status"] = content.split("\n")[2];
+                mission["slug"] = content.split("\n")[0].trim();
+                mission["name"] = content.split("\n")[1].trim();
+                mission["status"] = content.split("\n")[2].trim();
                 mission["content"] = content.split("\n").splice(3).join("\n");
                 this.missions = [...this.missions, mission];
             });
@@ -214,6 +214,11 @@ export default {
     width: 100%; 
     height: 100%; 
     z-index: 100;
+    pointer-events: none; /* Let clicks pass through */
+}
+
+.page-wrapper > * {
+    pointer-events: auto; /* Re-enable clicks for Header/Sidebar */
 }
 
 #router-view-container {
