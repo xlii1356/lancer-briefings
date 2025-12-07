@@ -5,7 +5,7 @@
     <section id="countdown" class="section-container" :style="{ 'animation-delay': animationDelay }">
       <div class="section-header clipped-medium-backward">
         <img src="/icons/reflection.svg" />
-        <h1>NEXT DEBRIEF</h1>
+        <h1>NEXT DEPLOYMENT</h1>
       </div>
       <div class="section-content-container">
         <div class="countdown-display">
@@ -312,11 +312,22 @@ export default {
   margin-bottom: 5px;
 }
 .countdown-value {
-  font-family: 'Fragment Mono', monospace; /* Use a fixed-width font for stability */
-  font-size: 2em;
-  color: #00ff00;
-  text-shadow: 0 0 8px #00ff00;
+  /* Use a fixed-width font for stability and digital look */
+  font-family: 'Fragment Mono', monospace; 
+  font-size: 2.2em; /* Slightly larger */
+  color: #39ff14; /* Neon green/bright color */
+  
+  /* Add a glow effect for the "CRT/Hacker" look */
+  text-shadow: 
+    0 0 5px rgba(57, 255, 20, 0.6),
+    0 0 10px rgba(57, 255, 20, 0.6),
+    0 0 20px rgba(57, 255, 20, 0.4);
+    
   font-weight: bold;
+  letter-spacing: 2px; /* Spread the characters out */
+  padding: 0 5px; /* Give a little breathing room */
+  background: rgba(0, 0, 0, 0.6); /* Darker background for contrast */
+  border: 1px dashed #333; /* Border to frame the data */
 }
 
 /* --- EXISTING STYLES --- */
