@@ -3,10 +3,6 @@
 		<Header :planet-path="planetPath" :class="{ animate: animate }" :header="header" />
 		<Sidebar :animate="animate" :class="{ animate: animate }" />
 	</div>
-	<div class="header-countdown-box">
-		<span class="label">NEXT DEPLOYMENT:</span>
-		<span class="value">{{ countdownDisplay }}</span>
-	</div>
 	<div id="router-view-container">
 		<router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :events="events"
 			:pilots="pilots" :clocks="clocks" :reserves="reserves" />
@@ -27,7 +23,7 @@
 	</audio>
 </template>
 
-// App.vue <script>
+<script>
 import Header from "./components/layout/Header.vue";
 import Sidebar from "./components/layout/Sidebar.vue";
 import Config from "@/assets/info/general-config.json";
@@ -51,9 +47,6 @@ export default {
 			pilots: [],
 			reserves: [],
 			bonds: [],
-            // NEW: Countdown Data
-            countdownDisplay: 'CALCULATING...',
-            countdownInterval: null,
 		};
 	},
 	created() {
@@ -66,68 +59,97 @@ export default {
 	},
 	mounted() {
 		this.$router.push("/status");
-        
-        // NEW: Start the countdown timer
-        this.updateCountdown();
-        this.countdownInterval = setInterval(this.updateCountdown, 1000);
 	},
-    beforeUnmount() {
-        // Clean up the timer when the app is destroyed
-        if (this.countdownInterval) clearInterval(this.countdownInterval);
-    },
 	methods: {
-        // NEW: Countdown Logic
-        updateCountdown() {
-            const now = new Date();
-            
-            // 1. Find the next Tuesday (Day 2)
-            const currentDay = now.getDay();
-            let daysUntilTuesday = 2 - currentDay;
-
-            // If it's already past Tuesday (e.g. Wednesday), cycle to the next week
-            if (daysUntilTuesday < 0) {
-                daysUntilTuesday += 7;
-            }
-            
-            // 2. Set the target time to 7:00 PM (19:00:00)
-            const targetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilTuesday, 19, 0, 0);
-
-            // 3. Special check: If it IS Tuesday but AFTER 7 PM, target next week
-            if (targetTime < now) {
-                targetTime.setDate(targetTime.getDate() + 7);
-            }
-
-            // 4. Calculate difference in milliseconds
-            const distance = targetTime - now;
-
-            // 5. Format the text
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Helper to add leading zero (e.g., "05" instead of "5")
-            const pad = (n) => String(n).padStart(2, '0');
-
-            this.countdownDisplay = `${days}D ${pad(hours)}H ${pad(minutes)}M ${pad(seconds)}S`;
-        },
 		setTitleFavicon(title, favicon) {
-			// ... existing method content ...
+			document.title = title;
+			let headEl = document.querySelector('head');
+			let faviconEl = document.createElement('link');
+			faviconEl.setAttribute('rel', 'shortcut icon');
+			faviconEl.setAttribute('href', favicon);
+			headEl.appendChild(faviconEl);
 		},
 		async importMissions(files) {
-			// ... existing method content ...
+			let filePromises = Object.keys(files).map(path => files[path]());
+			let fileContents = await Promise.all(filePromises);
+			fileContents.forEach(content => {
+				let mission = {};
+				mission["slug"] = content.split("\n")[0];
+				mission["name"] = content.split("\n")[1];
+				mission["status"] = content.split("\n")[2];
+				mission["content"] = content.split("\n").splice(3).join("\n");
+				this.missions = [...this.missions, mission];
+			});
+			this.missions = this.missions.sort(function (a, b) {
+				return b["slug"] - a["slug"];
+			})
 		},
 		async importEvents(files) {
-			// ... existing method content ...
+			let filePromises = Object.keys(files).map(path => files[path]());
+			let fileContents = await Promise.all(filePromises);
+			fileContents.forEach(content => {
+				let event = {};
+				event["title"] = content.split("\n")[0];
+				event["location"] = content.split("\n")[1];
+				event["time"] = content.split("\n")[2];
+				event["thumbnail"] = content.split("\n")[3];
+				event["content"] = content.split("\n").splice(4).join("\n");
+				this.events = [...this.events, event];
+			});
+
 		},
 		async importClocks(files) {
-			// ... existing method content ...
+			let filePromises = Object.keys(files).map(path => files[path]());
+			let fileContents = await Promise.all(filePromises);
+			fileContents.forEach(content => {
+				this.clocks = JSON.parse(JSON.stringify(content)).default;
+			});
 		},
 		async importReserves(files) {
-			// ... existing method content ...
+			let filePromises = Object.keys(files).map(path => files[path]());
+			let fileContents = await Promise.all(filePromises);
+			fileContents.forEach(content => {
+				this.reserves = JSON.parse(JSON.stringify(content)).default;
+			});
 		},
 		async importPilots(files) {
-			// ... existing method content ...
+			let filePromises = Object.keys(files).map(path => files[path]());
+			let fileContents = await Promise.all(filePromises);
+			fileContents.forEach(content => {
+				let pilotFromJson = JSON.parse(JSON.stringify(content));
+				// In case the pilot was added from a copy on compcon via sharecode, remove the "reference mark" symbol
+				pilotFromJson.name = pilotFromJson.name.replace("※", "");
+				pilotFromJson.callsign = pilotFromJson.callsign.replace("※", "");
+				let pilotFromVue = this.pilotSpecialInfo[pilotFromJson.callsign.toUpperCase()];
+				let pilot = {
+					...pilotFromJson,
+					...pilotFromVue,
+				};
+				this.pilots = [...this.pilots, pilot];
+				pilot.clocks.forEach(content => {
+					let clock = {};
+					clock["type"] = `Pilot Project // ${pilot.callsign}`;
+					clock["result"] = "";
+					clock["name"] = content.title;
+					clock["description"] = content.description;
+					clock["value"] = content.progress;
+					clock["max"] = content.segments;
+					clock["color"] = "#3CB043";
+					this.clocks = [...this.clocks, clock];
+				});
+
+				pilot.reserves.forEach(content => {
+					let reserve = {};
+					reserve["type"] = content.type;
+					reserve["name"] = content.name;
+					reserve["description"] = content.description;
+					reserve["label"] = content.label;
+					reserve["cost"] = content.cost;
+					reserve["notes"] = content.notes;
+					reserve["callsign"] = pilot.callsign.toUpperCase();
+					this.reserves = [...this.reserves, reserve];
+				});
+			});
 		},
 	},
 };
@@ -140,45 +162,4 @@ export default {
 	/* border-right: 1px solid #ff0;
 	border-bottom: 1px solid #ff0; */
 }
-.header-countdown-box {
-  /* Positioning for Centering */
-  position: absolute; 
-  top: 10px; /* Adjust vertical position */
-  left: 50%; /* Start positioning 50% from the left edge */
-  transform: translateX(-50%); /* Shift left by 50% of the box's own width (true center) */
-  z-index: 999; /* Ensure it is rendered on top of other header elements */
-
-  /* Compact Size and Layout */
-  display: inline-flex;
-  align-items: center;
-  gap: 8px; /* Space between label and numbers */
-  height: 30px; 
-  padding: 0 12px;
-  
-  /* Visual Style */
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid #333;
-  border-left: 2px solid #39ff14; /* Neon green accent bar */
-}
-
-.header-countdown-box .label {
-  font-family: 'Rubik', sans-serif;
-  color: #888;
-  font-size: 0.7rem;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-}
-
-.header-countdown-box .value {
-  font-family: 'Fragment Mono', monospace;
-  color: #39ff14;
-  font-size: 0.9rem;
-  font-weight: bold;
-  letter-spacing: 1px;
-  min-width: 130px; 
-  text-align: right;
-  text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
-}
-
 </style>
