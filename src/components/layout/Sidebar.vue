@@ -1,6 +1,12 @@
 <template>
 	<div class="sidebar-page">
-		<section class="sidebar-layout">
+		<section class="sidebar-layout" :class="{ open: isOpen }">
+            <!-- Mobile Toggle Button -->
+            <button class="mobile-toggle" @click="toggleSidebar">
+                <img src="/icons/menu.svg" alt="Menu" v-if="!isOpen"/>
+                <img src="/icons/close.svg" alt="Close" v-if="isOpen"/>
+            </button>
+
 			<o-sidebar
 			  id="sidebar"
 			  position="static"
@@ -39,8 +45,14 @@ export default {
 			expandOnHover: false,
 			mobile: "reduced",
 			reduce: false,
+            isOpen: false, // New state for mobile toggle
 		};
 	},
+    methods: {
+        toggleSidebar() {
+            this.isOpen = !this.isOpen;
+        }
+    }
 };
 </script>
 
@@ -54,5 +66,62 @@ export default {
 
 #sidebar {
 	pointer-events: auto;
+    transition: transform 0.3s ease;
+}
+
+/* Mobile Toggle Styles */
+.mobile-toggle {
+    display: none; /* Hidden by default on desktop */
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 2000; /* Above everything */
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #333;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    pointer-events: auto;
+}
+
+.mobile-toggle img {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+
+/* Mobile Breakpoint */
+@media (max-width: 768px) {
+    .mobile-toggle {
+        display: block;
+    }
+
+    /* Reset width to avoid full-screen blocking on mobile if closed */
+    .sidebar-layout {
+        width: 0 !important; 
+    }
+
+    /* When open, it can take space (for the overlay) */
+    .sidebar-layout.open {
+        width: 100% !important;
+        background: rgba(0,0,0,0.5); /* Backdrop */
+        pointer-events: auto; /* Catch clicks on backdrop */
+    }
+
+    /* Hide sidebar off-screen by default */
+    #sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 250px !important; /* Fixed width for mobile menu */
+        transform: translateX(-100%);
+        z-index: 1001;
+    }
+
+    /* Slide in when open */
+    .sidebar-layout.open #sidebar {
+        transform: translateX(0);
+    }
 }
 </style>

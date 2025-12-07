@@ -253,6 +253,60 @@ div.location-info {
 	padding-right: 0px;
 }
 
+/* Mobile Header Adjustments */
+@media (max-width: 768px) {
+    header {
+        height: auto !important;
+        flex-direction: column;
+        padding-bottom: 20px;
+    }
+    .title {
+        width: 100%;
+        justify-content: center;
+        padding: 10px;
+        flex-wrap: wrap; /* Allow wrapping if needed */
+    }
+    .logo {
+        height: 50px;
+        width: auto;
+    }
+    .title #title-header, .title #title-subheader {
+        font-size: 24px;
+    }
+    .title #subtitle-header, .title #subtitle-subheader {
+        font-size: 16px;
+    }
+    .rhombus { display: none; }
+    
+    .planet-location-container {
+        position: relative;
+        right: auto;
+        justify-content: center;
+        margin-top: 5px;
+    }
+    header video {
+        display: none;
+    }
+    div .location-info {
+        margin-left: 0;
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
+        gap: 15px;
+    }
+    .location-row {
+        width: auto;
+        height: auto;
+        flex-direction: column-reverse; /* Stack label over value or vice versa */
+        align-items: center;
+    }
+    .location-row #year, .location-row #gate, .location-row #ring, .location-row #system {
+        border-left: none; /* Remove borders for stacked layout */
+        width: auto;
+        text-align: center;
+    }
+}
+
 .page-wrapper {
 	display: flex;
 	flex-direction: column;

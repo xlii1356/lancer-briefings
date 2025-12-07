@@ -273,4 +273,35 @@ export default {
     text-align: right;
     text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
 }
+
+@media (max-width: 768px) {
+    #router-view-container {
+        margin-left: 0; /* Remove sidebar offset on mobile */
+        padding-top: 0; /* Let flow naturally */
+        padding-left: 10px;
+        padding-right: 10px;
+        position: relative; /* Override absolute positioning */
+        top: auto; /* Reset top */
+        left: auto; /* Reset left */
+        width: 100%;
+        height: auto; /* Allow full height */
+        overflow-y: visible; /* Let body scroll */
+    }
+    
+    .page-wrapper {
+        position: relative; /* Unfix on mobile to allow flow */
+        height: auto; /* Let it grow */
+    }
+    
+    .header-countdown-box {
+        position: relative; /* Stack naturally */
+        top: auto;
+        left: auto;
+        transform: none;
+        width: 100%;
+        margin-bottom: 20px;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.8);
+    }
+}
 </style>

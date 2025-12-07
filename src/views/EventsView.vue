@@ -42,6 +42,7 @@
 <script>
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import Event from "@/components/Event.vue";
+import EventModal from "@/components/modals/EventModal.vue";
 import PilotModal from '@/components/modals/PilotModal.vue';
 import PrimeModal from '@/components/modals/PrimeModal.vue';
 
@@ -67,7 +68,22 @@ export default {
   },
   methods: {
     selectEvent(event) {
-      this.selectedEvent = event;
+      if (window.innerWidth <= 768) {
+          this.$oruga.modal.open({
+            component: EventModal,
+            custom: true,
+            trapFocus: true,
+            props: { 
+                event: event,
+                pilots: this.pilots, // Pass pilots for checking
+                events: this.events  // Pass events list
+            },
+            class: 'custom-modal',
+            width: 1920,
+          });
+      } else {
+          this.selectedEvent = event;
+      }
     },
     handleMarkdownClick(event) {
       const link = event.target.closest('a');
