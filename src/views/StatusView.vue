@@ -9,7 +9,6 @@
       </div>
       <div class="section-content-container">
         <div class="countdown-display">
-          <span class="countdown-label">Time to Next Tuesday 7:00 PM EST:</span>
           <span class="countdown-value">{{ countdownDisplay }}</span>
         </div>
       </div>
