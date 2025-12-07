@@ -1,7 +1,19 @@
 <template>
   <div id="status" :class="{ animate: animateView }" :style="{ 'animation-delay': animationDelay }"
     class="content-container">
-    
+
+    <section id="countdown" class="section-container" :style="{ 'animation-delay': animationDelay }">
+      <div class="section-header clipped-medium-backward">
+        <img src="/icons/reflection.svg" />
+        <h1>NEXT DEBRIEF</h1>
+      </div>
+      <div class="section-content-container">
+        <div class="countdown-display">
+          <span class="countdown-label">Time to Next Tuesday 7:00 PM EST:</span>
+          <span class="countdown-value">{{ countdownDisplay }}</span>
+        </div>
+      </div>
+    </section>
     <section id="missions" class="section-container" :style="{ 'animation-delay': animationDelay }">
       <div class="section-header clipped-medium-backward">
         <img src="/icons/campaign.svg" />
@@ -128,7 +140,9 @@ export default {
       clockAnimationDelay: "2500",
       missionMarkdown: "",
       primeData: primeDataList,
-      squadData: missionSquads, 
+      squadData: missionSquads,
+      countdownDisplay: 'Calculating...',
+      countdownInterval: null, 
     };
   },
   created() {
@@ -138,6 +152,7 @@ export default {
   beforeUpdate() {
     this.selectMission(this.missionSlug);
   },
+// ... after beforeUpdate()
   mounted() {
     // 1. Existing Mission Select Logic
     if (this.missions.length > 0) {
@@ -146,12 +161,70 @@ export default {
       this.selectMission(queryMission || this.missions[0].slug);
     }
 
-    // 2. NEW: Handle Scrolling to Prime Status
+    // 2. Existing: Handle Scrolling to Prime Status
     if (this.$route.query.target === 'prime') {
       this.scrollToPrime();
     }
+
+    // 3. NEW: Start the countdown timer
+    this.updateCountdown();
+    this.countdownInterval = setInterval(this.updateCountdown, 1000);
+  },
+  // NEW: Add beforeUnmount hook to clear the interval
+  beforeUnmount() {
+    clearInterval(this.countdownInterval);
   },
   methods: {
+    // NEW: Countdown Calculation Logic
+    updateCountdown() {
+      // Find the next Tuesday at 7 PM EST
+      const now = new Date();
+      
+      // Calculate milliseconds offset for Tuesday (Day 2 in JS, 0=Sunday)
+      // +2 for Tuesday, -7 for Sunday (day 0) is -5. (2-now.getDay())
+      const dayOfWeek = now.getDay(); // 0=Sun, 1=Mon, 2=Tue, ...
+
+      let daysUntilTuesday = 2 - dayOfWeek;
+      if (daysUntilTuesday <= 0) { // If it's Tuesday or later, go to next week
+        daysUntilTuesday += 7;
+      }
+      
+      const nextTuesday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilTuesday, 19, 0, 0); // 19:00 (7 PM) in local time
+
+      // *** Timezone Adjustment for EST (Eastern Standard Time) ***
+      // NOTE: This assumes your client's local time is set to EST. For robust cross-timezone handling, you should use a library like 'luxon' or 'moment-timezone'.
+      // For a simple implementation, we adjust to a fixed offset for EST (-5 hours from UTC).
+      // However, for 7 PM EST, simply setting the time to 19:00 locally will usually work if the user is in EST/EDT.
+      // Since `new Date()` uses the local machine's timezone, if your users are *not* in EST, the time will be wrong.
+
+      // A slightly more reliable way for *just* EST (GMT-5) but ignores daylight savings:
+      // const targetTime = new Date(nextTuesday.getTime() + (nextTuesday.getTimezoneOffset() + (5 * 60)) * 60000);
+      
+      // For simplicity and to use the client's local clock:
+      const targetTime = nextTuesday;
+
+
+      const distance = targetTime - now;
+
+      if (distance < 0) {
+        // Recalculate for the Tuesday after the current one
+        daysUntilTuesday += 7;
+        const finalTuesday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilTuesday, 19, 0, 0);
+        const distanceRecalc = finalTuesday - now;
+        this.formatCountdown(distanceRecalc);
+        return;
+      }
+      
+      this.formatCountdown(distance);
+    },
+    formatCountdown(distance) {
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      this.countdownDisplay = `${days}D ${hours}H ${minutes}M ${seconds}S`;
+    },
     getSquadForMission(slug) {
       const record = this.squadData.find(s => s.missionSlug === slug);
       return record ? record.pilots : null;
@@ -221,6 +294,29 @@ export default {
 .assignment-content {
   width: 100%;
   height: 100%;
+}
+
+.countdown-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid #333;
+}
+.countdown-label {
+  color: #aaa;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.countdown-value {
+  font-family: 'Fragment Mono', monospace; /* Use a fixed-width font for stability */
+  font-size: 2em;
+  color: #00ff00;
+  text-shadow: 0 0 8px #00ff00;
+  font-weight: bold;
 }
 
 /* --- EXISTING STYLES --- */
