@@ -229,27 +229,28 @@ html {
     overflow: hidden !important;
     width: 100%;
     height: 100%;
-    background-color: #161c1d; /* Fallback */
-    background: radial-gradient(circle at center, #2c3638 0%, #161c1d 100%); /* Vanta globe approximation */
+    background-color: #0c090d; /* Vanta Match */
 }
 
 body {
     margin: 0;
     padding: 0;
-    
-    /* SCALE WHOLE SITE */
-    transform: scale(0.8);
-    transform-origin: top left;
-    width: 125vw; /* Use viewport width */
-    height: 125vh; /* Use viewport height */
+    width: 100%;
+    height: 100%;
     overflow-x: hidden;
-    background-color: transparent; /* Let html background show */
+    background-color: transparent; 
 }
 
 #app {
 	min-height: 100vh;
 	overflow: hidden !important;
     display: block; 
+    
+    /* SCALE APP CONTENT ONLY */
+    transform: scale(0.8);
+    transform-origin: top left;
+    width: 125vw; 
+    height: 125vh; 
 }
 
 .page-wrapper {
