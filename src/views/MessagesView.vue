@@ -53,6 +53,7 @@
 <script>
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import Message from "@/components/Message.vue";
+import MessageModal from "@/components/modals/MessageModal.vue";
 
 export default {
   name: "MessagesView",
@@ -84,7 +85,20 @@ export default {
   },
   methods: {
     selectMessage(msg) {
+      if (window.innerWidth <= 768) {
+          this.$oruga.modal.open({
+            component: MessageModal,
+            custom: true,
+            trapFocus: true,
+            props: { 
+                message: msg,
+            },
+            class: 'custom-modal',
+            width: 1920,
+          });
+      } else {
         this.selectedMessage = msg;
+      }
     }
   }
 };
