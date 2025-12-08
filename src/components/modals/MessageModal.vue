@@ -38,26 +38,16 @@ export default {
 </script>
 
 <style scoped>
+/* Ensure the modal content wraps correctly on mobile */
 .event-modal {
-    width: 100%;
-    max-width: 85vw; /* Explicitly constrain width relative to viewport */
-    max-height: 85vh; /* Limit height to allow scrolling within view */
-    display: flex; /* Flexbox for scrolling body */
-    flex-direction: column;
-    overflow: hidden; /* Prevent horizontal scroll */
-    box-sizing: border-box;
-    margin: 0 auto; /* Center it */
-}
-
-.header-container {
-    margin-bottom: 20px;
+    max-width: 100%;
 }
 
 /* Force header scale down */
 :deep(.section-header) {
     height: 40px !important;
     width: 100% !important;
-    clip-path: none !important; /* Remove clipping to fit */
+    clip-path: none !important;
 }
 :deep(.section-header img) {
     height: 24px !important;
@@ -68,12 +58,59 @@ export default {
     line-height: 40px !important;
 }
 :deep(.rhombus-back) {
-    display: none !important; /* Hide extra deco */
+    display: none !important;
 }
 
-.modal-card-head {
+/* Override fixed widths that might be forcing the modal wide */
+:deep(.clipped-info-backward) {
+    width: 100% !important;
+    max-width: 100% !important;
+    clip-path: none !important;
+}
+
+/* Ensure the modal stays within bounds */
+.event-modal {
+    width: 100%;
+    max-width: 85vw; /* Explicitly constrain width relative to viewport */
+    max-height: 85vh; /* Limit height to allow scrolling within view */
+    display: flex; /* Flexbox for scrolling body */
+    flex-direction: column;
+    overflow: hidden; /* Prevent horizontal scroll, internal scroll on body */
+    box-sizing: border-box;
+    margin: 0 auto; /* Center it */
+}
+
+/* .event class styles if needed for legacy */
+.event-modal .event {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    color: #eee;
+    overflow-y: auto; 
+}
+
+.modal-card-body {
     padding: 20px;
-    border-bottom: 1px solid #444;
+    overflow-y: auto;
+    color: #eee;
+    flex: 1;
+    min-height: 0;
+}
+
+.event-modal .markdown {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Meta info styling specific to messages */
+.meta-info {
+    font-family: 'Rubik', sans-serif;
+    font-size: 0.9rem;
+    color: #aaa;
+    display: flex;
+    gap: 20px;
+    margin-top: 5px;
 }
 
 .modal-card-title {
@@ -84,30 +121,20 @@ export default {
     margin: 0 0 10px 0;
 }
 
-.meta-info {
-    font-family: 'Rubik', sans-serif;
-    font-size: 0.9rem;
-    color: #aaa;
-    display: flex;
-    gap: 20px;
-}
-
-.modal-card-body {
-    padding: 20px;
-    overflow-y: auto; /* Enable vertical scroll for content */
-    color: #eee; /* Ensure text is light */
-    flex: 1; /* Allow growing to fill space */
-    min-height: 0; /* Important for flex child scrolling */
-}
-
-/* Use deep selector to ensure text color applies */
-:deep(.markdown) {
-    color: #eee;
-    font-family: 'Rubik', sans-serif;
-    line-height: 1.6;
-}
-
-:deep(.markdown p) {
-    margin-bottom: 1em;
+/* Use deep selector to ensure styles apply to elements INSIDE the markdown component */
+:deep(.markdown),
+:deep(.markdown p),
+:deep(.markdown div),
+:deep(.markdown span),
+:deep(.markdown h1),
+:deep(.markdown h2),
+:deep(.markdown h3),
+:deep(.markdown h4),
+:deep(.markdown li) {
+    white-space: pre-wrap !important; /* Preserve line breaks but wrap text */
+    word-break: break-word !important; /* Break long words if necessary */
+    overflow-wrap: anywhere !important; /* Force break if line is too long */
+    max-width: 100%;
+    box-sizing: border-box;
 }
 </style>

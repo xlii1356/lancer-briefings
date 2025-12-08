@@ -1979,4 +1979,35 @@ div.markdown ol li {
 		max-width: 100%;
 		height: auto;
 	}
+}/* --- MOBILE MODAL FIXES --- */
+/* Force the custom modal wrapper to be high z-index and interactive */
+.custom-modal {
+    z-index: 9999 !important;
+    position: fixed !important;
+    /* Ensure it stays fixed viewport */
+}
+
+/* Ensure the content inside is definitely above the overlay */
+.custom-modal .animation-content {
+    z-index: 10000 !important;
+    position: relative !important;
+    pointer-events: auto !important;
+    /* Force interaction */
+    max-height: 90vh;
+    /* Safety cap */
+    display: flex;
+    /* Allow children to flex */
+}
+
+/* Ensure the overlay is BEHIND the content */
+.custom-modal .o-modal__overlay {
+    z-index: 9000 !important;
+    /* Lower than content */
+    background-color: rgba(0, 0, 0, 0.85) !important;
+    /* Darker backdrop */
+}
+
+/* Fix for standard Oruga structure if needed */
+.o-modal.is-active {
+    z-index: 9999 !important;
 }
