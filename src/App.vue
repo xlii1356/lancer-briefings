@@ -232,6 +232,12 @@ html {
     background-color: #0c090d; /* Vanta Match */
 }
 
+@media (max-width: 768px) {
+    html {
+        overflow: auto !important; /* Allow scroll on mobile */
+    }
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -322,6 +328,19 @@ body {
 }
 
 @media (max-width: 768px) {
+    /* RESET SCALING AND SCROLLING FOR MOBILE */
+    body {
+        overflow-y: auto; /* Enable scroll */
+        height: auto;
+    }
+
+    #app {
+        transform: none; /* Disable scale */
+        width: 100%;
+        height: auto;
+        overflow: visible !important;
+    }
+
     #router-view-container {
         margin-left: 0; /* Remove sidebar offset on mobile */
         padding-top: 0; /* Let flow naturally */
