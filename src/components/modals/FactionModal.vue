@@ -7,10 +7,10 @@
 			</div>
 			<div class="rhombus-back">&nbsp;</div>
 		</div>
-			<div class="modal-card-head" style="background-color: var(--background-black)">
+			<div class="modal-card-head" style="background-color: #0c090d">
 				<p class="modal-card-title">{{ faction.title }}</p>
 			</div>
-			<div class="modal-card-body content-wrapper" style="background-color: var(--background-black)">
+			<div class="modal-card-body content-wrapper" style="background-color: #0c090d">
 				<vue-markdown-it :source="faction.content" class="markdown" />
 			</div>
 	</div>

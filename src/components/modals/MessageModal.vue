@@ -7,14 +7,14 @@
 			</div>
 			<div class="rhombus-back">&nbsp;</div>
 		</div>
-			<div class="modal-card-head" style="background-color: var(--background-black)">
+			<div class="modal-card-head" style="background-color: #0c090d">
 				<p class="modal-card-title">{{ message.title }}</p>
                 <div class="meta-info">
                     <span><strong>FROM:</strong> {{ message.sender }}</span>
                     <span><strong>DATE:</strong> {{ message.date }}</span>
                 </div>
 			</div>
-			<div class="modal-card-body content-wrapper" style="background-color: var(--background-black)">
+			<div class="modal-card-body content-wrapper" style="background-color: #0c090d">
 				<vue-markdown-it :source="message.content" class="markdown" />
 			</div>
 	</div>
