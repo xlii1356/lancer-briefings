@@ -7,50 +7,58 @@
 			</div>
 			<div class="rhombus-back">&nbsp;</div>
 		</div>
+<<<<<<< HEAD:src/components/modals/FactionModal.vue
 			<div class="modal-card-head" style="background-color: #0c090d">
 				<p class="modal-card-title">{{ faction.title }}</p>
 			</div>
 			<div class="modal-card-body content-wrapper" style="background-color: #0c090d">
 				<vue-markdown-it :source="faction.content" class="markdown" />
+=======
+		<div class="event" @click="handleMarkdownClick">
+			<div class="name">
+				<h1>{{ event.location }} // {{ event.time }}</h1>
+				<h2>{{ event.title }}</h2>
+>>>>>>> parent of e7d5aba (fixed events to factions):src/components/modals/EventModal.vue
 			</div>
+			<vue-markdown-it :source="event.content" class="markdown" />
+		</div>
 	</div>
 </template>
 
 <script>
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import PilotModal from '@/components/modals/PilotModal.vue';
-// PrimeModal and primeDataList are removed as prime:// links are no longer handled
-// import PrimeModal from '@/components/modals/PrimeModal.vue';
-// import primeDataList from '@/assets/prime/prime.json';
+import PrimeModal from '@/components/modals/PrimeModal.vue';
+import primeDataList from '@/assets/prime/prime.json';
 
 export default {
-	name: "FactionModal",
+	name: "EventModal",
 	components: {
 		VueMarkdownIt,
 	},
 	props: {
-		faction: {
+		event: {
 			type: Object,
 			required: true,
 		},
         // We need pilots data to resolve pilot links
         pilots: {
             type: Array,
-            required: true, // Changed to required: true
-            // default: () => [] // Removed default
+            required: false,
+            default: () => [] 
         },
-        // We need factions data if we want to resolve faction:// links to OTHER factions
-        factions: {
+        // We need events data if we want to resolve event:// links to OTHER events (though tricky in a modal)
+        events: {
             type: Array,
-            required: true // New prop
+            required: false,
+            default: () => []
         }
 	},
-    // primeData is removed as prime:// links are no longer handled
-    // data() {
-    //     return {
-    //         primeData: primeDataList
-    //     };
-    // },
+    data() {
+        return {
+            primeData: primeDataList
+        };
+    },
     methods: {
         handleMarkdownClick(event) {
             const link = event.target.closest('a');
@@ -88,7 +96,52 @@ export default {
                 this.$emit('close'); // Close modal on navigation
             }
 
+<<<<<<< HEAD:src/components/modals/FactionModal.vue
 
+=======
+            // --- HANDLE PRIME LINKS ---
+            else if (href && href.startsWith('prime://')) {
+                event.preventDefault();
+                const rawAlias = href.replace('prime://', '');
+                const targetAlias = decodeURIComponent(rawAlias).toUpperCase();
+                const primeEntry = this.primeData.find(p => p.alias.toUpperCase() === targetAlias);
+
+                if (primeEntry) {
+                    this.$oruga.modal.open({
+                        component: PrimeModal,
+                        custom: true,
+                        trapFocus: true,
+                        props: { prime: primeEntry },
+                        class: 'custom-modal',
+                        width: 1920,
+                    });
+                }
+            }
+             // --- HANDLE EVENT LINKS ---
+            else if (href && href.startsWith('event://')) {
+                event.preventDefault();
+                const titleRaw = href.replace('event://', '');
+                const title = decodeURIComponent(titleRaw);
+                // Find existing event from the passed event list
+                const targetEvent = this.events.find(e => e.title.trim() === title.trim());
+
+                if (targetEvent) {
+                    // Open a new modal stacked on top for the linked event
+                     this.$oruga.modal.open({
+                        component: this.$options, // Self-reference for recursion
+                        custom: true,
+                        trapFocus: true,
+                        props: { 
+                            event: targetEvent,
+                            pilots: this.pilots,
+                            events: this.events
+                        },
+                        class: 'custom-modal',
+                        width: 1920,
+                    });
+                }
+            }
+>>>>>>> parent of e7d5aba (fixed events to factions):src/components/modals/EventModal.vue
         }
     }
 };
@@ -203,13 +256,21 @@ export default {
   cursor: pointer;
 }
 
+<<<<<<< HEAD:src/components/modals/FactionModal.vue
 :deep(.markdown a[href^="faction://"]) {
+=======
+::v-deep .markdown a[href^="event://"] {
+>>>>>>> parent of e7d5aba (fixed events to factions):src/components/modals/EventModal.vue
   color: #bd93f9; 
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted #bd93f9;
 }
+<<<<<<< HEAD:src/components/modals/FactionModal.vue
 :deep(.markdown a[href^="faction://"]:hover) {
+=======
+::v-deep .markdown a[href^="event://"]:hover {
+>>>>>>> parent of e7d5aba (fixed events to factions):src/components/modals/EventModal.vue
   background-color: rgba(189, 147, 249, 0.2);
   cursor: pointer;
 }

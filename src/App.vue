@@ -8,7 +8,7 @@
         <span class="value">{{ countdownDisplay }}</span>
     </div>
     <div id="router-view-container">
-        <router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :factions="factions"
+        <router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :events="events"
             :pilots="pilots" :clocks="clocks" :reserves="reserves" :messages="messages" />
     </div>
     <svg style="visibility: hidden; position: absolute" width="0" height="0" xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +46,7 @@ export default {
             header: Config.header,
             pilotSpecialInfo: Config.pilotSpecialInfo,
             clocks: [],
-            factions: [],
+            events: [],
             missions: [],
             pilots: [],
             reserves: [],
@@ -60,7 +60,7 @@ export default {
     created() {
         this.setTitleFavicon(Config.defaultTitle + " MISSION BRIEFING", Config.icon);
         this.importMissions(import.meta.glob("@/assets/missions/*.md", { query: '?raw', import: 'default' }));
-        this.importFactions(import.meta.glob("@/assets/factions/*.md", { query: '?raw', import: 'default' }));
+        this.importEvents(import.meta.glob("@/assets/events/*.md", { query: '?raw', import: 'default' }));
         this.importClocks(import.meta.glob("@/assets/clocks/*.json"));
         this.importReserves(import.meta.glob("@/assets/reserves/*.json"));
 
@@ -130,17 +130,17 @@ export default {
                 return b["slug"] - a["slug"];
             })
         },
-        async importFactions(files) {
+        async importEvents(files) {
             let filePromises = Object.keys(files).map(path => files[path]());
             let fileContents = await Promise.all(filePromises);
             fileContents.forEach(content => {
-                let faction = {};
-                faction["title"] = content.split("\n")[0];
-                faction["location"] = content.split("\n")[1];
-                faction["time"] = content.split("\n")[2];
-                faction["thumbnail"] = content.split("\n")[3];
-                faction["content"] = content.split("\n").splice(4).join("\n");
-                this.factions = [...this.factions, faction];
+                let event = {};
+                event["title"] = content.split("\n")[0];
+                event["location"] = content.split("\n")[1];
+                event["time"] = content.split("\n")[2];
+                event["thumbnail"] = content.split("\n")[3];
+                event["content"] = content.split("\n").splice(4).join("\n");
+                this.events = [...this.events, event];
             });
 
         },

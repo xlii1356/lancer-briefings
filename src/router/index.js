@@ -2,8 +2,7 @@ import { createMemoryHistory, createWebHistory, createRouter } from "vue-router"
 
 import StatusView from "../views/StatusView.vue";
 import PilotsView from "../views/PilotsView.vue";
-
-import FactionsView from "../views/FactionsView.vue";
+import EventsView from "../views/EventsView.vue";
 import MessagesView from "../views/MessagesView.vue";
 import Config from "@/assets/info/general-config.json";
 
@@ -35,11 +34,11 @@ const routes = [
 		meta: { title: `${DEFAULT_TITLE} MESSAGES` },
 	},
 	{
-		path: "/factions",
-		name: "Factions",
-		component: FactionsView,
+		path: "/events",
+		name: "Events",
+		component: EventsView,
 		props: true,
-		meta: { title: `${DEFAULT_TITLE} FACTIONS LOG` },
+		meta: { title: `${DEFAULT_TITLE} EVENTS LOG` },
 	},
 ];
 
