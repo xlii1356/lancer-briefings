@@ -7,18 +7,10 @@
 			</div>
 			<div class="rhombus-back">&nbsp;</div>
 		</div>
-<<<<<<< HEAD:src/components/modals/FactionModal.vue
-			<div class="modal-card-head" style="background-color: #0c090d">
-				<p class="modal-card-title">{{ faction.title }}</p>
-			</div>
-			<div class="modal-card-body content-wrapper" style="background-color: #0c090d">
-				<vue-markdown-it :source="faction.content" class="markdown" />
-=======
 		<div class="event" @click="handleMarkdownClick">
 			<div class="name">
 				<h1>{{ event.location }} // {{ event.time }}</h1>
 				<h2>{{ event.title }}</h2>
->>>>>>> parent of e7d5aba (fixed events to factions):src/components/modals/EventModal.vue
 			</div>
 			<vue-markdown-it :source="event.content" class="markdown" />
 		</div>
@@ -96,9 +88,6 @@ export default {
                 this.$emit('close'); // Close modal on navigation
             }
 
-<<<<<<< HEAD:src/components/modals/FactionModal.vue
-
-=======
             // --- HANDLE PRIME LINKS ---
             else if (href && href.startsWith('prime://')) {
                 event.preventDefault();
@@ -141,7 +130,6 @@ export default {
                     });
                 }
             }
->>>>>>> parent of e7d5aba (fixed events to factions):src/components/modals/EventModal.vue
         }
     }
 };
@@ -196,6 +184,8 @@ export default {
     box-sizing: border-box;
     color: #eee;
     overflow-y: auto; /* Allow scroll if needed on container */
+    flex: 1;
+    min-height: 0;
 }
 
 .modal-card-body {
@@ -256,21 +246,13 @@ export default {
   cursor: pointer;
 }
 
-<<<<<<< HEAD:src/components/modals/FactionModal.vue
-:deep(.markdown a[href^="faction://"]) {
-=======
-::v-deep .markdown a[href^="event://"] {
->>>>>>> parent of e7d5aba (fixed events to factions):src/components/modals/EventModal.vue
+:deep(.markdown a[href^="event://"]) {
   color: #bd93f9; 
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted #bd93f9;
 }
-<<<<<<< HEAD:src/components/modals/FactionModal.vue
-:deep(.markdown a[href^="faction://"]:hover) {
-=======
-::v-deep .markdown a[href^="event://"]:hover {
->>>>>>> parent of e7d5aba (fixed events to factions):src/components/modals/EventModal.vue
+:deep(.markdown a[href^="event://"]:hover) {
   background-color: rgba(189, 147, 249, 0.2);
   cursor: pointer;
 }

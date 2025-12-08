@@ -188,21 +188,13 @@ export default {
   cursor: pointer;
 }
 
-<<<<<<< HEAD:src/views/FactionsView.vue
-:deep(.markdown a[href^="faction://"]) {
-=======
-::v-deep .markdown a[href^="event://"] {
->>>>>>> parent of e7d5aba (fixed events to factions):src/views/EventsView.vue
+:deep(.markdown a[href^="event://"]) {
   color: #bd93f9; 
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted #bd93f9;
 }
-<<<<<<< HEAD:src/views/FactionsView.vue
-:deep(.markdown a[href^="faction://"]:hover) {
-=======
-::v-deep .markdown a[href^="event://"]:hover {
->>>>>>> parent of e7d5aba (fixed events to factions):src/views/EventsView.vue
+:deep(.markdown a[href^="event://"]:hover) {
   background-color: rgba(189, 147, 249, 0.2);
   cursor: pointer;
 }
