@@ -163,53 +163,49 @@ export default {
 
 <style scoped>
 /* Link Styles */
-::v-deep .markdown a[href^="pilot://"],
-::v-deep .markdown a[href^="pilots://"] {
+:deep(.markdown a[href^="pilot://"]),
+:deep(.markdown a[href^="pilots://"]) {
   color: #FFC107;
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted #FFC107;
   transition: background 0.2s;
 }
-::v-deep .markdown a[href^="pilot://"]:hover,
-::v-deep .markdown a[href^="pilots://"]:hover {
+:deep(.markdown a[href^="pilot://"]:hover),
+:deep(.markdown a[href^="pilots://"]:hover) {
   background-color: rgba(255, 193, 7, 0.2);
   cursor: pointer;
 }
 
-::v-deep .markdown a[href^="mission://"] {
+:deep(.markdown a[href^="mission://"]) {
   color: #7dbbbb;
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted #7dbbbb;
 }
-::v-deep .markdown a[href^="mission://"]:hover {
+:deep(.markdown a[href^="mission://"]:hover) {
   background-color: rgba(125, 187, 187, 0.2);
   cursor: pointer;
 }
 
-::v-deep .markdown a[href^="faction://"] {
+:deep(.markdown a[href^="faction://"]) {
   color: #bd93f9; 
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted #bd93f9;
 }
-::v-deep .markdown a[href^="faction://"]:hover {
-  background-color: rgba(189, 147, 249, 0.2);
-  cursor: pointer;
-}
-::v-deep .markdown a[href^="event://"]:hover {
+:deep(.markdown a[href^="faction://"]:hover) {
   background-color: rgba(189, 147, 249, 0.2);
   cursor: pointer;
 }
 
-::v-deep .markdown a[href^="prime://"] {
+:deep(.markdown a[href^="prime://"]) {
   color: #ff5555; 
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted #ff5555;
 }
-::v-deep .markdown a[href^="prime://"]:hover {
+:deep(.markdown a[href^="prime://"]:hover) {
   background-color: rgba(255, 85, 85, 0.2);
   cursor: pointer;
 }

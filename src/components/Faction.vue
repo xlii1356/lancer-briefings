@@ -13,7 +13,7 @@
 </template>
 
 <script>
-<script>
+
 import FactionModal from "@/components/modals/FactionModal.vue";
 
 import removeMd from "remove-markdown";
