@@ -114,11 +114,11 @@ export default {
 
 .detail-header h2 {
     font-family: 'Rubik', sans-serif;
-    font-size: 2rem;
-    color: #39ff14; /* Hacker green */
+    font-size: 1.5rem;
+    color: #eee; 
     text-transform: uppercase;
-    margin: 5px 0 15px 0;
-    text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+    margin: 5px 0 10px 0;
+    /* Removed text-shadow for less intrusiveness */
 }
 
 .meta-info {
@@ -146,10 +146,9 @@ export default {
     letter-spacing: 2px;
 }
 
-/* Specific Section overrides if needed to match EventsView layout exactly */
-/* Assuming .section-container etc are global or scoped in a way we need to replicate?
-   Looking at EventsView, they seemed to rely on global classes or local scoped styles that might be missing here if not careful.
-   However, the user asked to "pull messages... in the same .md format Missions and Events pull from", so I'm mimicking the structure.
-*/
-
+/* Specific Section overrides */
+#message-content {
+    width: 1100px; /* Wider box */
+    margin: 50px 30px;
+}  
 </style>
