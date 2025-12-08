@@ -89,7 +89,7 @@
 <script>
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import Mission from "@/components/Mission.vue";
-import Event from "@/components/Event.vue";
+
 import Reserve from "@/components/Reserve.vue";
 
 import primeDataList from '@/assets/prime/prime.json';
@@ -99,7 +99,7 @@ export default {
   components: {
     VueMarkdownIt,
     Mission,
-    Event,
+
     Reserve,
   },
   props: {
