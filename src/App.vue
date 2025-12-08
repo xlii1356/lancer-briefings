@@ -226,14 +226,19 @@ export default {
 <style>
 
 /* --- MODAL FIXES --- */
-/* Ensure modal content sits above the overlay */
+.o-modal {
+    z-index: 20000 !important; /* Highest level container */
+    position: fixed !important;
+}
 .o-modal .animation-content {
-    z-index: 10000 !important;
-    max-height: 90vh; /* Safety cap */
-    display: flex; 
+    z-index: 20010 !important; /* Content above overlay */
+    max-height: 90vh; 
+    display: flex;
+    position: relative !important; 
+    pointer-events: auto !important;
 }
 .o-modal .o-modal__overlay {
-    z-index: 9000 !important;
+    z-index: 20005 !important; /* Overlay between container and content */
 }
 /* --- CRITICAL LAYOUT FIXES (To prevent boxes from being empty/collapsed) --- */
 html {

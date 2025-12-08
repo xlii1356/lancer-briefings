@@ -1978,8 +1978,4 @@ div.markdown ol li {
 	video {
 		max-width: 100%;
 		height: auto;
-	}
-}
-
-/* --- MOBILE MODAL FIXES --- */
-/* Force the custom modal wrapper to be high z-index and interactive */
+	}}
