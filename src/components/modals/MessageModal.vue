@@ -53,6 +53,24 @@ export default {
     margin-bottom: 20px;
 }
 
+/* Force header scale down */
+:deep(.section-header) {
+    height: 40px !important;
+    width: 100% !important;
+    clip-path: none !important; /* Remove clipping to fit */
+}
+:deep(.section-header img) {
+    height: 24px !important;
+    width: 24px !important;
+}
+:deep(.section-header h1) {
+    font-size: 1rem !important;
+    line-height: 40px !important;
+}
+:deep(.rhombus-back) {
+    display: none !important; /* Hide extra deco */
+}
+
 .modal-card-head {
     padding: 20px;
     border-bottom: 1px solid #444;
@@ -78,6 +96,8 @@ export default {
     padding: 20px;
     overflow-y: auto; /* Enable vertical scroll for content */
     color: #eee; /* Ensure text is light */
+    flex: 1; /* Allow growing to fill space */
+    min-height: 0; /* Important for flex child scrolling */
 }
 
 /* Use deep selector to ensure text color applies */

@@ -100,6 +100,24 @@ export default {
     max-width: 100%;
 }
 
+/* Force header scale down */
+:deep(.section-header) {
+    height: 40px !important;
+    width: 100% !important;
+    clip-path: none !important;
+}
+:deep(.section-header img) {
+    height: 24px !important;
+    width: 24px !important;
+}
+:deep(.section-header h1) {
+    font-size: 1rem !important;
+    line-height: 40px !important;
+}
+:deep(.rhombus-back) {
+    display: none !important;
+}
+
 /* Override fixed widths that might be forcing the modal wide */
 :deep(.clipped-medium-backward-bio) {
     width: 100% !important;
@@ -125,6 +143,14 @@ export default {
     box-sizing: border-box;
     color: #eee;
     overflow-y: auto; /* Allow scroll if needed on container */
+}
+
+.modal-card-body {
+    padding: 20px;
+    overflow-y: auto;
+    color: #eee;
+    flex: 1;
+    min-height: 0;
 }
 
 .event-modal .markdown {
