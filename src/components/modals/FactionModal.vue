@@ -88,7 +88,7 @@ export default {
                 this.$emit('close'); // Close modal on navigation
             }
 
-            }
+
         }
     }
 };
