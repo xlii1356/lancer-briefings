@@ -224,6 +224,7 @@ export default {
 </script>
 
 <style>
+@import './assets/styles/_modal_fixes.css';
 /* --- CRITICAL LAYOUT FIXES (To prevent boxes from being empty/collapsed) --- */
 html {
     overflow: hidden !important;
