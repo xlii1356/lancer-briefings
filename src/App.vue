@@ -229,6 +229,8 @@ html {
     overflow: hidden !important;
     width: 100%;
     height: 100%;
+    background-color: #161c1d; /* Fallback */
+    background: radial-gradient(circle at center, #2c3638 0%, #161c1d 100%); /* Vanta globe approximation */
 }
 
 body {
@@ -238,9 +240,10 @@ body {
     /* SCALE WHOLE SITE */
     transform: scale(0.8);
     transform-origin: top left;
-    width: 125%; /* 100 / 0.8 = 125% to fill width */
-    height: 125vh; /* 100 / 0.8 = 125vh to fill height */
+    width: 125vw; /* Use viewport width */
+    height: 125vh; /* Use viewport height */
     overflow-x: hidden;
+    background-color: transparent; /* Let html background show */
 }
 
 #app {
