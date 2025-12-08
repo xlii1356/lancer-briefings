@@ -1,5 +1,5 @@
 <template>
-	<div class="message-modal">
+	<div class="event-modal">
 		<div class="header-container">
 			<div class="section-header clipped-info-backward">
 				<img src="/icons/protocol.svg" />
@@ -38,7 +38,7 @@ export default {
 </script>
 
 <style scoped>
-.message-modal {
+.event-modal {
     width: 100%;
     max-width: 85vw; /* Explicitly constrain width relative to viewport */
     max-height: 85vh; /* Limit height to allow scrolling within view */
