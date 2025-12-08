@@ -21,7 +21,7 @@
     <!-- Content Section -->
     <section id="message-content" :class="{ animate: animate }" class="section-container">
       <div style="height: 52px; overflow: hidden">
-        <div class="section-header clipped-medium-backward-events-logs">
+        <div class="section-header clipped-info-backward">
           <img src="/icons/protocol.svg" />
           <h1>DECODED TRANSMISSION</h1>
         </div>

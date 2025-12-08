@@ -106,7 +106,7 @@ export default {
     animate: { type: Boolean, required: true },
     initialSlug: { type: String, required: true },
     missions: { type: Array, required: true },
-    events: { type: Array, required: true },
+
     pilots: { type: Array, required: true },
     clocks: { type: Array, required: true },
     reserves: { type: Array, required: true },

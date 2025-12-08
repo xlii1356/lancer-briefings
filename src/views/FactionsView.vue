@@ -19,7 +19,7 @@
     
     <section id="factions-logs" :class="{ animate: animate }" class="section-container">
       <div style="height: 52px; overflow: hidden">
-        <div class="section-header clipped-medium-backward-events-logs">
+        <div class="section-header clipped-info-backward">
           <img src="/icons/conversation.svg" />
           <h1>KNOWN DETAILS</h1>
         </div>

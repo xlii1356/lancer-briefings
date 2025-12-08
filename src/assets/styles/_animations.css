@@ -2,6 +2,7 @@
 	0% {
 		transform: translateX(-100%);
 	}
+
 	100% {
 		transform: translateX(0);
 	}
@@ -12,12 +13,15 @@
 		transform: translateX(-100%);
 		opacity: 0;
 	}
+
 	50% {
 		opacity: 0.2;
 	}
+
 	75% {
 		opacity: 0.5;
 	}
+
 	100% {
 		transform: translateX(0);
 		opacity: 1;
@@ -29,12 +33,15 @@
 		transform: translateY(-100%);
 		opacity: 0;
 	}
+
 	50% {
 		opacity: 0.2;
 	}
+
 	75% {
 		opacity: 0.5;
 	}
+
 	100% {
 		transform: translateY(0);
 		opacity: 1;
@@ -55,9 +62,11 @@
 	0% {
 		transform: translateX(-500%) skew(-0.785398rad);
 	}
+
 	90% {
 		transform: translateX(-25%) skew(-0.785398rad);
 	}
+
 	100% {
 		transform: translateX(0) skew(-0.785398rad);
 	}
@@ -79,16 +88,20 @@
 	0% {
 		opacity: 0;
 	}
+
 	10% {
 		opacity: 0.2;
 	}
+
 	15%,
 	30% {
 		opacity: 0.4;
 	}
+
 	40% {
 		opacity: 0.05;
 	}
+
 	100% {
 		opacity: 1;
 	}
@@ -98,9 +111,11 @@
 	49% {
 		background-color: var(--text-pilot-code);
 	}
+
 	50% {
 		background-color: transparent;
 	}
+
 	99% {
 		background-color: transparent;
 	}
@@ -110,9 +125,11 @@
 	0% {
 		opacity: 0;
 	}
+
 	50% {
 		opacity: 0.5;
 	}
+
 	100% {
 		opacity: 1;
 	}
@@ -123,19 +140,19 @@
    otherwise the animations will be disabled.
 */
 
-/* TODO: fix animations for Pilot.vue and Event.vue elements */
+/* TODO: fix animations for Pilot.vue and Faction.vue elements */
 
 /* HEADER + SIDEBAR */
 header[class*="animate"] {
-	position:relative;
-	z-index:100;
+	position: relative;
+	z-index: 100;
 	animation: slideInFromLeft 0.3s ease-out;
 }
 
 .sidebar-page[class*="animate"] #sidebar {
 	display: flex;
-	position:relative;
-	z-index:100;
+	position: relative;
+	z-index: 100;
 	background-color: var(--primary-color);
 	animation: slideInDownSidebar 0.3s ease-out 1.2s;
 	animation-fill-mode: both;
@@ -168,16 +185,17 @@ header[class*="animate"] div.location-info {
 	animation: flickerIn 0.5s ease-in 1.5s 1;
 	animation-fill-mode: forwards;
 }
+
 /* END HEADER + SIDEBAR */
 
 /* VIEWS CONTENT */
 
 .content-container[class*="animate"]#status,
 .section-content-container[class*="animate"]#pilots,
-section.section-container[class*="animate"]#events,
-section.section-container[class*="animate"]#events-logs {
-	position:relative;
-	z-index:0;
+section.section-container[class*="animate"]#factions,
+section.section-container[class*="animate"]#factions-logs {
+	position: relative;
+	z-index: 0;
 	animation: slideInFromTopFade 0.5s ease-in-out;
 	animation-fill-mode: both;
 }
