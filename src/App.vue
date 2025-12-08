@@ -224,7 +224,17 @@ export default {
 </script>
 
 <style>
-@import './assets/styles/_modal_fixes.css';
+
+/* --- MODAL FIXES --- */
+/* Ensure modal content sits above the overlay */
+.o-modal .animation-content {
+    z-index: 10000 !important;
+    max-height: 90vh; /* Safety cap */
+    display: flex; 
+}
+.o-modal .o-modal__overlay {
+    z-index: 9000 !important;
+}
 /* --- CRITICAL LAYOUT FIXES (To prevent boxes from being empty/collapsed) --- */
 html {
     overflow: hidden !important;
