@@ -1,8 +1,9 @@
 import { createMemoryHistory, createWebHistory, createRouter } from "vue-router";
 
-import Status from "@/views/StatusView.vue";
-import Pilots from "@/views/PilotsView.vue";
-import Events from "@/views/EventsView.vue";
+import StatusView from "../views/StatusView.vue";
+import PilotsView from "../views/PilotsView.vue";
+import EventsView from "../views/EventsView.vue";
+import MessagesView from "../views/MessagesView.vue";
 import Config from "@/assets/info/general-config.json";
 
 const DEFAULT_TITLE = Config.defaultTitle;
@@ -14,21 +15,28 @@ const routes = [
 	{
 		path: "/status",
 		name: "Mission Status",
-		component: Status,
+		component: StatusView,
 		props: true,
 		meta: { title: `${DEFAULT_TITLE} MISSION STATUS` },
 	},
 	{
 		path: "/pilots",
-		name: "Pilots",
-		component: Pilots,
+		name: "pilots",
+		component: PilotsView,
 		props: true,
 		meta: { title: `${DEFAULT_TITLE} PILOT ROSTER` },
 	},
 	{
+		path: "/messages",
+		name: "messages",
+		component: MessagesView,
+		props: true,
+		meta: { title: `${DEFAULT_TITLE} MESSAGES` },
+	},
+	{
 		path: "/events",
 		name: "Events",
-		component: Events,
+		component: EventsView,
 		props: true,
 		meta: { title: `${DEFAULT_TITLE} EVENTS LOG` },
 	},

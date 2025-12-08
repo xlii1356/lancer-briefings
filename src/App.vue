@@ -9,7 +9,7 @@
     </div>
     <div id="router-view-container">
         <router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :events="events"
-            :pilots="pilots" :clocks="clocks" :reserves="reserves" />
+            :pilots="pilots" :clocks="clocks" :reserves="reserves" :messages="messages" />
     </div>
     <svg style="visibility: hidden; position: absolute" width="0" height="0" xmlns="http://www.w3.org/2000/svg"
         version="1.1">
@@ -51,6 +51,7 @@ export default {
             pilots: [],
             reserves: [],
             bonds: [],
+            messages: [],
             // NEW: Countdown Data
             countdownDisplay: 'CALCULATING...',
             countdownInterval: null,
@@ -62,7 +63,9 @@ export default {
         this.importEvents(import.meta.glob("@/assets/events/*.md", { query: '?raw', import: 'default' }));
         this.importClocks(import.meta.glob("@/assets/clocks/*.json"));
         this.importReserves(import.meta.glob("@/assets/reserves/*.json"));
+
         this.importPilots(import.meta.glob("@/assets/pilots/*.json"));
+        this.importMessages(import.meta.glob("@/assets/messages/*.md", { query: '?raw', import: 'default' }));
     },
     mounted() {
         this.$router.push("/status");
@@ -192,6 +195,28 @@ export default {
                     reserve["callsign"] = pilot.callsign.toUpperCase();
                     this.reserves = [...this.reserves, reserve];
                 });
+            });
+        },
+        async importMessages(files) {
+            let filePromises = Object.keys(files).map(path => files[path]());
+            let fileContents = await Promise.all(filePromises);
+            fileContents.forEach(content => {
+                let message = {};
+                // Format:
+                // ID
+                // Title
+                // Sender // Date
+                // ... Content
+                let lines = content.split("\n");
+                message["id"] = lines[0].trim();
+                message["title"] = lines[1].trim();
+                
+                let meta = lines[2].split("//");
+                message["sender"] = meta[0] ? meta[0].trim() : "UNKNOWN";
+                message["date"] = meta[1] ? meta[1].trim() : "UNKNOWN";
+
+                message["content"] = lines.splice(3).join("\n");
+                this.messages = [...this.messages, message];
             });
         },
     },
