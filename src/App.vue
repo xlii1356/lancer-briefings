@@ -225,6 +225,24 @@ export default {
 
 <style>
 /* --- CRITICAL LAYOUT FIXES (To prevent boxes from being empty/collapsed) --- */
+html {
+    overflow: hidden !important;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    
+    /* SCALE WHOLE SITE */
+    transform: scale(0.8);
+    transform-origin: top left;
+    width: 125%; /* 100 / 0.8 = 125% to fill width */
+    height: 125vh; /* 100 / 0.8 = 125vh to fill height */
+    overflow-x: hidden;
+}
+
 #app {
 	min-height: 100vh;
 	overflow: hidden !important;
@@ -252,7 +270,7 @@ export default {
     padding-top: 50px;  /* ASSUMPTION: Adjust this to your Header height */
 
     position: relative;
-    height: 100vh; /* Takes full viewport height */
+    height: 100%; /* Takes full parent height (125vh) -> 100vh visual */
     width: auto; 
     overflow-y: auto; 
 }
