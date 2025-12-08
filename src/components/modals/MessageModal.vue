@@ -80,21 +80,14 @@ export default {
     color: #eee; /* Ensure text is light */
 }
 
-/* Use deep selector to ensure styles apply to elements INSIDE the markdown component */
-:deep(.markdown),
-:deep(.markdown p),
-:deep(.markdown div),
-:deep(.markdown span),
-:deep(.markdown h1),
-:deep(.markdown h2),
-:deep(.markdown h3),
-:deep(.markdown h4),
-:deep(.markdown li) {
-    white-space: pre-wrap !important; /* Preserve line breaks but wrap text */
-    word-break: break-word !important; /* Break long words if necessary */
-    overflow-wrap: anywhere !important; /* Force break if line is too long */
-    max-width: 100%;
-    box-sizing: border-box;
+/* Use deep selector to ensure text color applies */
+:deep(.markdown) {
     color: #eee;
+    font-family: 'Rubik', sans-serif;
+    line-height: 1.6;
+}
+
+:deep(.markdown p) {
+    margin-bottom: 1em;
 }
 </style>
