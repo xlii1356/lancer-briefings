@@ -41,7 +41,10 @@ export default {
 .message-modal {
     width: 100%;
     max-width: 85vw; /* Explicitly constrain width relative to viewport */
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    max-height: 85vh; /* Limit height to allow scrolling within view */
+    display: flex; /* Flexbox for scrolling body */
+    flex-direction: column;
+    overflow: hidden; /* Prevent horizontal scroll */
     box-sizing: border-box;
     margin: 0 auto; /* Center it */
 }
@@ -73,6 +76,8 @@ export default {
 
 .modal-card-body {
     padding: 20px;
+    overflow-y: auto; /* Enable vertical scroll for content */
+    color: #eee; /* Ensure text is light */
 }
 
 /* Use deep selector to ensure styles apply to elements INSIDE the markdown component */

@@ -111,7 +111,10 @@ export default {
 .event-modal {
     width: 100%;
     max-width: 85vw; /* Explicitly constrain width relative to viewport */
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    max-height: 85vh; /* Limit height to allow scrolling within view */
+    display: flex; /* Flexbox for scrolling body */
+    flex-direction: column;
+    overflow: hidden; /* Prevent horizontal scroll, internal scroll on body */
     box-sizing: border-box;
     margin: 0 auto; /* Center it */
 }
@@ -120,6 +123,8 @@ export default {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    color: #eee;
+    overflow-y: auto; /* Allow scroll if needed on container */
 }
 
 .event-modal .markdown {
