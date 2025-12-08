@@ -7,50 +7,50 @@
 			</div>
 			<div class="rhombus-back">&nbsp;</div>
 		</div>
-		<div class="event" @click="handleMarkdownClick">
-			<div class="name">
-				<h1>{{ event.location }} // {{ event.time }}</h1>
-				<h2>{{ event.title }}</h2>
+			<div class="modal-card-head" style="background-color: var(--background-black)">
+				<p class="modal-card-title">{{ faction.title }}</p>
 			</div>
-			<vue-markdown-it :source="event.content" class="markdown" />
-		</div>
+			<div class="modal-card-body content-wrapper" style="background-color: var(--background-black)">
+				<vue-markdown-it :source="faction.content" class="markdown" />
+			</div>
 	</div>
 </template>
 
 <script>
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import PilotModal from '@/components/modals/PilotModal.vue';
-import PrimeModal from '@/components/modals/PrimeModal.vue';
-import primeDataList from '@/assets/prime/prime.json';
+// PrimeModal and primeDataList are removed as prime:// links are no longer handled
+// import PrimeModal from '@/components/modals/PrimeModal.vue';
+// import primeDataList from '@/assets/prime/prime.json';
 
 export default {
-	name: "EventModal",
+	name: "FactionModal",
 	components: {
 		VueMarkdownIt,
 	},
 	props: {
-		event: {
+		faction: {
 			type: Object,
 			required: true,
 		},
         // We need pilots data to resolve pilot links
         pilots: {
             type: Array,
-            required: false,
-            default: () => [] 
+            required: true, // Changed to required: true
+            // default: () => [] // Removed default
         },
-        // We need events data if we want to resolve event:// links to OTHER events (though tricky in a modal)
-        events: {
+        // We need factions data if we want to resolve faction:// links to OTHER factions
+        factions: {
             type: Array,
-            required: false,
-            default: () => []
+            required: true // New prop
         }
 	},
-    data() {
-        return {
-            primeData: primeDataList
-        };
-    },
+    // primeData is removed as prime:// links are no longer handled
+    // data() {
+    //     return {
+    //         primeData: primeDataList
+    //     };
+    // },
     methods: {
         handleMarkdownClick(event) {
             const link = event.target.closest('a');
@@ -88,47 +88,6 @@ export default {
                 this.$emit('close'); // Close modal on navigation
             }
 
-            // --- HANDLE PRIME LINKS ---
-            else if (href && href.startsWith('prime://')) {
-                event.preventDefault();
-                const rawAlias = href.replace('prime://', '');
-                const targetAlias = decodeURIComponent(rawAlias).toUpperCase();
-                const primeEntry = this.primeData.find(p => p.alias.toUpperCase() === targetAlias);
-
-                if (primeEntry) {
-                    this.$oruga.modal.open({
-                        component: PrimeModal,
-                        custom: true,
-                        trapFocus: true,
-                        props: { prime: primeEntry },
-                        class: 'custom-modal',
-                        width: 1920,
-                    });
-                }
-            }
-             // --- HANDLE EVENT LINKS ---
-            else if (href && href.startsWith('event://')) {
-                event.preventDefault();
-                const titleRaw = href.replace('event://', '');
-                const title = decodeURIComponent(titleRaw);
-                // Find existing event from the passed event list
-                const targetEvent = this.events.find(e => e.title.trim() === title.trim());
-
-                if (targetEvent) {
-                    // Open a new modal stacked on top for the linked event
-                     this.$oruga.modal.open({
-                        component: this.$options, // Self-reference for recursion
-                        custom: true,
-                        trapFocus: true,
-                        props: { 
-                            event: targetEvent,
-                            pilots: this.pilots,
-                            events: this.events
-                        },
-                        class: 'custom-modal',
-                        width: 1920,
-                    });
-                }
             }
         }
     }
@@ -213,13 +172,13 @@ export default {
   cursor: pointer;
 }
 
-::v-deep .markdown a[href^="event://"] {
+::v-deep .markdown a[href^="faction://"] {
   color: #bd93f9; 
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted #bd93f9;
 }
-::v-deep .markdown a[href^="event://"]:hover {
+::v-deep .markdown a[href^="faction://"]:hover {
   background-color: rgba(189, 147, 249, 0.2);
   cursor: pointer;
 }
