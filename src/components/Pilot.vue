@@ -152,6 +152,21 @@
     min-height: 0;
 }
 
+.pilot-identity {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.pilot-identity .header {
+    flex: 0 0 auto !important;
+    align-self: stretch !important;
+}
+
+.pilot-identity .body {
+    flex: 1 1 auto !important;
+}
+
 /* Prevent parent containers from shifting */
 .pilot-identity .row.flex-container-cols.add-padding {
     align-items: flex-start !important;
