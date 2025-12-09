@@ -9,7 +9,7 @@
     </div>
     <div id="router-view-container">
         <router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :factions="factions"
-            :pilots="pilots" :clocks="clocks" :reserves="reserves" :messages="messages" :scans="scans" />
+            :pilots="pilots" :clocks="clocks" :reserves="reserves" :messages="messages" :scans="scans" :locations="locations" />
     </div>
     <svg style="visibility: hidden; position: absolute" width="0" height="0" xmlns="http://www.w3.org/2000/svg"
         version="1.1">
@@ -31,6 +31,7 @@
 import Header from "./components/layout/Header.vue";
 import Sidebar from "./components/layout/Sidebar.vue";
 import Config from "@/assets/info/general-config.json";
+import locationsData from "@/assets/map/locations.json";
 
 export default {
     components: {
@@ -56,6 +57,7 @@ export default {
             countdownDisplay: 'CALCULATING...',
             countdownInterval: null,
             scans: [],
+            locations: locationsData,
         };
     },
     created() {

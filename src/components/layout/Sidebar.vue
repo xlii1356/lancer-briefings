@@ -35,6 +35,10 @@
 					<img src="/icons/mech.svg" />
 					<span>Mech Scans</span>
 				</router-link>
+                <router-link class="clipped-bottom-right" to="/map">
+                    <img src="/icons/orbital.svg" />
+                    <span>Tactical Map</span>
+                </router-link>
 			</o-sidebar>
 		</section>
 	</div>

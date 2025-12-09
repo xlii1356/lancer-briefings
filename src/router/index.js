@@ -5,6 +5,7 @@ import PilotsView from "../views/PilotsView.vue";
 import FactionsView from "../views/FactionsView.vue"; // added
 import MessagesView from "../views/MessagesView.vue";
 import MechScansView from "../views/MechScansView.vue";
+import TacticalMapView from "../views/TacticalMapView.vue";
 import Config from "@/assets/info/general-config.json";
 
 const DEFAULT_TITLE = Config.defaultTitle;
@@ -47,6 +48,13 @@ const routes = [
 		component: MechScansView,
 		props: true,
 		meta: { title: `${DEFAULT_TITLE} MECH SCANS` },
+	},
+	{
+		path: "/map",
+		name: "Map",
+		component: TacticalMapView,
+		props: true,
+		meta: { title: `${DEFAULT_TITLE} TACTICAL MAP` },
 	},
 ];
 
