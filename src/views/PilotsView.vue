@@ -56,7 +56,7 @@
 
                         <div class="nhp-visual">
                              <div class="section-header clipped-medium-backward">
-                                <img src="/icons/memetics.svg" />
+                                <img src="/icons/clockwork.svg" />
                                 <h1>NHP COFFIN</h1>
                             </div>
                             <div class="nhp-box">
@@ -66,7 +66,7 @@
                                 <div v-else class="nhp-list">
                                     <div v-for="(nhp, idx) in currentNhps" :key="idx" class="nhp-item">
                                         <div class="nhp-icon">
-                                            <img src="/icons/memetics.svg" />
+                                            <img src="/icons/clockwork.svg" />
                                         </div>
                                         <div class="nhp-details">
                                             <div class="nhp-name">{{ nhp.name }}</div>
