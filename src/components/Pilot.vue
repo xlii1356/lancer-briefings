@@ -152,8 +152,20 @@
     min-height: 0;
 }
 
-/* Prevent parent row from shifting */
-.row.flex-container-cols.add-padding {
+/* Prevent parent containers from shifting */
+.pilot-identity .row.flex-container-cols.add-padding {
+    align-items: flex-start !important;
+}
+
+.pilot-identity .flex-container-cols {
+    align-items: flex-start !important;
+}
+
+.pilot-identity .col.grow-max {
+    align-self: stretch !important;
+}
+
+.pilot-identity .flex-container-rows {
     align-items: flex-start !important;
 }
 
