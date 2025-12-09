@@ -93,8 +93,7 @@ export default {
 
 .world-map {
     display: block;
-    max-width: none; /* Allow native size */
-    min-width: 100%; /* Ensure it fills at least the container */
+    width: 100%; /* Scale to frame width */
     height: auto;
     border: 1px solid #333;
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
