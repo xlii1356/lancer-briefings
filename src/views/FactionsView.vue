@@ -95,7 +95,7 @@ export default {
     goToMap() {
         if (this.mappedLocation) {
             this.$router.push({ 
-                path: '/tactical-map', 
+                path: '/map', 
                 query: { highlight: this.mappedLocation.id } 
             });
         }
