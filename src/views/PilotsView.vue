@@ -192,24 +192,27 @@ export default {
 </script>
 
 <style scoped>
+/* scoped styles */
 .full-height {
-    width: 1755px; /* Maintain existing width from global layout but better context */
+    width: 100%;
     height: 100%;
-    margin: 30px;
+    padding: 30px;
     display: flex;
     flex-direction: column;
+    overflow: hidden; /* Main container clipped */
 }
 
 .pilots-layout {
     display: flex;
     flex: 1;
-    min-height: 0;
+    min-height: 0; /* Important for nested flex scroll */
     gap: 20px;
 }
 
 /* --- Roster Panel --- */
 .roster-panel {
     width: 300px;
+    min-width: 300px; /* Prevent shrinking */
     background: rgba(0,0,0,0.3);
     border: 1px solid var(--primary-color);
     display: flex;
@@ -295,7 +298,9 @@ export default {
     display: flex;
     gap: 20px;
     height: 400px; /* Fixed height for visuals */
+    min-height: 400px;
     margin-bottom: 50px; /* Add bottom margin for scroll clearing */
+    flex-shrink: 0; /* Don't squash me */
 }
 
 .mech-visual {
