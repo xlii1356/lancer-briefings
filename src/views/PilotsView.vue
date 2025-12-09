@@ -49,8 +49,9 @@
                                 <img src="/icons/mech.svg" />
                                 <h1>ACTIVE FRAME</h1>
                             </div>
-                            <div class="mech-image-container" @click="mechModal" style="cursor: pointer;">
-                                <img :src="safeMechImage" class="mech-portrait-lg" />
+                            <div class="mech-image-container" @click="mechModal" style="cursor: pointer; position: relative;">
+                                <img :src="safeMechImage" class="mech-portrait-lg" @error="e => e.target.src = '/icons/clockwork.svg'" />
+                                <div style="position: absolute; bottom: 0; left: 0; background: rgba(0,0,0,0.8); color: red; font-size: 10px;">{{ safeMechImage }}</div>
                             </div>
                         </div>
 
