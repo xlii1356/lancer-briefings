@@ -124,26 +124,40 @@ export default {
         currentNhps() {
             if (!this.selectedPilot) return [];
             
-            // Find active mech
-            const activeMechId = this.selectedPilot.state.active_mech_id;
-            const activeMech = this.selectedPilot.mechs.find(m => m.id === activeMechId) || this.selectedPilot.mechs[0];
+            // Find active mech safely
+            const activeMechId = this.selectedPilot?.state?.active_mech_id;
+            let activeMech = null;
             
+            if (this.selectedPilot.mechs && this.selectedPilot.mechs.length > 0) {
+                 activeMech = this.selectedPilot.mechs.find(m => m.id === activeMechId);
+                 if (!activeMech) activeMech = this.selectedPilot.mechs[0];
+            }
+
             if (!activeMech) return [];
 
-            // Get active loadout
-            const loadout = activeMech.loadouts[activeMech.active_loadout_index];
+            // Get active loadout safely
+            const loadout = activeMech.loadouts ? activeMech.loadouts[activeMech.active_loadout_index] : null;
             if (!loadout) return [];
 
             // Collect all systems from mounts and generic systems
-            let systems = [...loadout.systems];
+            let systems = [];
+            if (loadout.systems) systems = [...systems, ...loadout.systems];
             
-            // Add mounted systems if they are technically separate items (usually just weapons or mods, but checking)
-            // Typically NHPs are "systems".
-            
+            // Check mounts for systems/NHPs acting as weapons or integrated
+            if (loadout.mounts) {
+                loadout.mounts.forEach(mount => {
+                    mount.slots.forEach(slot => {
+                        if (slot.weapon) systems.push(slot.weapon);
+                    });
+                });
+            }
+
             const nhps = [];
 
             systems.forEach(sys => {
+                if (!sys) return;
                 const sysData = this.allSystems.find(s => s.id === sys.id);
+                // Check tags mostly
                 if (sysData && (sysData.tags.includes('AI') || sysData.tags.includes('NHP') || sysData.name.includes('NHP'))) {
                     nhps.push({
                         name: sysData.name,
@@ -269,20 +283,7 @@ export default {
     flex: 1;
     overflow-y: auto;
     padding-right: 10px;
-}
-
-.empty-state {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    font-family: "Big Shoulders Display", cursive;
-    font-size: 2rem;
-    color: rgba(255,255,255,0.3);
-}
-
-.profile-card-wrapper {
-    margin-bottom: 20px;
+    min-width: 0; /* Prevent flex child from overflowing */
 }
 
 /* --- Mech & NHP Section --- */
@@ -290,6 +291,7 @@ export default {
     display: flex;
     gap: 20px;
     height: 400px; /* Fixed height for visuals */
+    margin-bottom: 50px; /* Add bottom margin for scroll clearing */
 }
 
 .mech-visual {
