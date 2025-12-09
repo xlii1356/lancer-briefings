@@ -4,7 +4,7 @@
         <div class="pilots-layout">
             <!-- Left: Pilot Roster -->
             <div class="roster-panel custom-scroll">
-                <div class="section-header">
+                <div class="section-header clipped-medium-backward">
                     <img src="/icons/pilot.svg" />
                     <h1>ROSTER</h1>
                 </div>
@@ -357,18 +357,7 @@ export default {
 
 <style>
 /* Global override for section headers in this view */
-#pilots .section-header h1 {
-    color: white;
-    text-shadow: 0 0 5px rgba(0,0,0,0.5);
-    margin-left: 15px; /* Spacing due to image float/flex */
-}
-
-#pilots .section-header img {
-    filter: brightness(0) invert(1);
-    height: 40px;
-    width: auto;
-}
-
+/* Removing specific overrides to match Mission Log style */
 #pilots .mech-image-container {
     background: rgba(255, 255, 255, 0.05);
     background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
