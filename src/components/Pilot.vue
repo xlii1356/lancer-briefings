@@ -5,7 +5,7 @@
         <div class="heading h1">{{ pilot.callsign }}</div>
         <div class="heading h2">({{ pilot.name }}) </div>
       </div>
-      <div class="col"><img src="/faction-logos/soteria.svg"></div>
+      <div class="col"><img src="/faction-logos/soteria.svg" style="height: 50px;"></div>
     </div>
     <div class="body">
       <div class="add-padding"> Union Administrative RM-4 Pilot Identification Protocol (IDENT) Record
@@ -79,19 +79,6 @@
             <div style="width:100%">
               BIOMETRIC RECORD VALID [[{{ randomNumber(14, 22) }}PB]]<br />
               OHM C//{{ timeStamp(pilot.lastModified) }}
-            </div>
-          </div>
-        </div>
-        <div class="row biometrics-container">
-          <div class="mech-record flex-container-cols" @click="mechModal">
-            <div style="width:100%">
-              MECHANICAL BLUEPRINT VALID [[{{ randomNumber(14, 22) }}TB]] <br />
-              {{ activeMech.manufacturer.toUpperCase() }}-{{ activeMech.frame_name.toUpperCase() }} :: "{{ activeMech.name.toUpperCase() }}"
-            </div>
-            <div>
-              <i aria-hidden="true"
-                class="v-icon notranslate cci cci-reserve-mech theme--dark grey--text text--darken-2 larger"
-                style="font-size: 42px; margin-top:1em;"></i>
             </div>
           </div>
         </div>

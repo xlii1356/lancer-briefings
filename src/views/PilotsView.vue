@@ -49,7 +49,7 @@
                                 <img src="/icons/mech.svg" />
                                 <h1>ACTIVE FRAME</h1>
                             </div>
-                            <div class="mech-image-container">
+                            <div class="mech-image-container" @click="mechModal" style="cursor: pointer;">
                                 <img :src="safeMechImage" class="mech-portrait-lg" />
                             </div>
                         </div>
@@ -90,6 +90,7 @@
 <script>
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import Pilot from "@/components/Pilot.vue";
+import MechModal from '@/components/modals/MechModal.vue';
 import lancerData from '@massif/lancer-data';
 import ktbData from 'lancer-ktb-data';
 import nrfawData from 'lancer-nrfaw-data';
@@ -124,6 +125,22 @@ export default {
         allSystems() {
              return [...lancerData.systems, ...ktbData.systems, ...nrfawData.systems, ...longrimData.systems];
         },
+        mechWeapons() {
+             return [...lancerData.weapons, ...ktbData.weapons, ...nrfawData.weapons, ...longrimData.weapons];
+        },
+        mechSystems() {
+             return [...lancerData.systems, ...ktbData.systems, ...nrfawData.systems, ...longrimData.systems];
+        },
+        activeMech() {
+            if (!this.selectedPilot) return null;
+            const activeMechId = this.selectedPilot?.state?.active_mech_id;
+            let mech = null;
+            if (this.selectedPilot.mechs && this.selectedPilot.mechs.length > 0) {
+                 mech = this.selectedPilot.mechs.find(m => m.id === activeMechId);
+                 if (!mech) mech = this.selectedPilot.mechs[0];
+            }
+            return mech;
+        },
         currentNhps() {
             if (!this.selectedPilot) return [];
             
@@ -135,7 +152,6 @@ export default {
         },
         safeMechImage() {
             if (!this.selectedPilot) return '';
-            // Handle spaces in callsigns like "GRAN GRAN"
             return `/mechs/${encodeURIComponent(this.selectedPilot.callsign.toUpperCase())}.webp`;
         }
     },
@@ -152,7 +168,25 @@ export default {
 			if (this.animate) {
 				this.animateView = true;
 			}
-        }
+        },
+        mechModal() {
+          if (!this.activeMech) return;
+          
+          this.$oruga.modal.open({
+            component: MechModal,
+            custom: true,
+            trapFocus: true,
+            props: {
+              animate: this.animate,
+              mech: this.activeMech,
+              systemsData: this.mechSystems,
+              weaponsData: this.mechWeapons,
+              pilot: this.selectedPilot,
+            },
+            class: 'custom-modal',
+            width: 1920,
+          })
+        },
 	}
 };
 </script>
