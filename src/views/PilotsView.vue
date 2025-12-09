@@ -51,7 +51,6 @@
                             </div>
                             <div class="mech-image-container" @click="mechModal" style="cursor: pointer; position: relative;">
                                 <img :src="safeMechImage" class="mech-portrait-lg" @error="e => e.target.src = '/icons/clockwork.svg'" />
-                                <div style="position: absolute; bottom: 0; left: 0; background: rgba(0,0,0,0.8); color: red; font-size: 10px;">{{ safeMechImage }}</div>
                             </div>
                         </div>
 
@@ -379,31 +378,41 @@ export default {
         width: 100% !important;
         margin: 0 !important;
         padding: 10px;
+        height: auto !important; /* Allow growing */
+        overflow: visible !important;
     }
     
     .pilots-layout {
         flex-direction: column;
+        height: auto; /* Allow growing */
     }
 
     .roster-panel {
         width: 100%;
-        height: 200px; /* Reduced height list */
+        height: 200px;
+        flex: none; /* Don't expand, just be 200px */
+    }
+    
+    .details-panel {
+        overflow: visible; /* Let body scroll it */
+        flex: none; /* Just stack */
+        height: auto;
     }
 
     .mech-intel-section {
         flex-direction: column;
         height: auto;
+        margin-bottom: 20px;
     }
 
     .mech-visual, .nhp-visual {
-        /* height: 300px; Remove fixed height to allow content to dictate or flex */
         min-height: 300px;
     }
 }
 </style>
 
 <style>
-/* Global override for section headers in this view if scoped doesn't catch deep structures or for consistency */
+/* Global override for section headers in this view */
 #pilots .section-header h1 {
     color: white;
     text-shadow: 0 0 5px rgba(0,0,0,0.5);
@@ -414,10 +423,18 @@ export default {
 }
 
 #pilots .mech-image-container {
-    background: rgba(255, 255, 255, 0.05); /* Slight background to see the box */
-    /* Add a subtle grid pattern if possible, or just the bg */
+    background: rgba(255, 255, 255, 0.05);
     background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     background-size: 20px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#pilots .mech-portrait-lg {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
 }
 </style>
