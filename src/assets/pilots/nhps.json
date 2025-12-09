@@ -5,7 +5,7 @@
             {
                 "name": "OSIRIS",
                 "type": "Technophile",
-                "icon": "/icons/memetics.svg"
+                "icon": "/icons/clockwork.svg"
             }
         ]
     },
@@ -15,7 +15,7 @@
             {
                 "name": "AGNI",
                 "type": "Genghis Class",
-                "icon": "/icons/memetics.svg"
+                "icon": "/icons/clockwork.svg"
             }
         ]
     },
@@ -25,7 +25,7 @@
             {
                 "name": "SCYLLA",
                 "type": "Gorgon Class",
-                "icon": "/icons/memetics.svg"
+                "icon": "/icons/clockwork.svg"
             }
         ]
     }

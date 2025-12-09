@@ -39,7 +39,7 @@
                     </div>
                     
                     <div class="profile-card-wrapper">
-                        <Pilot :pilot="selectedPilot" :animate="animate" />
+                        <Pilot :pilot="selectedPilot" :key="selectedPilot.callsign" :animate="animate" />
                     </div>
 
                     <!-- Mech & NHP Info -->

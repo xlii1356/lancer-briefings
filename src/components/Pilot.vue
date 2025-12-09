@@ -242,6 +242,15 @@ export default {
     this.getActiveMech();
     this.getBond();
   },
+  watch: {
+    pilot: {
+      handler() {
+        this.getActiveMech();
+        this.getBond();
+      },
+      deep: true
+    }
+  },
   methods: {
     getBond() {
       this.bond = this.bonds.find((obj) => {
