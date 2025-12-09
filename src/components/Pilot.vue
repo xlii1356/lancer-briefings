@@ -76,7 +76,7 @@
 
                 <!-- Pilot Layer (Top, Clipped) -->
                 <div class="layer layer-pilot">
-                    <img :src="pilotPortrait" class="portrait" />
+                    <img :src="pilotPortrait" @error="e => e.target.src = '/icons/pilot.svg'" class="portrait" />
                     <div class="label-corner top-left">PILOT VISUAL</div>
                 </div>
             </div>
@@ -145,12 +145,13 @@
     width: 100%;
     height: 100%;
     transition: clip-path 0.4s ease;
+    background-color: #0d1117; /* Dark background for letterboxing */
 }
 
 .layer img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain; /* Scale to fit without cropping */
 }
 
 .layer-mech {
