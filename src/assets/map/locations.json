@@ -1,20 +1,20 @@
 [
     {
         "id": "loc_1",
-        "x": 50,
-        "y": 50,
-        "label": "Capital City",
+        "x": 45,
+        "y": 55,
+        "label": "Silvershard Colony",
         "type": "mission",
-        "target": "operation-solstice-rain",
-        "color": "#ff0000"
+        "target": "home",
+        "color": "#dddddd"
     },
     {
         "id": "loc_2",
-        "x": 75,
-        "y": 30,
-        "label": "Rebel Base",
+        "x": 15,
+        "y": 45,
+        "label": "Mt Anzonel",
         "type": "faction",
-        "target": "The Ungratefuls",
-        "color": "#00ff00"
+        "target": "volatized",
+        "color": "#dd0000"
     }
 ]

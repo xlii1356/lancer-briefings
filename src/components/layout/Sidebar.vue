@@ -1,12 +1,7 @@
 <template>
 	<div class="sidebar-page">
-		<section class="sidebar-layout" :class="{ open: isOpen }">
-            <!-- Mobile Toggle Button -->
-            <button class="mobile-toggle" @click="toggleSidebar">
-                <img src="/icons/menu.svg" alt="Menu" v-if="!isOpen"/>
-                <img src="/icons/close.svg" alt="Close" v-if="isOpen"/>
-            </button>
-
+		<section class="sidebar-layout">
+            <!-- Desktop Sidebar (Hidden on Mobile) -->
 			<o-sidebar
 			  id="sidebar"
 			  position="static"
@@ -41,6 +36,34 @@
                 </router-link>
 			</o-sidebar>
 		</section>
+
+        <!-- Mobile Bottom Navigation -->
+        <nav class="mobile-bottom-nav">
+            <router-link to="/status" active-class="active">
+                <img src="/icons/orbital.svg" />
+                <span>Status</span>
+            </router-link>
+            <router-link to="/pilots" active-class="active">
+                <img src="/icons/pilot.svg" />
+                <span>Pilots</span>
+            </router-link>
+            <router-link to="/factions" active-class="active">
+                <img src="/faction-logos/barony.svg" />
+                <span>Factions</span>
+            </router-link>
+            <router-link to="/messages" active-class="active">
+                <img src="/icons/conversation.svg" />
+                <span>Msgs</span>
+            </router-link>
+            <router-link to="/scans" active-class="active">
+                <img src="/icons/mech.svg" />
+                <span>Scans</span>
+            </router-link>
+            <router-link to="/map" active-class="active">
+                <img src="/icons/orbital.svg" />
+                <span>Map</span>
+            </router-link>
+        </nav>
 	</div>
 </template>
 
@@ -57,14 +80,8 @@ export default {
 			expandOnHover: false,
 			mobile: "reduced",
 			reduce: false,
-            isOpen: false, // New state for mobile toggle
 		};
-	},
-    methods: {
-        toggleSidebar() {
-            this.isOpen = !this.isOpen;
-        }
-    }
+	}
 };
 </script>
 
@@ -81,59 +98,65 @@ export default {
     transition: transform 0.3s ease;
 }
 
-/* Mobile Toggle Styles */
-.mobile-toggle {
-    display: none; /* Hidden by default on desktop */
+/* Mobile Bottom Nav Styles */
+.mobile-bottom-nav {
+    display: none; /* Hidden on desktop */
     position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 2000; /* Above everything */
-    background: rgba(0, 0, 0, 0.8);
-    border: 1px solid #333;
-    padding: 8px;
-    cursor: pointer;
-    border-radius: 4px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: var(--secondary-color, #161c1dcc);
+    border-top: 2px solid var(--primary-color, #7dbbbb);
+    z-index: 2000;
+    justify-content: space-around;
+    align-items: center;
+    backdrop-filter: blur(5px);
     pointer-events: auto;
 }
 
-.mobile-toggle img {
-    width: 24px;
-    height: 24px;
-    display: block;
+.mobile-bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--text-location, rgba(255, 255, 255, 0.87));
+    font-size: 10px;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    width: 100%;
+    height: 100%;
+}
+
+.mobile-bottom-nav a img {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 2px;
+    opacity: 0.7;
+}
+
+.mobile-bottom-nav a.active {
+    background: rgba(125, 187, 187, 0.2); /* var(--primary-color) with opacity */
+    color: var(--primary-color, #7dbbbb);
+    border-top: 2px solid var(--primary-color, #7dbbbb);
+    margin-top: -2px; /* Offset border */
+}
+
+.mobile-bottom-nav a.active img {
+    opacity: 1;
 }
 
 /* Mobile Breakpoint */
 @media (max-width: 768px) {
-    .mobile-toggle {
-        display: block;
-    }
-
-    /* Reset width to avoid full-screen blocking on mobile if closed */
+    /* Hide Desktop Sidebar */
     .sidebar-layout {
-        width: 0 !important; 
+        display: none !important;
     }
 
-    /* When open, it can take space (for the overlay) */
-    .sidebar-layout.open {
-        width: 100% !important;
-        background: rgba(0,0,0,0.5); /* Backdrop */
-        pointer-events: auto; /* Catch clicks on backdrop */
-    }
-
-    /* Hide sidebar off-screen by default */
-    #sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 250px !important; /* Fixed width for mobile menu */
-        transform: translateX(-100%);
-        z-index: 1001;
-    }
-
-    /* Slide in when open */
-    .sidebar-layout.open #sidebar {
-        transform: translateX(0);
+    /* Show Mobile Nav */
+    .mobile-bottom-nav {
+        display: flex;
     }
 }
 </style>
