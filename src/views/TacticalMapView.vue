@@ -46,11 +46,24 @@ export default {
     this.animateView = true;
     if (this.$route.query.highlight) {
         this.highlightedId = this.$route.query.highlight;
-        // Optional: Scroll to it if needed
+        
         this.$nextTick(() => {
-            const el = this.$el.querySelector('.is-highlighted');
-            if (el) {
-                el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            const container = this.$el.querySelector('.map-container');
+            const target = this.$el.querySelector('.is-highlighted');
+            
+            if (container && target) {
+                // Calculate scroll position to center the target
+                // We use offsetLeft/Top which are relative to the map-wrapper
+                // We want that position to be in the middle of the container
+                
+                const centerX = target.offsetLeft + (target.offsetWidth / 2);
+                const centerY = target.offsetTop + (target.offsetHeight / 2);
+                
+                container.scrollTo({
+                    left: centerX - (container.clientWidth / 2),
+                    top: centerY - (container.clientHeight / 2),
+                    behavior: 'smooth'
+                });
             }
         });
     }
