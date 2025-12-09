@@ -142,7 +142,6 @@
     width: 100%;
     height: 100%;
     transition: clip-path 0.4s ease;
-    background-color: #0d1117; /* Dark background for letterboxing */
     will-change: clip-path; /* Optimize clip-path animations */
 }
 
