@@ -161,9 +161,14 @@ export default {
 }
 
 /* Foundry HTML Specific Overrides */
+/* Brute force all text to be light to override inline styles */
+:deep(*) {
+    color: #eee !important;
+}
+
 :deep(h2) {
     font-family: 'Fragment Mono', monospace;
-    color: #39ff14; /* Standard green accent */
+    color: #39ff14 !important; /* Standard green accent */
     border-bottom: 1px solid #333;
     margin-top: 20px;
     margin-bottom: 15px;
@@ -174,7 +179,7 @@ export default {
 
 :deep(h3) {
     font-family: 'Fragment Mono', monospace;
-    color: #00d1b2; /* Cyan/Teal secondary accent */
+    color: #00d1b2 !important; /* Cyan/Teal secondary accent */
     margin-top: 15px;
     margin-bottom: 10px;
     font-size: 1.1rem;
@@ -191,18 +196,23 @@ export default {
     filter: brightness(0.9); /* Slight dim to fit dark theme */
 }
 
+:deep(div[style]) {
+    width: 100% !important; /* Override fixed widths like 65% */
+    float: none !important; /* Disable float for better stacking */
+}
+
 :deep(table) {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
     font-size: 0.9rem;
-    background: rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.2) !important;
     font-family: 'Fragment Mono', monospace;
 }
 
 :deep(th) {
-    background-color: rgba(57, 255, 20, 0.1); /* Low opacity green */
-    color: #39ff14;
+    background-color: rgba(57, 255, 20, 0.1) !important; /* Low opacity green */
+    color: #39ff14 !important;
     font-weight: bold;
     text-align: left;
     padding: 8px;
@@ -213,26 +223,26 @@ export default {
 :deep(td) {
     padding: 8px;
     border: 1px solid #444;
-    color: #ccc;
+    color: #ccc !important;
 }
 
 :deep(details) {
     margin-bottom: 10px;
     border: 1px solid #333;
     padding: 10px;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.3) !important;
 }
 
 :deep(summary) {
     cursor: pointer;
     font-weight: bold;
-    color: #00d1b2; /* Cyan accent */
+    color: #00d1b2 !important; /* Cyan accent */
     font-family: 'Fragment Mono', monospace;
     outline: none;
 }
 
 :deep(summary:hover) {
-    color: #39ff14;
+    color: #39ff14 !important;
 }
 
 .empty-state {
@@ -256,15 +266,6 @@ export default {
 
     .foundry-content {
         padding: 10px;
-    }
-    
-    /* Force floated elements to stack on mobile */
-    :deep(div[style*="float"]), 
-    :deep(p img[style*="float"]) {
-        float: none !important;
-        width: 100% !important;
-        display: block;
-        margin: 0 auto 10px auto;
     }
 }
 </style>
