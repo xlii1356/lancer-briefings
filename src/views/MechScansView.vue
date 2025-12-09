@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import MechScanModal from "@/components/modals/MechScanModal.vue";
+
 export default {
   name: "MechScansView",
   props: {
@@ -74,7 +76,20 @@ export default {
   },
   methods: {
     selectScan(scan) {
-        this.selectedScan = scan;
+        if (window.innerWidth <= 768) {
+            this.$oruga.modal.open({
+                component: MechScanModal,
+                custom: true,
+                trapFocus: true,
+                props: { 
+                    scan: scan,
+                },
+                class: 'custom-modal',
+                width: 1920,
+            });
+        } else {
+            this.selectedScan = scan;
+        }
     },
     handleImageErrors() {
         // Wait for DOM to update with new v-html
