@@ -144,11 +144,17 @@
 }
 
 .col.split-frame-col {
-    flex: 0 0 auto;
+    flex: 0 0 auto !important;
     align-items: center;
+    align-self: flex-start !important;
     justify-content: flex-start;
     width: auto;
     min-height: 0;
+}
+
+/* Prevent parent row from shifting */
+.row.flex-container-cols.add-padding {
+    align-items: flex-start !important;
 }
 
 
