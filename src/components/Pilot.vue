@@ -78,7 +78,7 @@
             <div class="nhp-container" style="margin-top: 20px;" v-if="nhps.length > 0">
                  <div style="font-size: 0.8em; opacity: 0.7; border-bottom: 1px solid white; margin-bottom: 5px;">NHP COFFIN</div>
                  <div v-for="nhp in nhps" :key="nhp.name" style="display: flex; align-items: center; gap: 5px; margin-bottom: 2px;">
-                      <img :src="nhp.icon || '/icons/clockwork.svg'" style="width: 20px; height: 20px; filter: brightness(0) invert(1);" />
+                      <img :src="nhp.icon || '/icons/clockwork.svg'" style="width: 20px; height: 20px; object-fit: contain; filter: brightness(0) invert(1);" />
                       <div style="font-size: 0.8em;">{{ nhp.name }}</div>
                  </div>
             </div>
