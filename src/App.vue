@@ -8,7 +8,7 @@
         <span class="value">{{ countdownDisplay }}</span>
     </div>
     <div id="router-view-container">
-        <router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :events="events"
+        <router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :factions="factions"
             :pilots="pilots" :clocks="clocks" :reserves="reserves" :messages="messages" :scans="scans" />
     </div>
     <svg style="visibility: hidden; position: absolute" width="0" height="0" xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +46,7 @@ export default {
             header: Config.header,
             pilotSpecialInfo: Config.pilotSpecialInfo,
             clocks: [],
-            events: [],
+            factions: [],
             missions: [],
             pilots: [],
             reserves: [],
@@ -61,7 +61,7 @@ export default {
     created() {
         this.setTitleFavicon(Config.defaultTitle + " MISSION BRIEFING", Config.icon);
         this.importMissions(import.meta.glob("@/assets/missions/*.md", { query: '?raw', import: 'default' }));
-        this.importEvents(import.meta.glob("@/assets/events/*.md", { query: '?raw', import: 'default' }));
+        this.importFactions(import.meta.glob("@/assets/factions/*.md", { query: '?raw', import: 'default' }));
         this.importClocks(import.meta.glob("@/assets/clocks/*.json"));
         this.importReserves(import.meta.glob("@/assets/reserves/*.json"));
 
@@ -132,18 +132,18 @@ export default {
                 return b["slug"] - a["slug"];
             })
         },
-        async importEvents(files) {
+        async importFactions(files) {
             let filePromises = Object.keys(files).map(path => files[path]());
             let fileContents = await Promise.all(filePromises);
             fileContents.forEach(content => {
-                let event = {};
+                let faction = {};
                 let lines = content.split(/\r?\n/);
-                event["title"] = lines[0].trim();
-                event["location"] = lines[1].trim();
-                event["time"] = lines[2].trim();
-                event["thumbnail"] = lines[3].trim();
-                event["content"] = lines.slice(4).join("\n");
-                this.events = [...this.events, event];
+                faction["title"] = lines[0].trim();
+                faction["location"] = lines[1].trim();
+                faction["time"] = lines[2].trim();
+                faction["thumbnail"] = lines[3].trim();
+                faction["content"] = lines.slice(4).join("\n");
+                this.factions = [...this.factions, faction];
             });
 
         },

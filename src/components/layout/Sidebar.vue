@@ -23,7 +23,7 @@
 					<img src="/icons/pilot.svg" />
 					<span>Pilots</span>
 				</router-link>
-				<router-link class="clipped-bottom-right" to="/events">
+				<router-link class="clipped-bottom-right" to="/factions">
 					<img src="/faction-logos/barony.svg" />
 					<span>Factions</span>
 				</router-link>

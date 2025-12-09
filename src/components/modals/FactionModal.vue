@@ -1,18 +1,18 @@
 <template>
-	<div class="event-modal">
-		<div class="event-header-container">
+	<div class="faction-modal">
+		<div class="faction-header-container">
 			<div class="section-header clipped-medium-backward-bio">
 				<img src="/icons/license.svg" />
 				<h1>KNOWN DETAILS</h1>
 			</div>
 			<div class="rhombus-back">&nbsp;</div>
 		</div>
-		<div class="event" @click="handleMarkdownClick">
+		<div class="faction" @click="handleMarkdownClick">
 			<div class="name">
-				<h1>{{ event.location }} // {{ event.time }}</h1>
-				<h2>{{ event.title }}</h2>
+				<h1>{{ faction.location }} // {{ faction.time }}</h1>
+				<h2>{{ faction.title }}</h2>
 			</div>
-			<vue-markdown-it :source="event.content" class="markdown" />
+			<vue-markdown-it :source="faction.content" class="markdown" />
 		</div>
 	</div>
 </template>
@@ -24,12 +24,12 @@ import PrimeModal from '@/components/modals/PrimeModal.vue';
 import primeDataList from '@/assets/prime/prime.json';
 
 export default {
-	name: "EventModal",
+	name: "FactionModal",
 	components: {
 		VueMarkdownIt,
 	},
 	props: {
-		event: {
+		faction: {
 			type: Object,
 			required: true,
 		},
@@ -39,8 +39,8 @@ export default {
             required: false,
             default: () => [] 
         },
-        // We need events data if we want to resolve event:// links to OTHER events (though tricky in a modal)
-        events: {
+        // We need factions data if we want to resolve faction:// links to OTHER factions (though tricky in a modal)
+        factions: {
             type: Array,
             required: false,
             default: () => []
@@ -106,24 +106,24 @@ export default {
                     });
                 }
             }
-             // --- HANDLE EVENT LINKS ---
-            else if (href && href.startsWith('event://')) {
+            // --- HANDLE FACTION LINKS ---
+            else if (href && href.startsWith('faction://')) {
                 event.preventDefault();
-                const titleRaw = href.replace('event://', '');
+                const titleRaw = href.replace('faction://', '');
                 const title = decodeURIComponent(titleRaw);
-                // Find existing event from the passed event list
-                const targetEvent = this.events.find(e => e.title.trim() === title.trim());
+                // Find existing faction from the passed faction list
+                const targetFaction = this.factions.find(e => e.title.trim() === title.trim());
 
-                if (targetEvent) {
-                    // Open a new modal stacked on top for the linked event
+                if (targetFaction) {
+                    // Open a new modal stacked on top for the linked faction
                      this.$oruga.modal.open({
                         component: this.$options, // Self-reference for recursion
                         custom: true,
                         trapFocus: true,
                         props: { 
-                            event: targetEvent,
+                            faction: targetFaction,
                             pilots: this.pilots,
-                            events: this.events
+                            factions: this.factions
                         },
                         class: 'custom-modal',
                         width: 1920,
@@ -137,7 +137,7 @@ export default {
 
 <style scoped>
 /* Ensure the modal content wraps correctly on mobile */
-.event-modal {
+.faction-modal {
     max-width: 100%;
     z-index: 2147483647 !important; /* Max z-index */
     position: relative;
@@ -170,7 +170,7 @@ export default {
 }
 
 /* Ensure the modal stays within bounds */
-.event-modal {
+.faction-modal {
     width: 100%;
     max-width: 85vw; /* Explicitly constrain width relative to viewport */
     max-height: 85vh; /* Limit height to allow scrolling within view */
@@ -181,7 +181,7 @@ export default {
     margin: 0 auto; /* Center it */
 }
 
-.event-modal .event {
+.faction-modal .faction {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
@@ -199,7 +199,7 @@ export default {
     min-height: 0;
 }
 
-.event-modal .markdown {
+.faction-modal .markdown {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
@@ -249,13 +249,13 @@ export default {
   cursor: pointer;
 }
 
-:deep(.markdown a[href^="event://"]) {
+:deep(.markdown a[href^="faction://"]) {
   color: #bd93f9; 
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted #bd93f9;
 }
-:deep(.markdown a[href^="event://"]:hover) {
+:deep(.markdown a[href^="faction://"]:hover) {
   background-color: rgba(189, 147, 249, 0.2);
   cursor: pointer;
 }

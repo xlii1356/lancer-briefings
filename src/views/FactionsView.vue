@@ -1,23 +1,23 @@
 <template>
-  <div id="eventsView" :class="{ animate: animateView }" :style="{ 'animation-delay': animationDelay }" class="content-container">
-    <section id="events" :class="{ animate: animate }" class="section-container">
+  <div id="factionsView" :class="{ animate: animateView }" :style="{ 'animation-delay': animationDelay }" class="content-container">
+    <section id="factions" :class="{ animate: animate }" class="section-container">
       <div class="section-header clipped-medium-backward">
         <img src="/icons/license.svg" />
         <h1>KNOWN FACTIONS</h1>
       </div>
       <div class="section-content-container">
-        <div class="events-list-container">
-          <Event
-            v-for="item in events"
+        <div class="factions-list-container">
+          <Faction
+            v-for="item in factions"
             :key="item.title"
-            :event="item"
+            :faction="item"
             :animate="animate"
-            @select-event="selectEvent(item)" />
+            @select-faction="selectFaction(item)" />
         </div>
       </div>
     </section>
     
-    <section id="events-logs" :class="{ animate: animate }" class="section-container">
+    <section id="factions-logs" :class="{ animate: animate }" class="section-container">
       <div style="height: 52px; overflow: hidden">
         <div class="section-header clipped-info-backward">
           <img src="/icons/conversation.svg" />
@@ -27,12 +27,12 @@
       </div>
       
       <div class="section-content-container extra-margins" @click="handleMarkdownClick">
-        <div class="event" v-if="selectedEvent.title">
+        <div class="faction" v-if="selectedFaction.title">
           <div class="name">
-            <h1>{{ selectedEvent.location }} // {{ selectedEvent.time }}</h1>
-            <h2>{{ selectedEvent.title }}</h2>
+            <h1>{{ selectedFaction.location }} // {{ selectedFaction.time }}</h1>
+            <h2>{{ selectedFaction.title }}</h2>
           </div>
-          <vue-markdown-it :source="selectedEvent.content" class="markdown" />
+          <vue-markdown-it :source="selectedFaction.content" class="markdown" />
         </div>
       </div>
     </section>
@@ -41,8 +41,8 @@
 
 <script>
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
-import Event from "@/components/Event.vue";
-import EventModal from "@/components/modals/EventModal.vue";
+import Faction from "@/components/Faction.vue";
+import FactionModal from "@/components/modals/FactionModal.vue";
 import PilotModal from '@/components/modals/PilotModal.vue';
 import PrimeModal from '@/components/modals/PrimeModal.vue';
 
@@ -52,37 +52,37 @@ import primeDataList from '@/assets/prime/prime.json';
 export default {
   components: {
     VueMarkdownIt,
-    Event,
+    Faction,
   },
   props: {
     animate: { type: Boolean, required: true },
-    events: { type: Array, required: true },
+    factions: { type: Array, required: true },
     pilots: { type: Array, required: true, default: () => [] }, 
   },
   data() {
     return {
-      selectedEvent: { type: Object },
+      selectedFaction: { type: Object },
       // --- THIS DATA REGISTRATION WAS MISSING ---
       primeData: primeDataList 
     };
   },
   methods: {
-    selectEvent(event) {
+    selectFaction(faction) {
       if (window.innerWidth <= 768) {
           this.$oruga.modal.open({
-            component: EventModal,
+            component: FactionModal,
             custom: true,
             trapFocus: true,
             props: { 
-                event: event,
+                faction: faction,
                 pilots: this.pilots, // Pass pilots for checking
-                events: this.events  // Pass events list
+                factions: this.factions  // Pass factions list
             },
             class: 'custom-modal',
             width: 1920,
           });
       } else {
-          this.selectedEvent = event;
+          this.selectedFaction = faction;
       }
     },
     handleMarkdownClick(event) {
@@ -118,16 +118,16 @@ export default {
         this.$router.push({ path: '/status', query: { mission: slug } });
       }
 
-      // --- HANDLE EVENT LINKS ---
-      else if (href && href.startsWith('event://')) {
+      // --- HANDLE FACTION LINKS ---
+      else if (href && href.startsWith('faction://')) {
         event.preventDefault();
-        const titleRaw = href.replace('event://', '');
+        const titleRaw = href.replace('faction://', '');
         const title = decodeURIComponent(titleRaw);
-        const targetEvent = this.events.find(e => e.title.trim() === title.trim());
+        const targetFaction = this.factions.find(e => e.title.trim() === title.trim());
 
-        if (targetEvent) {
-          this.selectEvent(targetEvent);
-          const container = document.querySelector('#events-logs .section-content-container');
+        if (targetFaction) {
+          this.selectFaction(targetFaction);
+          const container = document.querySelector('#factions-logs .section-content-container');
           if(container) container.scrollTop = 0;
         }
       }
@@ -188,13 +188,13 @@ export default {
   cursor: pointer;
 }
 
-:deep(.markdown a[href^="event://"]) {
+:deep(.markdown a[href^="faction://"]) {
   color: #bd93f9; 
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted #bd93f9;
 }
-:deep(.markdown a[href^="event://"]:hover) {
+:deep(.markdown a[href^="faction://"]:hover) {
   background-color: rgba(189, 147, 249, 0.2);
   cursor: pointer;
 }
