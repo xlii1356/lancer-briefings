@@ -148,11 +148,13 @@
 
 .layer img {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 280px; /* Fixed height - both images will scale to this */
+    width: auto; /* Width scales proportionally */
+    max-width: 240px; /* Don't overflow the container width */
+    object-fit: contain;
     object-position: center;
 }
 
