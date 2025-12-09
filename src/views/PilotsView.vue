@@ -395,7 +395,28 @@ export default {
     }
 
     .mech-visual, .nhp-visual {
-        height: 300px;
+        /* height: 300px; Remove fixed height to allow content to dictate or flex */
+        min-height: 300px;
     }
+}
+</style>
+
+<style>
+/* Global override for section headers in this view if scoped doesn't catch deep structures or for consistency */
+#pilots .section-header h1 {
+    color: white;
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+#pilots .section-header img {
+    filter: brightness(0) invert(1);
+}
+
+#pilots .mech-image-container {
+    background: rgba(255, 255, 255, 0.05); /* Slight background to see the box */
+    /* Add a subtle grid pattern if possible, or just the bg */
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
 }
 </style>
