@@ -63,25 +63,7 @@ export default {
 };
 </script>
 
-<style>
-/* GLOBAL overrides for this specific view ID */
-/* Must be non-scoped to effectively battle _base.css if needed, though ID usually wins */
-#tacticalMapView {
-    height: 100%;
-    width: 100%;
-    display: flex !important;
-    flex-direction: column !important; /* Override _base.css row direction if problematic */
-}
 
-#map-display {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-</style>
 
 <style scoped>
 .full-height {
@@ -92,6 +74,7 @@ export default {
 
 .map-container {
     flex: 1;
+    min-height: 0; /* Crucial for nested flex scrolling */
     position: relative;
     overflow: auto; /* Allow scrolling if map is large */
     background: rgba(0, 0, 0, 0.2);

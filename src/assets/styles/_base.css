@@ -468,11 +468,12 @@ section.section-container#pilots .rhombus-back {
 section.section-container#map-display {
 	display: flex;
 	flex-direction: column;
-	margin: 50px 30px;
-	width: 100% !important;
-	/* Force full width */
-	height: calc(100vh - 150px) !important;
-	/* Fill height minus header */
+	margin: 0 !important;
+	/* Managed by calc */
+	/* App is 125vw wide (scaled 0.8). Sidebar is 90px. Gutter 30px. */
+	width: calc(125vw - 140px) !important;
+	/* App is 125vh high. Header 95px. Gutter ~30px. */
+	height: calc(125vh - 140px) !important;
 	max-width: none !important;
 }
 
