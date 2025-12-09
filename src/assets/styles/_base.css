@@ -477,6 +477,15 @@ section.section-container#map-display {
 	max-width: none !important;
 }
 
+@media (max-width: 768px) {
+	section.section-container#map-display {
+		width: 100% !important;
+		/* Adjust for mobile header/nav bar if present, or just fill available spac e*/
+		height: calc(100vh - 120px) !important;
+		margin: 10px 0 !important;
+	}
+}
+
 section .section-header {
 	background-color: var(--primary-color);
 	border-color: var(--primary-color);
