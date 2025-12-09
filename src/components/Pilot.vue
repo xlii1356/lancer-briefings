@@ -156,15 +156,19 @@
     position: relative !important;
     display: flex !important;
     flex-direction: column !important;
+    min-height: 0 !important;
+    padding-top: 0 !important; /* Lock top padding */
 }
 
 .pilot-identity .header {
     flex: 0 0 auto !important;
     align-self: stretch !important;
+    margin-bottom: 0 !important; /* Prevent margin collapse */
 }
 
 .pilot-identity .body {
     flex: 1 1 auto !important;
+    padding-top: 0 !important; /* Lock body top padding */
 }
 
 /* Prevent parent containers from shifting */
@@ -217,6 +221,7 @@
     /* Default Diagonal Split (Bottom-Left to Top-Right line) -> Top Left Triangle visible */
     clip-path: polygon(0 0, 100% 0, 0 100%);
     background: #000; /* Fallback */
+    transition: clip-path 0.4s ease; /* Ensure transition applies */
 }
 
 /* Hover States */
