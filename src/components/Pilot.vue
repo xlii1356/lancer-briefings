@@ -2,7 +2,7 @@
   <div class="grid-item pilot-identity" style="color:white!important">
     <div class="header">
       <div class="col grow-max">
-        <div class="heading h1">{{ pilot.callsign }}</div>
+        <div class="heading h1">TACTICAL PROFILE // {{ pilot.callsign }}</div>
         <div class="heading h2">({{ pilot.name }}) </div>
       </div>
       <div class="col"><img src="/faction-logos/soteria.svg" style="height: 50px;"></div>
@@ -65,6 +65,22 @@
               <div class="pilot-image-border">
                 <img :src="pilotPortrait" class="portrait" />
               </div>
+              <div style="text-align:center; font-size: 0.8em; opacity: 0.7; margin-bottom: 5px;">PILOT VISUAL</div>
+            </div>
+
+            <div class="pilot-image-container" style="margin-top: 20px; cursor: pointer;" @click="mechModal">
+              <div class="pilot-image-border">
+                 <img :src="safeMechPortrait" class="portrait" @error="e => e.target.src = '/icons/clockwork.svg'" />
+              </div>
+              <div style="text-align:center; font-size: 0.8em; opacity: 0.7;">ACTIVE FRAME</div>
+            </div>
+            
+            <div class="nhp-container" style="margin-top: 20px;" v-if="nhps.length > 0">
+                 <div style="font-size: 0.8em; opacity: 0.7; border-bottom: 1px solid white; margin-bottom: 5px;">NHP COFFIN</div>
+                 <div v-for="nhp in nhps" :key="nhp.name" style="display: flex; align-items: center; gap: 5px; margin-bottom: 2px;">
+                      <img :src="nhp.icon || '/icons/clockwork.svg'" style="width: 20px; height: 20px; filter: brightness(0) invert(1);" />
+                      <div style="font-size: 0.8em;">{{ nhp.name }}</div>
+                 </div>
             </div>
           </div>
         </div>
@@ -157,6 +173,10 @@ export default {
       type: Object,
       required: true,
     },
+    nhps: {
+        type: Array,
+        default: () => []
+    }
   },
   data() {
     return {
@@ -168,8 +188,8 @@ export default {
     pilotPortrait() {
       return `/pilots/${this.pilot.callsign.toUpperCase()}.webp`
     },
-    mechPortrait() {
-      return `/mechs/${this.pilot.callsign.toUpperCase()}.webp`
+    safeMechPortrait() {
+      return `/mechs/${encodeURIComponent(this.pilot.callsign.toUpperCase())}.webp`
     },
     pilotGear() {
       return [...lancerData.pilot_gear]

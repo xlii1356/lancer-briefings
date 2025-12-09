@@ -31,53 +31,10 @@
 
             <!-- Right: Details Panel -->
             <div class="details-panel custom-scroll">
-                <div v-if="selectedPilot" class="pilot-detail-view">
-                    <!-- Tactical Profile Card -->
-                    <div class="section-header clipped-info-backward">
-                        <img src="/icons/license.svg" />
-                        <h1>TACTICAL PROFILE</h1>
-                    </div>
-                    
+                <div v-if="selectedPilot" class="pilot-detail-view">                   
                     <div class="profile-card-wrapper">
-                        <Pilot :pilot="selectedPilot" :key="selectedPilot.callsign" :animate="animate" />
+                        <Pilot :pilot="selectedPilot" :key="selectedPilot.callsign" :animate="animate" :nhps="currentNhps" />
                     </div>
-
-                    <!-- Mech & NHP Info -->
-                    <div class="mech-intel-section">
-                        <div class="mech-visual">
-                            <div class="section-header clipped-medium-backward">
-                                <img src="/icons/mech.svg" />
-                                <h1>ACTIVE FRAME</h1>
-                            </div>
-                            <div class="mech-image-container" @click="mechModal" style="cursor: pointer; position: relative;">
-                                <img :src="safeMechImage" class="mech-portrait-lg" @error="e => e.target.src = '/icons/clockwork.svg'" />
-                            </div>
-                        </div>
-
-                        <div class="nhp-visual">
-                             <div class="section-header clipped-medium-backward">
-                                <img src="/icons/clockwork.svg" />
-                                <h1>NHP COFFIN</h1>
-                            </div>
-                            <div class="nhp-box">
-                                <div v-if="currentNhps.length === 0" class="no-nhp">
-                                    NO NHP DETECTED
-                                </div>
-                                <div v-else class="nhp-list">
-                                    <div v-for="(nhp, idx) in currentNhps" :key="idx" class="nhp-item">
-                                        <div class="nhp-icon">
-                                            <img :src="nhp.icon || '/icons/clockwork.svg'" />
-                                        </div>
-                                        <div class="nhp-details">
-                                            <div class="nhp-name">{{ nhp.name }}</div>
-                                            <div class="nhp-type">{{ nhp.type || 'NON-HUMAN PERSON' }}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
                 <div v-else class="empty-state">
                     SELECT A PILOT TO VIEW TACTICAL PROFILE
@@ -150,10 +107,6 @@ export default {
             }
             return [];
         },
-        safeMechImage() {
-            if (!this.selectedPilot) return '';
-            return `/mechs/${encodeURIComponent(this.selectedPilot.callsign.toUpperCase())}.webp`;
-        }
     },
     mounted() {
         if (this.pilots.length > 0) {
@@ -168,24 +121,6 @@ export default {
 			if (this.animate) {
 				this.animateView = true;
 			}
-        },
-        mechModal() {
-          if (!this.activeMech) return;
-          
-          this.$oruga.modal.open({
-            component: MechModal,
-            custom: true,
-            trapFocus: true,
-            props: {
-              animate: this.animate,
-              mech: this.activeMech,
-              systemsData: this.mechSystems,
-              weaponsData: this.mechWeapons,
-              pilot: this.selectedPilot,
-            },
-            class: 'custom-modal',
-            width: 1920,
-          })
         },
 	}
 };
