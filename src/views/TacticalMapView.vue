@@ -69,6 +69,14 @@ export default {
     width: 100%;
 }
 
+/* Target the section container specifically */
+#map-display {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important; /* Remove default margins if needed */
+    flex: 1; /* Grow to fill space */
+}
+
 .full-height {
     height: 100%;
     display: flex;
