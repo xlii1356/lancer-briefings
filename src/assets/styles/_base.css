@@ -465,6 +465,17 @@ section.section-container#pilots .rhombus-back {
 	left: -2em;
 }
 
+section.section-container#map-display {
+	display: flex;
+	flex-direction: column;
+	margin: 50px 30px;
+	width: 100% !important;
+	/* Force full width */
+	height: calc(100vh - 150px) !important;
+	/* Fill height minus header */
+	max-width: none !important;
+}
+
 section .section-header {
 	background-color: var(--primary-color);
 	border-color: var(--primary-color);
@@ -1984,4 +1995,5 @@ div.markdown ol li {
 	video {
 		max-width: 100%;
 		height: auto;
-	}}
+	}
+}
