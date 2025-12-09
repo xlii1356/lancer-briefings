@@ -76,7 +76,7 @@
 
                 <!-- Pilot Layer (Top, Clipped) -->
                 <div class="layer layer-pilot">
-                    <img :src="pilotPortrait" @error="e => { e.target.src = '/icons/portrait.svg'; e.target.style.padding = '20px'; e.target.style.filter='invert(1)'; }" class="portrait" />
+                    <img :src="pilotPortrait" @error="e => { e.target.src = '/icons/portrait.svg'; e.target.style.filter='invert(1)'; }" class="portrait" />
                     <div class="label-corner top-left">PILOT VISUAL</div>
                 </div>
             </div>
