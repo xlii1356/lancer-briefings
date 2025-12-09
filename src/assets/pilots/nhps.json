@@ -1,31 +1,36 @@
 [
     {
-        "callsign": "AIMBOT",
-        "nhps": [
-            {
-                "name": "OSIRIS",
-                "type": "Technophile",
-                "icon": "/icons/clockwork.svg"
-            }
-        ]
-    },
-    {
-        "callsign": "HUBRIS",
-        "nhps": [
-            {
-                "name": "AGNI",
-                "type": "Genghis Class",
-                "icon": "/icons/clockwork.svg"
-            }
-        ]
-    },
-    {
-        "callsign": "MERLIN",
+        "callsign": "STHENO",
         "nhps": [
             {
                 "name": "SCYLLA",
                 "type": "Gorgon Class",
-                "icon": "/icons/clockwork.svg"
+                "icon": "/faction-icons/scylla.svg"
+            },
+            {
+                "name": "SOTERIA",
+                "type": "ENLIGHTENMENT Class",
+                "icon": "/faction-icons/soteria.svg"
+            }
+        ]
+    },
+    {
+        "callsign": "DIAMOND",
+        "nhps": [
+            {
+                "name": "TLALOC",
+                "type": "MONARCH Class",
+                "icon": "/faction-icons/tlaloc.svg"
+            }
+        ]
+    },
+    {
+        "callsign": "GRAN GRAN",
+        "nhps": [
+            {
+                "name": "INNES",
+                "type": "SALADIN Class",
+                "icon": "/faction-icons/ha.svg"
             }
         ]
     }

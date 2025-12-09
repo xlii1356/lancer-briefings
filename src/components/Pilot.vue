@@ -61,7 +61,7 @@
             </div>
           </div>
           <div class="col">
-            <div class="pilot-image-container">
+            <div class="pilot-image-container" style="cursor: pointer;" @click="pilotModal">
               <div class="pilot-image-border">
                 <img :src="pilotPortrait" class="portrait" />
               </div>
@@ -85,19 +85,7 @@
           </div>
         </div>
       </div>
-      <div class="flex-container-cols modal-buttons">
-        <div class="row biometrics-container">
-          <div class="biometrics flex-container-cols" @click="pilotModal">
-            <div>
-              <i aria-hidden="true" class="v-icon notranslate mdi mdi-fingerprint theme--dark grey--text text--darken-2"
-                style="font-size: 36px; margin-top:36px;"></i>
-            </div>
-            <div style="width:100%">
-              BIOMETRIC RECORD VALID [[{{ randomNumber(14, 22) }}PB]]<br />
-              OHM C//{{ timeStamp(pilot.lastModified) }}
-            </div>
-          </div>
-        </div>
+      <div class="flex-container-cols modal-buttons" style="display: none;">
       </div>
       <hr role="separator" aria-orientation="horizontal" class="ma-2 v-divider theme--dark">
       <div class="row row--dense"><span class="overline" style="line-height: 13px !important; opacity: 0.4;">
