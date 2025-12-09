@@ -1,0 +1,32 @@
+[
+    {
+        "callsign": "AIMBOT",
+        "nhps": [
+            {
+                "name": "OSIRIS",
+                "type": "Technophile",
+                "icon": "/icons/memetics.svg"
+            }
+        ]
+    },
+    {
+        "callsign": "HUBRIS",
+        "nhps": [
+            {
+                "name": "AGNI",
+                "type": "Genghis Class",
+                "icon": "/icons/memetics.svg"
+            }
+        ]
+    },
+    {
+        "callsign": "MERLIN",
+        "nhps": [
+            {
+                "name": "SCYLLA",
+                "type": "Gorgon Class",
+                "icon": "/icons/memetics.svg"
+            }
+        ]
+    }
+]

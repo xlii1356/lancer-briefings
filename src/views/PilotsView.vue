@@ -50,7 +50,7 @@
                                 <h1>ACTIVE FRAME</h1>
                             </div>
                             <div class="mech-image-container">
-                                <img :src="`/mechs/${selectedPilot.callsign.toUpperCase()}.webp`" class="mech-portrait-lg" />
+                                <img :src="safeMechImage" class="mech-portrait-lg" />
                             </div>
                         </div>
 
@@ -66,11 +66,11 @@
                                 <div v-else class="nhp-list">
                                     <div v-for="(nhp, idx) in currentNhps" :key="idx" class="nhp-item">
                                         <div class="nhp-icon">
-                                            <img src="/icons/clockwork.svg" />
+                                            <img :src="nhp.icon || '/icons/clockwork.svg'" />
                                         </div>
                                         <div class="nhp-details">
                                             <div class="nhp-name">{{ nhp.name }}</div>
-                                            <div class="nhp-type">NON-HUMAN PERSON</div>
+                                            <div class="nhp-type">{{ nhp.type || 'NON-HUMAN PERSON' }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -95,6 +95,8 @@ import ktbData from 'lancer-ktb-data';
 import nrfawData from 'lancer-nrfaw-data';
 import longrimData from 'lancer-longrim-data';
 
+import nhpData from '@/assets/pilots/nhps.json';
+
 export default {
 	components: {
 		VueMarkdownIt,
@@ -115,6 +117,7 @@ export default {
 			animateView: this.animate,
 			animationDelay: "0s",
             selectedPilot: null,
+            nhpAssociations: nhpData
 		};
 	},
     computed: {
@@ -124,49 +127,16 @@ export default {
         currentNhps() {
             if (!this.selectedPilot) return [];
             
-            // Find active mech safely
-            const activeMechId = this.selectedPilot?.state?.active_mech_id;
-            let activeMech = null;
-            
-            if (this.selectedPilot.mechs && this.selectedPilot.mechs.length > 0) {
-                 activeMech = this.selectedPilot.mechs.find(m => m.id === activeMechId);
-                 if (!activeMech) activeMech = this.selectedPilot.mechs[0];
+            const pilotEntry = this.nhpAssociations.find(p => p.callsign.toUpperCase() === this.selectedPilot.callsign.toUpperCase());
+            if (pilotEntry) {
+                return pilotEntry.nhps;
             }
-
-            if (!activeMech) return [];
-
-            // Get active loadout safely
-            const loadout = activeMech.loadouts ? activeMech.loadouts[activeMech.active_loadout_index] : null;
-            if (!loadout) return [];
-
-            // Collect all systems from mounts and generic systems
-            let systems = [];
-            if (loadout.systems) systems = [...systems, ...loadout.systems];
-            
-            // Check mounts for systems/NHPs acting as weapons or integrated
-            if (loadout.mounts) {
-                loadout.mounts.forEach(mount => {
-                    mount.slots.forEach(slot => {
-                        if (slot.weapon) systems.push(slot.weapon);
-                    });
-                });
-            }
-
-            const nhps = [];
-
-            systems.forEach(sys => {
-                if (!sys) return;
-                const sysData = this.allSystems.find(s => s.id === sys.id);
-                // Check tags mostly
-                if (sysData && (sysData.tags.includes('AI') || sysData.tags.includes('NHP') || sysData.name.includes('NHP'))) {
-                    nhps.push({
-                        name: sysData.name,
-                        id: sysData.id
-                    });
-                }
-            });
-
-            return nhps;
+            return [];
+        },
+        safeMechImage() {
+            if (!this.selectedPilot) return '';
+            // Handle spaces in callsigns like "GRAN GRAN"
+            return `/mechs/${encodeURIComponent(this.selectedPilot.callsign.toUpperCase())}.webp`;
         }
     },
     mounted() {
