@@ -135,16 +135,19 @@ export default {
             let fileContents = await Promise.all(filePromises);
             fileContents.forEach(content => {
                 let event = {};
-                event["title"] = content.split("\n")[0];
-                event["location"] = content.split("\n")[1];
-                event["time"] = content.split("\n")[2];
-                event["thumbnail"] = content.split("\n")[3];
-                event["content"] = content.split("\n").splice(4).join("\n");
+                let lines = content.split(/\r?\n/);
+                event["title"] = lines[0].trim();
+                event["location"] = lines[1].trim();
+                event["time"] = lines[2].trim();
+                event["thumbnail"] = lines[3].trim();
+                event["content"] = lines.slice(4).join("\n");
                 this.events = [...this.events, event];
             });
 
         },
         async importClocks(files) {
+// ... (omitted for brevity, will target CSS block separately if needed, but tool allows one block replacement usually. The instruction says "Update the CSS selector... AND update the split logic". I should use multi_replace.
+
             let filePromises = Object.keys(files).map(path => files[path]());
             let fileContents = await Promise.all(filePromises);
             fileContents.forEach(content => {
@@ -230,7 +233,8 @@ export default {
     z-index: 20000 !important; /* Highest level container */
     position: fixed !important;
 }
-.o-modal .animation-content {
+.o-modal .animation-content,
+.o-modal .o-modal__content {
     z-index: 20010 !important; /* Content above overlay */
     max-height: 90vh; 
     display: flex;

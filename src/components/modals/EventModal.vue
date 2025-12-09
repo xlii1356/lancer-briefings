@@ -139,6 +139,9 @@ export default {
 /* Ensure the modal content wraps correctly on mobile */
 .event-modal {
     max-width: 100%;
+    z-index: 2147483647 !important; /* Max z-index */
+    position: relative;
+    background-color: #161c1d !important; /* Force opaque background */
 }
 
 /* Force header scale down */

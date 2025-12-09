@@ -1328,6 +1328,12 @@ section .section-header h1 {
 	right: 0;
 	top: 0;
 	background-color: rgba(10, 10, 10, 0.7);
+	z-index: 40;
+}
+
+.o-modal__content {
+	z-index: 50;
+	position: relative;
 }
 
 .o-tip__arrow {
