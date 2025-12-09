@@ -60,22 +60,28 @@
               </div>
             </div>
           </div>
-          <div class="col">
-            <div class="pilot-image-container" style="cursor: pointer;" @click="pilotModal">
-              <div class="pilot-image-border">
-                <img :src="pilotPortrait" class="portrait" />
-              </div>
-              <div style="text-align:center; font-size: 0.8em; opacity: 0.7; margin-bottom: 5px;">PILOT VISUAL</div>
-            </div>
+          <div class="col" style="display: flex; flex-direction: column; gap: 20px;">
+            <div 
+                class="split-frame-container" 
+                @mousemove="handleSplitHover" 
+                @mouseleave="resetSplit"
+                @click="handleSplitClick"
+                :class="activeSide"
+            >
+                <!-- Mech Layer (Bottom) -->
+                <div class="layer layer-mech">
+                    <img :src="safeMechPortrait" @error="e => e.target.src = '/icons/clockwork.svg'" class="portrait" />
+                    <div class="label-corner bottom-right">ACTIVE FRAME</div>
+                </div>
 
-            <div class="pilot-image-container" style="margin-top: 20px; cursor: pointer;" @click="mechModal">
-              <div class="pilot-image-border">
-                 <img :src="safeMechPortrait" class="portrait" @error="e => e.target.src = '/icons/clockwork.svg'" />
-              </div>
-              <div style="text-align:center; font-size: 0.8em; opacity: 0.7;">ACTIVE FRAME</div>
+                <!-- Pilot Layer (Top, Clipped) -->
+                <div class="layer layer-pilot">
+                    <img :src="pilotPortrait" class="portrait" />
+                    <div class="label-corner top-left">PILOT VISUAL</div>
+                </div>
             </div>
             
-            <div class="nhp-container" style="margin-top: 20px;" v-if="nhps.length > 0">
+            <div class="nhp-container" v-if="nhps.length > 0">
                  <div style="font-size: 0.8em; opacity: 0.7; border-bottom: 1px solid white; margin-bottom: 5px;">NHP COFFIN</div>
                  <div v-for="nhp in nhps" :key="nhp.name" style="display: flex; align-items: center; gap: 5px; margin-bottom: 2px;">
                       <img :src="nhp.icon || '/icons/clockwork.svg'" style="width: 20px; height: 20px; object-fit: contain; filter: brightness(0) invert(1);" />
@@ -118,8 +124,77 @@
   text-align: right;
 }
 
-.modal-buttons {
-  margin-top: 5px;
+.split-frame-container {
+    position: relative;
+    width: 250px; /* Fixed width matching design roughly, or 100% of col? */
+    /* Original pilot-image-container had width auto? Lets check. */
+    /* Previous layout had just container. I'll make it 100% width of column but aspect ratio? */
+    /* Pilot images are usually squares or portrait. I'll enforce aspect ratio or height. */
+    /* Assuming squareish for portrait. */
+    width: 100%;
+    aspect-ratio: 1 / 1.2; /* Slightly tall */
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid var(--primary-color);
+}
+
+.layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: clip-path 0.4s ease;
+}
+
+.layer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.layer-mech {
+    z-index: 1;
+    /* Bottom layer, always visible fully, but covered by pilot layer */
+}
+
+.layer-pilot {
+    z-index: 2;
+    /* Default Diagonal Split (Bottom-Left to Top-Right line) -> Top Left Triangle visible */
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    background: #000; /* Fallback */
+}
+
+/* Hover States */
+.split-frame-container.pilot .layer-pilot {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); /* Full Reveal */
+}
+
+.split-frame-container.mech .layer-pilot {
+    clip-path: polygon(0 0, 0 0, 0 0); /* Hide completely -> Reveal Mech */
+}
+
+.label-corner {
+    position: absolute;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    font-size: 0.8rem;
+    padding: 2px 5px;
+    pointer-events: none;
+    z-index: 3;
+    font-weight: bold;
+}
+
+.label-corner.top-left {
+    top: 0;
+    left: 0;
+    border-bottom-right-radius: 5px;
+}
+
+.label-corner.bottom-right {
+    bottom: 0;
+    right: 0;
+    border-top-left-radius: 5px;
 }
 </style>
 
@@ -170,6 +245,7 @@ export default {
     return {
       activeMech: {},
       bond: {},
+      activeSide: null, // 'pilot' or 'mech'
     }
   },
   computed: {
@@ -355,6 +431,37 @@ export default {
       let tz = date.getTimezoneOffset();
       y += 2990;
       return new Date(y, m, d, h, mi, s, ms).toISOString();
+    },
+    handleSplitHover(e) {
+        // Calculate based on Diagonal from Bottom-Left (0, H) to Top-Right (W, 0)
+        // Line equation: Y = H - (H/W)*X
+        // If y < H - (H/W)*X, we are Top-Left (Pilot)
+        // If y > H - (H/W)*X, we are Bottom-Right (Mech)
+        
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top; // y is 0 at top
+        const w = rect.width;
+        const h = rect.height;
+        
+        // Threshold Y at this X
+        const thresholdY = h - (h / w) * x;
+        
+        if (y < thresholdY) {
+            this.activeSide = 'pilot';
+        } else {
+            this.activeSide = 'mech';
+        }
+    },
+    resetSplit() {
+        this.activeSide = null;
+    },
+    handleSplitClick() {
+        if (this.activeSide === 'pilot') {
+            this.pilotModal();
+        } else if (this.activeSide === 'mech') {
+            this.mechModal();
+        }
     },
     pilotModal() {
       this.$oruga.modal.open({
