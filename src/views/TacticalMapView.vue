@@ -64,6 +64,11 @@ export default {
 </script>
 
 <style scoped>
+#tacticalMapView {
+    height: 100%;
+    width: 100%;
+}
+
 .full-height {
     height: 100%;
     display: flex;
