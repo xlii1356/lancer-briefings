@@ -60,23 +60,29 @@ export default {
         }
     }
   }
-};
 </script>
 
-<style scoped>
+<style>
+/* GLOBAL overrides for this specific view ID */
+/* Must be non-scoped to effectively battle _base.css if needed, though ID usually wins */
 #tacticalMapView {
     height: 100%;
     width: 100%;
+    display: flex !important;
+    flex-direction: column !important; /* Override _base.css row direction if problematic */
 }
 
-/* Target the section container specifically */
 #map-display {
     width: 100% !important;
     max-width: none !important;
-    margin: 0 !important; /* Remove default margins if needed */
-    flex: 1; /* Grow to fill space */
+    margin: 0 !important;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
+</style>
 
+<style scoped>
 .full-height {
     height: 100%;
     display: flex;
