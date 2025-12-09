@@ -83,14 +83,14 @@ export default {
 
 .map-wrapper {
     position: relative;
-    /* You might want a fixed aspect ratio or max width */
-    max-width: 100%; 
+    max-width: none; 
     display: inline-block;
 }
 
 .world-map {
     display: block;
-    max-width: 100%;
+    max-width: none; /* Allow native size */
+    min-width: 100%; /* Ensure it fills at least the container */
     height: auto;
     border: 1px solid #333;
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
