@@ -60,7 +60,7 @@
               </div>
             </div>
           </div>
-          <div class="col" style="display: flex; flex-direction: column; gap: 20px;">
+          <div class="col split-frame-col" style="display: flex; flex-direction: column; gap: 20px;">
             <div 
                 class="split-frame-container" 
                 @mousemove="handleSplitHover" 
@@ -125,15 +125,30 @@
 }
 
 .split-frame-container {
-    position: relative;
-    width: 250px; /* Fixed width to prevent exploding size */
-    margin: 0 auto; /* Center in column */
-    aspect-ratio: 1 / 1.2;
+    width: 250px;
+    height: 350px;
+    margin: 0 auto;
     overflow: hidden;
     cursor: pointer;
     border: 1px solid var(--primary-color);
-    background: #000;
+    background: transparent;
+    position: relative;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    align-self: flex-start;
+    flex-shrink: 0;
+    min-height: 0; /* Prevent growth */
+    transition: none; /* No size transition */
 }
+
+.col.split-frame-col {
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-start;
+    width: auto;
+    min-height: 0;
+}
+
 
 .layer {
     position: absolute;
@@ -147,14 +162,14 @@
 
 .layer img {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: 280px; /* Fixed height - both images will scale to this */
-    width: auto; /* Width scales proportionally */
-    max-width: 240px; /* Don't overflow the container width */
-    object-fit: contain;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Keep image size consistent */
     object-position: center;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .layer-mech {
