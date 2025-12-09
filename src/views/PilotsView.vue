@@ -149,8 +149,6 @@ export default {
 .roster-panel {
     width: 300px;
     min-width: 300px; /* Prevent shrinking */
-    background: rgba(0,0,0,0.3);
-    border: 1px solid var(--primary-color);
     display: flex;
     flex-direction: column;
     height: 80vh; /* Fixed height for roster so it remains scrollable specifically */
@@ -161,6 +159,9 @@ export default {
 .roster-list {
     overflow-y: auto;
     flex: 1;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--primary-color);
+    margin-top: -1px; /* Connects to header */
 }
 
 .roster-item {
@@ -228,7 +229,7 @@ export default {
 .details-panel {
     flex: 1;
     /* overflow-y: auto;  Disable nested scroll for details, let the page flow */
-    padding-right: 10px;
+    padding-right: 50px; /* Increased gap */
     min-width: 0; /* Prevent flex child from overflowing */
 }
 
