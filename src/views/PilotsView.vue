@@ -4,7 +4,7 @@
         <div class="pilots-layout">
             <!-- Left: Pilot Roster -->
             <div class="roster-panel custom-scroll">
-                <div class="section-header clipped-medium-backward">
+                <div class="section-header">
                     <img src="/icons/pilot.svg" />
                     <h1>ROSTER</h1>
                 </div>
