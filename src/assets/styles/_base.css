@@ -433,12 +433,21 @@ section.section-container#reserves {
 	margin-top: 15px;
 }
 
-section.section-container#events-logs,
-section.section-container#factions-logs {
+section.section-container#events-logs {
 	display: flex;
 	flex-direction: column;
 	margin: 50px 90px;
 	width: 1179px;
+	height: 714px;
+}
+
+section.section-container#factions-logs {
+	display: flex;
+	flex-direction: column;
+	margin: 50px 30px;
+	margin-right: 2%;
+	width: auto;
+	flex: 1;
 	height: 714px;
 }
 
