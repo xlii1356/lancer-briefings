@@ -76,7 +76,7 @@
 
                 <!-- Pilot Layer (Top, Clipped) -->
                 <div class="layer layer-pilot">
-                    <img :src="pilotPortrait" @error="e => e.target.src = '/icons/pilot.svg'" class="portrait" />
+                    <img :src="pilotPortrait" @error="e => { e.target.src = '/icons/portrait.svg'; e.target.style.padding = '20px'; e.target.style.filter='invert(1)'; }" class="portrait" />
                     <div class="label-corner top-left">PILOT VISUAL</div>
                 </div>
             </div>
@@ -126,16 +126,13 @@
 
 .split-frame-container {
     position: relative;
-    width: 250px; /* Fixed width matching design roughly, or 100% of col? */
-    /* Original pilot-image-container had width auto? Lets check. */
-    /* Previous layout had just container. I'll make it 100% width of column but aspect ratio? */
-    /* Pilot images are usually squares or portrait. I'll enforce aspect ratio or height. */
-    /* Assuming squareish for portrait. */
-    width: 100%;
-    aspect-ratio: 1 / 1.2; /* Slightly tall */
+    width: 250px; /* Fixed width to prevent exploding size */
+    margin: 0 auto; /* Center in column */
+    aspect-ratio: 1 / 1.2;
     overflow: hidden;
     cursor: pointer;
     border: 1px solid var(--primary-color);
+    background: #000;
 }
 
 .layer {
