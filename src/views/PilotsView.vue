@@ -1,5 +1,5 @@
 <template>
-	<div id="pilots" :class="{ animate: animateView }" :style="{ 'animation-delay': animationDelay }" class="section-container full-height">
+	<section id="pilots" :class="{ animate: animateView }" :style="{ 'animation-delay': animationDelay }" class="section-container full-height">
         <!-- Layout Split -->
         <div class="pilots-layout">
             <!-- Left: Pilot Roster -->
@@ -41,7 +41,7 @@
                 </div>
             </div>
         </div>
-	</div>
+	</section>
 </template>
 
 <script>

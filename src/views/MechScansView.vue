@@ -177,11 +177,11 @@ export default {
 
 /* Foundry HTML Specific Overrides */
 /* Brute force all text to be light to override inline styles */
-:deep(*) {
+.foundry-content :deep(*) {
     color: #eee !important;
 }
 
-:deep(h2) {
+.foundry-content :deep(h2) {
     font-family: 'Fragment Mono', monospace;
     color: #39ff14 !important; /* Standard green accent */
     border-bottom: 1px solid #333;
@@ -192,7 +192,7 @@ export default {
     letter-spacing: 1px;
 }
 
-:deep(h3) {
+.foundry-content :deep(h3) {
     font-family: 'Fragment Mono', monospace;
     color: #00d1b2 !important; /* Cyan/Teal secondary accent */
     margin-top: 15px;
@@ -201,22 +201,22 @@ export default {
     text-transform: uppercase;
 }
 
-:deep(p) {
+.foundry-content :deep(p) {
     margin-bottom: 10px;
 }
 
-:deep(img) {
+.foundry-content :deep(img) {
     max-width: 100%;
     border: 1px solid #333 !important; /* Override inline borders */
     filter: brightness(0.9); /* Slight dim to fit dark theme */
 }
 
-:deep(div[style]) {
+.foundry-content :deep(div[style]) {
     width: 100% !important; /* Override fixed widths like 65% */
     float: none !important; /* Disable float for better stacking */
 }
 
-:deep(table) {
+.foundry-content :deep(table) {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
@@ -225,7 +225,7 @@ export default {
     font-family: 'Fragment Mono', monospace;
 }
 
-:deep(th) {
+.foundry-content :deep(th) {
     background-color: rgba(57, 255, 20, 0.1) !important; /* Low opacity green */
     color: #39ff14 !important;
     font-weight: bold;
@@ -235,20 +235,20 @@ export default {
     text-transform: uppercase;
 }
 
-:deep(td) {
+.foundry-content :deep(td) {
     padding: 8px;
     border: 1px solid #444;
     color: #ccc !important;
 }
 
-:deep(details) {
+.foundry-content :deep(details) {
     margin-bottom: 10px;
     border: 1px solid #333;
     padding: 10px;
     background: rgba(0,0,0,0.3) !important;
 }
 
-:deep(summary) {
+.foundry-content :deep(summary) {
     cursor: pointer;
     font-weight: bold;
     color: #00d1b2 !important; /* Cyan accent */
@@ -256,7 +256,7 @@ export default {
     outline: none;
 }
 
-:deep(summary:hover) {
+.foundry-content :deep(summary:hover) {
     color: #39ff14 !important;
 }
 
