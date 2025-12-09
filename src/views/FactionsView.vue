@@ -30,7 +30,12 @@
         <div class="faction" v-if="selectedFaction.title">
           <div class="name">
             <h1>{{ selectedFaction.location }} // {{ selectedFaction.time }}</h1>
-            <h2>{{ selectedFaction.title }}</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>{{ selectedFaction.title }}</h2>
+                <button v-if="mappedLocation" @click="goToMap" class="map-link-btn">
+                    <img src="/icons/orbital.svg" /> SHOW ON MAP
+                </button>
+            </div>
           </div>
           <vue-markdown-it :source="selectedFaction.content" class="markdown" />
         </div>
@@ -48,6 +53,7 @@ import PrimeModal from '@/components/modals/PrimeModal.vue';
 
 // --- THIS IMPORT WAS MISSING ---
 import primeDataList from '@/assets/prime/prime.json';
+import locationsData from '@/assets/map/locations.json';
 
 export default {
   components: {
@@ -72,10 +78,28 @@ export default {
     return {
       selectedFaction: { type: Object },
       // --- THIS DATA REGISTRATION WAS MISSING ---
-      primeData: primeDataList 
+      primeData: primeDataList,
+      locations: locationsData
     };
   },
+  computed: {
+      mappedLocation() {
+          if (!this.selectedFaction || !this.selectedFaction.title) return null;
+          return this.locations.find(l => 
+              l.type === 'faction' && 
+              l.target.toUpperCase() === this.selectedFaction.title.toUpperCase()
+          );
+      }
+  },
   methods: {
+    goToMap() {
+        if (this.mappedLocation) {
+            this.$router.push({ 
+                path: '/tactical-map', 
+                query: { highlight: this.mappedLocation.id } 
+            });
+        }
+    },
     selectFaction(faction) {
       if (window.innerWidth <= 768) {
           this.$oruga.modal.open({
@@ -217,5 +241,36 @@ export default {
 :deep(.markdown a[href^="prime://"]:hover) {
   background-color: rgba(255, 85, 85, 0.2);
   cursor: pointer;
+}
+
+.map-link-btn {
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 5px 10px;
+    font-family: "Big Shoulders Display", cursive;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+}
+
+.map-link-btn:hover {
+    background: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.map-link-btn img {
+    width: 16px;
+    height: 16px;
+    filter: invert(76%) sepia(21%) saturate(692%) hue-rotate(134deg) brightness(92%) contrast(84%); /* Approx match to primary color if black svg */
+}
+
+.map-link-btn:hover img {
+    filter: brightness(0); /* Black on hover */
 }
 </style>

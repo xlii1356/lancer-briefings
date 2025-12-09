@@ -15,6 +15,7 @@
                 :key="loc.id"
                 class="map-point"
                 :style="{ top: loc.y + '%', left: loc.x + '%', '--point-color': loc.color }"
+                :class="{ 'is-highlighted': highlightedId === loc.id }"
                 @click="handlePointClick(loc)"
               >
                 <div class="point-glow"></div>
@@ -38,10 +39,21 @@ export default {
     return {
       animateView: false,
       animationDelay: "0s",
+      highlightedId: null
     };
   },
   mounted() {
     this.animateView = true;
+    if (this.$route.query.highlight) {
+        this.highlightedId = this.$route.query.highlight;
+        // Optional: Scroll to it if needed
+        this.$nextTick(() => {
+            const el = this.$el.querySelector('.is-highlighted');
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            }
+        });
+    }
   },
   methods: {
     handlePointClick(loc) {
@@ -156,5 +168,21 @@ export default {
         transform: scale(1);
         opacity: 0;
     }
+}
+
+.map-point.is-highlighted .point-core {
+    background-color: #fff !important;
+    box-shadow: 0 0 10px #fff, 0 0 20px var(--point-color);
+    transform: scale(1.5);
+    transition: all 0.5s;
+}
+
+.map-point.is-highlighted .point-label {
+    opacity: 1;
+    background: var(--point-color);
+    color: black;
+    font-weight: bold;
+    border: 2px solid white;
+    z-index: 100;
 }
 </style>
