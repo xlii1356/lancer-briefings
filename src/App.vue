@@ -9,7 +9,7 @@
     </div>
     <div id="router-view-container">
         <router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :events="events"
-            :pilots="pilots" :clocks="clocks" :reserves="reserves" :messages="messages" />
+            :pilots="pilots" :clocks="clocks" :reserves="reserves" :messages="messages" :scans="scans" />
     </div>
     <svg style="visibility: hidden; position: absolute" width="0" height="0" xmlns="http://www.w3.org/2000/svg"
         version="1.1">
@@ -55,6 +55,7 @@ export default {
             // NEW: Countdown Data
             countdownDisplay: 'CALCULATING...',
             countdownInterval: null,
+            scans: [],
         };
     },
     created() {
@@ -66,6 +67,7 @@ export default {
 
         this.importPilots(import.meta.glob("@/assets/pilots/*.json"));
         this.importMessages(import.meta.glob("@/assets/messages/*.md", { query: '?raw', import: 'default' }));
+        this.importScans(import.meta.glob("@/assets/scans/*.json"));
     },
     mounted() {
         this.$router.push("/status");
@@ -221,6 +223,28 @@ export default {
                 message["content"] = lines.splice(3).join("\n");
                 this.messages = [...this.messages, message];
             });
+        },
+        async importScans(files) {
+            let filePromises = Object.keys(files).map(path => files[path]());
+            let fileContents = await Promise.all(filePromises);
+            fileContents.forEach(content => {
+                // Foundry Export JSON structure
+                let data = JSON.parse(JSON.stringify(content)).default || content;
+                // Handle different export wrappers if exists, but typically it is the content directly or default export
+                
+                // We want the first page's text content
+                if (data.pages && data.pages.length > 0) {
+                     let page = data.pages[0];
+                     let scan = {
+                         id: data._id || Math.random().toString(36).substr(2, 9),
+                         name: data.name,
+                         content: page.text.content
+                     };
+                     this.scans = [...this.scans, scan];
+                }
+            });
+            // Sort by name or ID if needed
+            this.scans.sort((a,b) => a.name.localeCompare(b.name));
         },
     },
 };

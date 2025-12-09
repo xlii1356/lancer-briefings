@@ -108,16 +108,30 @@ export default {
 /* Reuse layout struct from EventsView/StatusView via global CSS if available, 
    but specific styling here for the message view */
 
+/* Ensure deep styling reaches the markdown component to make it fill space */
+:deep(.markdown) {
+    flex: 1; /* Push to fill remaining space */
+    height: 100%;
+}
+
 .items-list-container {
     padding: 10px;
     display: flex;
     flex-direction: column;
+    height: 100%; /* Fill parent */
+    overflow-y: auto; /* Scroll internally if needed */
 }
 
 .message-detail {
     padding: 20px;
     color: #eee;
+    height: 100%; /* Fill parent */
+    display: flex;
+    flex-direction: column;
 }
+
+/* ... (rest of file) */
+
 
 .detail-header h1 {
     font-family: 'Fragment Mono', monospace;
@@ -126,22 +140,7 @@ export default {
     margin: 0;
 }
 
-.detail-header h2 {
-    font-family: 'Rubik', sans-serif;
-    font-size: 1.5rem;
-    color: #eee; 
-    text-transform: uppercase;
-    margin: 5px 0 10px 0;
-    /* Removed text-shadow for less intrusiveness */
-}
-
-.meta-info {
-    font-family: 'Rubik', sans-serif;
-    font-size: 0.9rem;
-    color: #aaa;
-    display: flex;
-    gap: 20px;
-}
+/* ... existing code ... */
 
 .divider {
     border: 0;
@@ -164,5 +163,28 @@ export default {
 #message-content {
     width: 1100px; /* Wider box */
     margin: 50px 30px;
-}  
+    height: 75vh; /* Use more vertical space on desktop */
+}
+
+#message-list {
+    height: 75vh; /* Match content height */
+}
+
+@media (max-width: 768px) {
+    #message-content {
+        height: auto;
+        margin: 20px 10px;
+        width: auto;
+    }
+
+    #message-list {
+        height: 80vh !important; /* Force taller list on mobile */
+        min-height: 600px;
+    }
+    
+    .items-list-container {
+        height: 100%; /* Ensure inner container fills the new height */
+        overflow-y: auto;
+    }
+}
 </style>

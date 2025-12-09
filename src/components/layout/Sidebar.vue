@@ -31,6 +31,10 @@
 					<img src="/icons/conversation.svg" />
 					<span>Messages</span>
 				</router-link>
+				<router-link class="clipped-bottom-right" to="/scans">
+					<img src="/icons/mech.svg" />
+					<span>Mech Scans</span>
+				</router-link>
 			</o-sidebar>
 		</section>
 	</div>
@@ -64,7 +68,7 @@ export default {
 .sidebar-page,
 .sidebar-layout {
 	pointer-events: none;
-	height: 100%; /* Ensure it doesn't collapse but allows clicks through */
+	height: 150vh; /* Brute force: Ensure it exceeds viewport even with 0.8 scale */
 	width: 100%;
 }
 

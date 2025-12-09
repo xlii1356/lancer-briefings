@@ -4,6 +4,7 @@ import StatusView from "../views/StatusView.vue";
 import PilotsView from "../views/PilotsView.vue";
 import EventsView from "../views/EventsView.vue";
 import MessagesView from "../views/MessagesView.vue";
+import MechScansView from "../views/MechScansView.vue";
 import Config from "@/assets/info/general-config.json";
 
 const DEFAULT_TITLE = Config.defaultTitle;
@@ -39,6 +40,13 @@ const routes = [
 		component: EventsView,
 		props: true,
 		meta: { title: `${DEFAULT_TITLE} EVENTS LOG` },
+	},
+	{
+		path: "/scans",
+		name: "scans",
+		component: MechScansView,
+		props: true,
+		meta: { title: `${DEFAULT_TITLE} MECH SCANS` },
 	},
 ];
 
