@@ -79,15 +79,16 @@ export default {
     overflow: auto; /* Allow scrolling if map is large */
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center; align-items: center;  <-- REMOVED: Causes clipping on overflow */
 }
 
 .map-wrapper {
     position: relative;
     max-width: none; 
     display: inline-block;
+    margin: auto; /* Centers content when smaller than container, safe when larger */
 }
 
 .world-map {
