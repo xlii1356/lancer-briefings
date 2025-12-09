@@ -134,6 +134,7 @@ export default {
     height: 20px;
     margin-bottom: 2px;
     opacity: 0.7;
+    filter: invert(1);
 }
 
 .mobile-bottom-nav a.active {
