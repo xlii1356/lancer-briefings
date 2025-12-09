@@ -6,7 +6,7 @@
         "label": "Silvershard Colony",
         "type": "mission",
         "target": "home",
-        "color": "#0000dd"
+        "color": "#00dd00"
     },
     {
         "id": "loc_2",

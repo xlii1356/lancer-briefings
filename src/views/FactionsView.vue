@@ -59,6 +59,15 @@ export default {
     factions: { type: Array, required: true },
     pilots: { type: Array, required: true, default: () => [] }, 
   },
+  mounted() {
+      if (this.$route.query.faction) {
+          const targetTitle = this.$route.query.faction;
+          const target = this.factions.find(f => f.title.toUpperCase() === targetTitle.toUpperCase());
+          if (target) {
+              this.selectFaction(target);
+          }
+      }
+  },
   data() {
     return {
       selectedFaction: { type: Object },

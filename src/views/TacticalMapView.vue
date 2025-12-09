@@ -48,15 +48,7 @@ export default {
         if (loc.type === 'mission') {
             this.$router.push({ path: '/status', query: { mission: loc.target } });
         } else if (loc.type === 'faction') {
-            // Need to trigger faction modal opening via query param or event?
-            // The FactionsView handles "selection" internally.
-            // If we route to /factions, we might need to pass a query param to auto-open.
-            // For now, let's just route to factions.
-            // Future improvement: Support query param selection on FactionsView.
-            this.$router.push({ path: '/factions' }); 
-            // NOTE: The user asked to "link to Missions or Factions". 
-            // Linking to a specific Faction modal from here requires FactionsView to support it.
-            // I will implement basic routing first.
+            this.$router.push({ path: '/factions', query: { faction: loc.target } }); 
         }
     }
   }
