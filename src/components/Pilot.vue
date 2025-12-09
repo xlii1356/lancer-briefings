@@ -168,7 +168,7 @@
 
 .pilot-identity .body {
     flex: 1 1 auto !important;
-    padding-top: 0 !important; /* Lock body top padding */
+    /* padding-top: 0 !important; Lock body top padding */
 }
 
 /* Prevent parent containers from shifting */
