@@ -195,17 +195,18 @@ export default {
 /* scoped styles */
 .full-height {
     width: 100%;
-    height: 100%;
+    /* height: 100%; Removing fixed height to rely on page scroll if needed */
+    min-height: 100vh; 
     padding: 30px;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Main container clipped */
+    /* overflow: hidden; Removing clip to see if it reveals content */
 }
 
 .pilots-layout {
     display: flex;
     flex: 1;
-    min-height: 0; /* Important for nested flex scroll */
+    min-height: 0;
     gap: 20px;
 }
 
@@ -217,6 +218,9 @@ export default {
     border: 1px solid var(--primary-color);
     display: flex;
     flex-direction: column;
+    height: 80vh; /* Fixed height for roster so it remains scrollable specifically */
+    position: sticky;
+    top: 20px;
 }
 
 .roster-list {
@@ -288,7 +292,7 @@ export default {
 /* --- Details Panel --- */
 .details-panel {
     flex: 1;
-    overflow-y: auto;
+    /* overflow-y: auto;  Disable nested scroll for details, let the page flow */
     padding-right: 10px;
     min-width: 0; /* Prevent flex child from overflowing */
 }
@@ -297,7 +301,7 @@ export default {
 .mech-intel-section {
     display: flex;
     gap: 20px;
-    height: 400px; /* Fixed height for visuals */
+    /* height: 400px; Remove fixed height */
     min-height: 400px;
     margin-bottom: 50px; /* Add bottom margin for scroll clearing */
     flex-shrink: 0; /* Don't squash me */
@@ -421,10 +425,13 @@ export default {
 #pilots .section-header h1 {
     color: white;
     text-shadow: 0 0 5px rgba(0,0,0,0.5);
+    margin-left: 15px; /* Spacing due to image float/flex */
 }
 
 #pilots .section-header img {
     filter: brightness(0) invert(1);
+    height: 40px;
+    width: auto;
 }
 
 #pilots .mech-image-container {
@@ -435,6 +442,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 300px; /* Ensure visibility */
 }
 
 #pilots .mech-portrait-lg {
