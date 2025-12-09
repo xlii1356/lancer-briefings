@@ -143,12 +143,16 @@
     height: 100%;
     transition: clip-path 0.4s ease;
     background-color: #0d1117; /* Dark background for letterboxing */
+    will-change: clip-path; /* Optimize clip-path animations */
 }
 
 .layer img {
     width: 100%;
     height: 100%;
     object-fit: contain; /* Scale to fit without cropping */
+    object-position: center; /* Ensure centered positioning */
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .layer-mech {
