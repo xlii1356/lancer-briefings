@@ -229,7 +229,7 @@ export default {
 .details-panel {
     flex: 1;
     /* overflow-y: auto;  Disable nested scroll for details, let the page flow */
-    padding-right: 50px; /* Increased gap */
+    padding-right: 5%; /* Increased gap */
     min-width: 0; /* Prevent flex child from overflowing */
 }
 
