@@ -125,8 +125,12 @@
 }
 
 .split-frame-container {
-    width: 250px;
-    height: 350px;
+    width: 250px !important;
+    height: 350px !important;
+    max-width: 250px !important;
+    max-height: 350px !important;
+    min-width: 250px !important;
+    min-height: 350px !important;
     margin: 0 auto;
     overflow: hidden;
     cursor: pointer;
@@ -137,8 +141,6 @@
     box-sizing: border-box;
     align-self: flex-start;
     flex-shrink: 0;
-    min-height: 0; /* Prevent growth */
-    transition: none; /* No size transition */
 }
 
 .col.split-frame-col {
