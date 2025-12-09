@@ -140,6 +140,23 @@ export default {
     margin: 0;
 }
 
+.detail-header h2 {
+    font-family: 'Rubik', sans-serif;
+    font-size: 1.5rem;
+    color: #eee; 
+    text-transform: uppercase;
+    margin: 5px 0 10px 0;
+}
+
+.meta-info {
+    font-family: 'Rubik', sans-serif;
+    font-size: 0.9rem;
+    color: #aaa;
+    display: flex; /* Key for spacing */
+    gap: 20px;    /* Key for spacing */
+    flex-wrap: wrap;
+}
+
 /* ... existing code ... */
 
 .divider {
