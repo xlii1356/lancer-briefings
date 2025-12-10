@@ -63,6 +63,15 @@
         "color": "#653610"
     },
     {
+        "id": "loc_8",
+        "x": 55,
+        "y": 55,
+        "label": "Spear of Saturn Wreckage",
+        "type": "faction",
+        "target": "FCE",
+        "color": "#fdbb7b"
+    },
+    {
         "id": "loc_99",
         "x": 60.5,
         "y": 63.5,
