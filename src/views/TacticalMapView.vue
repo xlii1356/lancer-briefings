@@ -108,8 +108,11 @@ export default {
     text-transform: uppercase;    
     letter-spacing: 0.15em;       
     color: #ffffff;
+    
+    /* Default Glow (White/Cyan mix) */
     text-shadow: 0 0 5px rgba(0, 255, 255, 0.5), 
                  0 0 10px rgba(0, 255, 255, 0.3);
+    
     margin: 0;
     line-height: 1;
 }
@@ -229,16 +232,28 @@ h1.text-tactical-header {
     align-items: center;
     gap: 10px; 
     padding: 5px 15px; 
-    transition: background-color 0.2s;
+    transition: all 0.2s ease; /* Smooth transition for color/bg */
+    border: 1px solid transparent; /* Prevent layout shift if we add border later */
 }
 
 .toggle-btn:hover {
     background-color: rgba(255, 255, 255, 0.1); 
 }
 
+/* --- UPDATED ACTIVE STATE --- */
+.toggle-btn.is-active {
+    /* Add a visible background instead of changing text color */
+    background-color: rgba(0, 255, 255, 0.2); 
+    border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
 .toggle-btn.is-active .text-tactical-header {
-    color: var(--primary-color, #00ffff);
-    text-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+    /* Keep text WHITE for readability */
+    color: #ffffff; 
+    
+    /* Stronger, tighter glow to show it's "ON" */
+    text-shadow: 0 0 8px rgba(0, 255, 255, 1), 
+                 0 0 20px rgba(0, 255, 255, 0.6);
 }
 
 .toggle-icon {

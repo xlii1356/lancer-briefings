@@ -25,5 +25,14 @@
         "type": "faction",
         "target": "ALDERMEN",
         "color": "#dddd00"
+    },
+    {
+        "id": "loc_4",
+        "x": 57,
+        "y": 45,
+        "label": "First Hearth",
+        "type": "faction",
+        "target": "SHEPARDS",
+        "color": "#008800"
     }
 ]
