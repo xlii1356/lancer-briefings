@@ -2,7 +2,7 @@
 	<div class="faction-modal">
 		<div class="faction-header-container">
 			<div class="section-header clipped-medium-backward-bio">
-				<img src="/icons/barony.svg" />
+				<img src="/faction-logos/barony.svg" />
 				<h1>KNOWN DETAILS</h1>
 			</div>
 			<div class="rhombus-back">&nbsp;</div>
