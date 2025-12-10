@@ -47,6 +47,7 @@
 <script>
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import Pilot from "@/components/Pilot.vue";
+import PilotViewModal from '@/components/modals/PilotViewModal.vue';
 import MechModal from '@/components/modals/MechModal.vue';
 import lancerData from '@massif/lancer-data';
 import ktbData from 'lancer-ktb-data';
@@ -79,6 +80,9 @@ export default {
 		};
 	},
     computed: {
+        isMobile() {
+            return window.innerWidth <= 768;
+        },
         allSystems() {
              return [...lancerData.systems, ...ktbData.systems, ...nrfawData.systems, ...longrimData.systems];
         },
@@ -115,7 +119,31 @@ export default {
     },
 	methods: {
 		selectPilot(pilot) {
-            this.selectedPilot = pilot;
+            if (this.isMobile) {
+                // Mobile: Open modal
+                this.$oruga.modal.open({
+                    component: PilotViewModal,
+                    custom: true,
+                    trapFocus: true,
+                    props: { 
+                        pilot: pilot,
+                        nhps: this.getNhpsForPilot(pilot),
+                        animate: this.animate
+                    },
+                    class: 'custom-modal',
+                    width: 1920,
+                });
+            } else {
+                // Desktop: Update selected pilot
+                this.selectedPilot = pilot;
+            }
+        },
+        getNhpsForPilot(pilot) {
+            const pilotEntry = this.nhpAssociations.find(p => p.callsign.toUpperCase() === pilot.callsign.toUpperCase());
+            if (pilotEntry) {
+                return pilotEntry.nhps;
+            }
+            return [];
         },
 		setAnimate() {
 			if (this.animate) {
@@ -338,10 +366,9 @@ export default {
         flex: none; /* Don't expand, just be 200px */
     }
     
+    /* Hide details panel on mobile since we use modal */
     .details-panel {
-        overflow: visible; /* Let body scroll it */
-        flex: none; /* Just stack */
-        height: auto;
+        display: none !important;
     }
 
     .mech-intel-section {
