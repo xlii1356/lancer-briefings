@@ -136,7 +136,6 @@
     max-height: 350px !important;
     min-width: 250px !important;
     min-height: 350px !important;
-    margin: 0 auto;
     overflow: hidden;
     cursor: pointer;
     border: 1px solid var(--primary-color);
@@ -153,7 +152,6 @@
     align-items: center;
     align-self: flex-start !important;
     justify-content: flex-start;
-    width: auto;
     min-height: 0;
 }
 
@@ -168,8 +166,8 @@
 .nhp-box {
     border: 1px solid var(--primary-color);
     background: rgba(0, 0, 0, 0.3);
-    padding: 10px;
-    width: 150px;
+    padding: 12px;
+    width: 180px;
     box-sizing: border-box;
 }
 
@@ -186,14 +184,14 @@
 .nhp-item {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 6px;
-    font-size: 0.85em;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 1em;
 }
 
 .nhp-icon {
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     object-fit: contain;
     filter: brightness(0) invert(1);
     flex-shrink: 0;
@@ -227,6 +225,8 @@
 /* Prevent parent containers from shifting */
 .pilot-identity .row.flex-container-cols.add-padding {
     align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
 }
 
 .pilot-identity .flex-container-cols {
