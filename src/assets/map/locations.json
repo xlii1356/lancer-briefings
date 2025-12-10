@@ -78,7 +78,7 @@
         "label": "Dead City of Fontaine",
         "type": "faction",
         "target": "UNDYING",
-        "color": "#44a5af"
+        "color": "#3b57ff"
     },
     {
         "id": "loc_10",
