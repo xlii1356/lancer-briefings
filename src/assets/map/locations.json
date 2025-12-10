@@ -52,5 +52,14 @@
         "type": "faction",
         "target": "ILLUMIRE PIRATES",
         "color": "#3430d9"
+    },
+    {
+        "id": "loc_7",
+        "x": 41,
+        "y": 64,
+        "label": "City of the Dredge King",
+        "type": "faction",
+        "target": "BROADBEND PIRATES",
+        "color": "#653610"
     }
 ]
