@@ -72,6 +72,24 @@
         "color": "#fdbb7b"
     },
     {
+        "id": "loc_9",
+        "x": 63,
+        "y": 57,
+        "label": "Dead City of Fontaine",
+        "type": "faction",
+        "target": "UNDYING",
+        "color": "#44a5af"
+    },
+    {
+        "id": "loc_10",
+        "x": 50,
+        "y": 66,
+        "label": "Crown Trading Post",
+        "type": "faction",
+        "target": "SKYPIERCERS",
+        "color": "#c12ef1"
+    },
+    {
         "id": "loc_99",
         "x": 60.5,
         "y": 63.5,
