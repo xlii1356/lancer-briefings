@@ -99,12 +99,21 @@
         "color": "#3b57ff"
     },
     {
-        "id": "loc_99",
+        "id": "loc_98",
         "x": 60.5,
         "y": 63.5,
         "label": "A Team",
         "type": "mission",
         "target": "001",
         "color": "#86f057"
+    },
+    {
+        "id": "loc_99",
+        "x": 74,
+        "y": 16,
+        "label": "B Team",
+        "type": "mission",
+        "target": "002",
+        "color": "#6A0DAD"
     }
 ]
