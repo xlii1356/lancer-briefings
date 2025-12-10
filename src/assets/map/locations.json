@@ -28,11 +28,29 @@
     },
     {
         "id": "loc_4",
-        "x": 57,
+        "x": 58,
         "y": 45,
         "label": "First Hearth",
         "type": "faction",
         "target": "SHEPARDS",
         "color": "#008800"
+    },
+    {
+        "id": "loc_5",
+        "x": 57,
+        "y": 40,
+        "label": "Palewatch",
+        "type": "faction",
+        "target": "HEGEMONY",
+        "color": "#ffa200"
+    },
+    {
+        "id": "loc_6",
+        "x": 18,
+        "y": 79,
+        "label": "Rose Wharf",
+        "type": "faction",
+        "target": "ILLUMIRE PIRATES",
+        "color": "#3430d9"
     }
 ]
