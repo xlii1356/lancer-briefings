@@ -60,7 +60,20 @@
               </div>
             </div>
           </div>
-          <div class="col split-frame-col" style="display: flex; flex-direction: column; gap: 20px;">
+          
+          <!-- NHP Column (only shows when NHPs exist) -->
+          <div class="col nhp-col" v-if="nhps.length > 0">
+            <div class="nhp-box">
+              <div class="nhp-header">NHP COFFIN</div>
+              <div v-for="nhp in nhps" :key="nhp.name" class="nhp-item">
+                <img :src="nhp.icon || '/icons/clockwork.svg'" class="nhp-icon" />
+                <div class="nhp-name">{{ nhp.name }}</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Portrait Column -->
+          <div class="col split-frame-col">
             <div 
                 class="split-frame-container" 
                 @mousemove="handleSplitHover" 
@@ -79,14 +92,6 @@
                     <img :src="pilotPortrait" @error="e => { e.target.src = '/icons/portrait.svg'; e.target.style.filter='invert(1)'; }" class="portrait" />
                     <div class="label-corner top-left">PILOT VISUAL</div>
                 </div>
-            </div>
-            
-            <div class="nhp-container" v-if="nhps.length > 0">
-                 <div style="font-size: 0.8em; opacity: 0.7; border-bottom: 1px solid white; margin-bottom: 5px;">NHP COFFIN</div>
-                 <div v-for="nhp in nhps" :key="nhp.name" style="display: flex; align-items: center; gap: 5px; margin-bottom: 2px;">
-                      <img :src="nhp.icon || '/icons/clockwork.svg'" style="width: 20px; height: 20px; object-fit: contain; filter: brightness(0) invert(1);" />
-                      <div style="font-size: 0.8em;">{{ nhp.name }}</div>
-                 </div>
             </div>
           </div>
         </div>
@@ -150,6 +155,54 @@
     justify-content: flex-start;
     width: auto;
     min-height: 0;
+}
+
+/* NHP Column Styles */
+.col.nhp-col {
+    flex: 0 0 auto !important;
+    align-self: flex-start !important;
+    margin-right: 20px;
+    min-height: 0;
+}
+
+.nhp-box {
+    border: 1px solid var(--primary-color);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    width: 150px;
+    box-sizing: border-box;
+}
+
+.nhp-header {
+    font-size: 0.8em;
+    opacity: 0.7;
+    border-bottom: 1px solid white;
+    margin-bottom: 8px;
+    padding-bottom: 3px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.nhp-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 0.85em;
+}
+
+.nhp-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    flex-shrink: 0;
+}
+
+.nhp-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .pilot-identity {
