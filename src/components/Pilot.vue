@@ -219,18 +219,18 @@
 .layer-pilot {
     z-index: 2;
     /* Default Diagonal Split (Bottom-Left to Top-Right line) -> Top Left Triangle visible */
-    clip-path: polygon(0 0, 100% 0, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 0 100%, 0 100%); /* 4 points (last 2 overlap) */
     background: #000; /* Fallback */
     transition: clip-path 0.4s ease; /* Ensure transition applies */
 }
 
 /* Hover States */
-.split-frame-container.pilot .layer-pilot {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); /* Full Reveal */
+.split-frame-container.side-pilot .layer-pilot {
+    clip-path: polygon(0 0, 200% 0, 0 200%, 0 100%); /* Linear Wipe: Slide diagonal to bottom-right */
 }
 
-.split-frame-container.mech .layer-pilot {
-    clip-path: polygon(0 0, 0 0, 0 0); /* Hide completely -> Reveal Mech */
+.split-frame-container.side-mech .layer-pilot {
+    clip-path: polygon(0 0, 0 0, 0 0, 0 0); /* Linear Wipe: Slide diagonal to top-left */
 }
 
 .label-corner {
@@ -254,6 +254,20 @@
     bottom: 0;
     right: 0;
     border-top-left-radius: 5px;
+}
+
+/* Mobile: Disable hover animations */
+@media (max-width: 768px) {
+    .split-frame-container.side-pilot .layer-pilot,
+    .split-frame-container.side-mech .layer-pilot {
+        /* Keep default diagonal split visible, no animation */
+        clip-path: polygon(0 0, 100% 0, 0 100%, 0 100%) !important;
+    }
+    
+    /* Disable transitions on mobile for instant feedback */
+    .layer-pilot {
+        transition: none !important;
+    }
 }
 </style>
 
@@ -304,10 +318,13 @@ export default {
     return {
       activeMech: {},
       bond: {},
-      activeSide: null, // 'pilot' or 'mech'
+      activeSide: null, // 'side-pilot' or 'side-mech'
     }
   },
   computed: {
+    isMobile() {
+      return window.innerWidth <= 768;
+    },
     pilotPortrait() {
       return `/pilots/${this.pilot.callsign.toUpperCase()}.webp`
     },
@@ -492,6 +509,9 @@ export default {
       return new Date(y, m, d, h, mi, s, ms).toISOString();
     },
     handleSplitHover(e) {
+        // Desktop only: show hover preview
+        if (this.isMobile) return;
+        
         // Calculate based on Diagonal from Bottom-Left (0, H) to Top-Right (W, 0)
         // Line equation: Y = H - (H/W)*X
         // If y < H - (H/W)*X, we are Top-Left (Pilot)
@@ -507,19 +527,38 @@ export default {
         const thresholdY = h - (h / w) * x;
         
         if (y < thresholdY) {
-            this.activeSide = 'pilot';
+            this.activeSide = 'side-pilot';
         } else {
-            this.activeSide = 'mech';
+            this.activeSide = 'side-mech';
         }
     },
     resetSplit() {
+        // Desktop only: reset hover preview
+        if (this.isMobile) return;
         this.activeSide = null;
     },
-    handleSplitClick() {
-        if (this.activeSide === 'pilot') {
-            this.pilotModal();
-        } else if (this.activeSide === 'mech') {
-            this.mechModal();
+    handleSplitClick(e) {
+        if (this.isMobile) {
+            // Mobile: calculate tap zone directly and open modal
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const w = rect.width;
+            const h = rect.height;
+            const thresholdY = h - (h / w) * x;
+            
+            if (y < thresholdY) {
+                this.pilotModal();
+            } else {
+                this.mechModal();
+            }
+        } else {
+            // Desktop: use activeSide from hover
+            if (this.activeSide === 'side-pilot') {
+                this.pilotModal();
+            } else if (this.activeSide === 'side-mech') {
+                this.mechModal();
+            }
         }
     },
     pilotModal() {
