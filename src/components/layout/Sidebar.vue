@@ -11,7 +11,7 @@
 			  :reduce="reduce"
 			  open>
 				<router-link class="clipped-bottom-right" to="/status">
-					<img src="/icons/orbital.svg" />
+					<img src="/icons/campaign.svg" />
 					<span>Status</span>
 				</router-link>
 				<router-link class="clipped-bottom-right" to="/pilots">
