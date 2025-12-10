@@ -1,8 +1,8 @@
 [
     {
         "id": "loc_1",
-        "x": 45,
-        "y": 55,
+        "x": 50,
+        "y": 51,
         "label": "Silvershard Colony",
         "type": "mission",
         "target": "home",
@@ -10,8 +10,8 @@
     },
     {
         "id": "loc_2",
-        "x": 15,
-        "y": 45,
+        "x": 5,
+        "y": 49,
         "label": "Mt Anzonel",
         "type": "faction",
         "target": "VOLATIZED",

@@ -3,7 +3,8 @@
     <section id="map-display" :class="{ animate: animate }" class="section-container full-height">
       <div class="section-header clipped-medium-backward">
         <img src="/icons/orbital.svg" />
-        <h1>TACTICAL MAP</h1>
+        
+        <h1 class="text-tactical-header">TACTICAL MAP</h1>
         
         <div class="label-toggle-container">
             <button 
@@ -12,33 +13,16 @@
                 class="toggle-btn clipped-medium-backward" 
             >
                 <img src="/icons/factions.svg" alt="Faction Icon" class="toggle-icon" /> 
-                <span class="toggle-label-text">
+                
+                <span class="toggle-label-text text-tactical-header">
                     {{ showAllLabels ? 'HIDE ALL LABELS' : 'SHOW ALL LABELS' }}
                 </span>
             </button>
         </div>
-        </div>
+      </div>
 
-<div class="map-container custom-scroll">
-<div class="map-wrapper" :class="{ 'labels-visible': showAllLabels }">
-<img src="/world_map.webp" class="world-map" alt="Tactical Map" /> 
-
-<div 
-v-for="loc in locations" 
-:key="loc.id"
-class="map-point"
-:style="{ top: loc.y + '%', left: loc.x + '%', '--point-color': loc.color }"
-:class="{ 'is-highlighted': highlightedId === loc.id }"
-@click="handlePointClick(loc)"
->
-<div class="point-glow"></div>
-<div class="point-core"></div>
-<div class="point-label">{{ loc.label }}</div>
-</div>
-</div>
-</div>
-</section>
-</div>
+      </section>
+  </div>
 </template>
 
 <script>
@@ -100,7 +84,42 @@ export default {
 
 <style scoped>
 /* ======================================= */
-/* 1. Structural and General Map Styles */
+/* 0. Typography & Shared Headers          */
+/* ======================================= */
+
+/* This class applies to both the H1 and the Button Text 
+   to ensure identical formatting (font, weight, glow).
+*/
+.text-tactical-header {
+    /* Replace 'sans-serif' with your specific font like 'Orbitron' or 'Rajdhani' if you have one imported */
+    font-family: sans-serif; 
+    font-weight: 800;             /* Extra Bold */
+    text-transform: uppercase;    /* All Caps */
+    letter-spacing: 0.15em;       /* Wide "Tactical" spacing */
+    color: #ffffff;
+    
+    /* Cyberpunk text glow */
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5), 
+                 0 0 10px rgba(0, 255, 255, 0.3);
+    
+    margin: 0;
+    line-height: 1;
+}
+
+/* Specific sizing for the Main H1 */
+h1.text-tactical-header {
+    font-size: 2rem; 
+    margin-left: 15px; /* Spacing between the Orbital Icon and the Text */
+}
+
+/* Specific sizing for the Button Text (Smaller than H1, but same style) */
+.toggle-btn .text-tactical-header {
+    font-size: 1.1rem; 
+    cursor: pointer; /* Ensures text acts like a button */
+}
+
+/* ======================================= */
+/* 1. Structural and General Map Styles    */
 /* ======================================= */
 
 .full-height {
@@ -114,6 +133,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: flex-start; /* Ensure elements flow left-to-right */
+    padding: 10px; /* Added padding for breathing room */
 }
 
 /* Position the toggle button group to the far right */
@@ -150,7 +170,7 @@ export default {
 }
 
 /* ======================================= */
-/* 2. Hologram/CRT Effects */
+/* 2. Hologram/CRT Effects                 */
 /* ======================================= */
 
 /* 1. Container for the flicker effect */
@@ -205,41 +225,37 @@ export default {
 }
 
 /* ======================================= */
-/* 3. Toggle Button and Label Visibility */
+/* 3. Toggle Button and Label Visibility   */
 /* ======================================= */
 
 /* Style the button container to look like header text */
 .toggle-btn {
     background: none;
     border: none; /* Remove default button border */
-    color: white;
+    /* Color and Font settings moved to .text-tactical-header */
     cursor: pointer;
     
     /* Make the button content display like a row */
     display: flex; 
     align-items: center;
-    gap: 8px; /* Space between icon and text */
+    gap: 10px; /* Space between icon and text */
     
-    /* Font styling to match the header's H1/H2 */
-    font-size: 1.1rem; 
-    font-weight: bold;
-    letter-spacing: 0.15em; 
-    
-    padding: 0 10px; 
+    padding: 5px 15px; /* Added padding for better hit area */
     transition: background-color 0.2s;
 }
 
 .toggle-btn:hover {
-    background-color: rgba(255, 255, 255, 0.05); /* Subtle hover effect */
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover effect */
 }
 
-.toggle-btn.is-active {
-    background-color: rgba(0, 255, 255, 0.1); 
+/* Active State: Make the text glow brighter */
+.toggle-btn.is-active .text-tactical-header {
     color: var(--primary-color, #00ffff);
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
 }
 
 .toggle-icon {
-    height: 20px; 
+    height: 24px; /* Slightly larger to match header feel */
     width: auto;
     filter: brightness(0) invert(1); /* Assume SVG is black and needs to be white */
 }
@@ -251,7 +267,7 @@ export default {
 }
 
 /* ======================================= */
-/* 4. Map Points and Labels */
+/* 4. Map Points and Labels                */
 /* ======================================= */
 
 .map-point {
@@ -308,7 +324,7 @@ export default {
 }
 
 /* ======================================= */
-/* 5. Keyframe Animations */
+/* 5. Keyframe Animations                  */
 /* ======================================= */
 
 @keyframes pulse {
@@ -371,7 +387,7 @@ export default {
     }
 }
 
-/* Existing highlight styles (copied for completeness) */
+/* Existing highlight styles */
 .map-point.is-highlighted .point-core {
     background-color: #fff !important;
     box-shadow: 0 0 10px #fff, 0 0 20px var(--point-color);
