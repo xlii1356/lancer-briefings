@@ -61,5 +61,14 @@
         "type": "faction",
         "target": "BROADBEND PIRATES",
         "color": "#653610"
+    },
+    {
+        "id": "loc_99",
+        "x": 61,
+        "y": 64,
+        "label": "A Team",
+        "type": "mission",
+        "target": "001",
+        "color": "#86f057"
     }
 ]
