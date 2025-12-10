@@ -5,12 +5,12 @@
             {
                 "name": "SCYLLA",
                 "type": "Gorgon Class",
-                "icon": "/faction-icons/scylla.svg"
+                "icon": "/faction-logos/scylla.svg"
             },
             {
                 "name": "SOTERIA",
                 "type": "ENLIGHTENMENT Class",
-                "icon": "/faction-icons/soteria.svg"
+                "icon": "/faction-logos/soteria.svg"
             }
         ]
     },
@@ -20,7 +20,7 @@
             {
                 "name": "TLALOC",
                 "type": "MONARCH Class",
-                "icon": "/faction-icons/tlaloc.svg"
+                "icon": "/faction-logos/tlaloc.svg"
             }
         ]
     },
@@ -30,7 +30,7 @@
             {
                 "name": "INNES",
                 "type": "SALADIN Class",
-                "icon": "/faction-icons/ha.svg"
+                "icon": "/faction-logos/ha.svg"
             }
         ]
     }
