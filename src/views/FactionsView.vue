@@ -2,7 +2,7 @@
   <div id="factionsView" :class="{ animate: animateView }" :style="{ 'animation-delay': animationDelay }" class="content-container">
     <section id="factions" :class="{ animate: animate }" class="section-container">
       <div class="section-header clipped-medium-backward">
-        <img src="/icons/barony.svg" />
+        <img src="/faction-logos/barony.svg" />
         <h1>KNOWN FACTIONS</h1>
       </div>
       <div class="section-content-container">
