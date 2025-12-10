@@ -51,7 +51,7 @@
         "label": "Rose Wharf",
         "type": "faction",
         "target": "ILLUMIRE PIRATES",
-        "color": "#3430d9"
+        "color": "#800020"
     },
     {
         "id": "loc_7",
@@ -88,6 +88,15 @@
         "type": "faction",
         "target": "SKYPIERCERS",
         "color": "#c12ef1"
+    },
+    {
+        "id": "loc_11",
+        "x": 8,
+        "y": 62,
+        "label": "Cabochon",
+        "type": "faction",
+        "target": "UNDYING",
+        "color": "#3b57ff"
     },
     {
         "id": "loc_99",
