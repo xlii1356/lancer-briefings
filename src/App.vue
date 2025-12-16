@@ -72,7 +72,7 @@ export default {
         this.importScans(import.meta.glob("@/assets/scans/*.json"));
     },
     mounted() {
-        this.$router.push("/status");
+
         // NEW: Start the countdown timer
         this.updateCountdown();
         this.countdownInterval = setInterval(this.updateCountdown, 1000);
