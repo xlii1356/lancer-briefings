@@ -32,6 +32,11 @@
       <div class="section-content-container" style="overflow: hidden; position: relative;">
         <Transition name="slide-right" mode="out-in">
           <div :key="missionSlug" class="assignment-content">
+             <div v-if="activeMission" style="display: flex; justify-content: flex-end; padding-bottom: 10px;">
+                <button v-if="mappedLocation" @click="goToMap" class="map-link-btn">
+                    <img src="/icons/orbital.svg" /> SHOW ON MAP
+                </button>
+             </div>
             <vue-markdown-it :source="missionMarkdown || 'No mission selected.'" class="markdown" />
           </div>
         </Transition>
@@ -94,19 +99,18 @@ import Reserve from "@/components/Reserve.vue";
 
 import primeDataList from '@/assets/prime/prime.json';
 import missionSquads from '@/assets/missions/squads.json';
+import locationsData from '@/assets/map/locations.json';
 
 export default {
   components: {
     VueMarkdownIt,
     Mission,
-
     Reserve,
   },
   props: {
     animate: { type: Boolean, required: true },
     initialSlug: { type: String, required: true },
     missions: { type: Array, required: true },
-
     pilots: { type: Array, required: true },
     clocks: { type: Array, required: true },
     reserves: { type: Array, required: true },
@@ -115,10 +119,20 @@ export default {
     sortedMissions() {
       return [...this.missions].sort((a, b) => Number(a.slug) - Number(b.slug));
     },
-    // FIX: Filter the reserves here instead of in the HTML
     visibleReserves() {
       if (!this.reserves) return [];
       return this.reserves.filter(item => item && item.name !== 'Skill Point');
+    },
+    activeMission() {
+        return this.missions.find(x => x.slug === this.missionSlug);
+    },
+    mappedLocation() {
+        if (!this.activeMission) return null;
+        // Match mission slug (e.g. "002") to target in locations (e.g. "002")
+        return this.locations.find(l => 
+            l.type === 'mission' && 
+            l.target === this.activeMission.slug
+        );
     }
   },
   data() {
@@ -129,7 +143,8 @@ export default {
       clockAnimationDelay: "2500",
       missionMarkdown: "",
       primeData: primeDataList,
-      squadData: missionSquads, 
+      squadData: missionSquads,
+      locations: locationsData 
     };
   },
   created() {
@@ -147,6 +162,14 @@ export default {
     }
   },
   methods: {
+    goToMap() {
+        if (this.mappedLocation) {
+            this.$router.push({ 
+                path: '/map', 
+                query: { highlight: this.mappedLocation.id } 
+            });
+        }
+    },
     getSquadForMission(slug) {
       const record = this.squadData.find(s => s.missionSlug === slug);
       return record ? record.pilots : null;
@@ -325,5 +348,37 @@ export default {
   90% { clip: rect(69px, 9999px, 57px, 0); transform: skew(0.55deg); }
   95% { clip: rect(34px, 9999px, 5px, 0); transform: skew(0.81deg); }
   100% { clip: rect(24px, 9999px, 78px, 0); transform: skew(0.43deg); }
+}
+
+.map-link-btn {
+    background: transparent;
+    border: 1px solid var(--primary-color, #00ff00); /* Fallback green */
+    color: var(--primary-color, #00ff00);
+    padding: 5px 10px;
+    font-family: "Big Shoulders Display", cursive;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.map-link-btn:hover {
+    background: var(--primary-color, #00ff00);
+    color: black;
+}
+
+.map-link-btn img {
+    width: 16px;
+    height: 16px;
+    filter: invert(76%) sepia(21%) saturate(692%) hue-rotate(134deg) brightness(92%) contrast(84%);
+}
+
+.map-link-btn:hover img {
+    filter: brightness(0);
 }
 </style>
