@@ -115,11 +115,28 @@ export default {
     }
   },
   mounted() {
-     if (this.sortedMessages.length > 0) {
-         this.selectedMessage = this.sortedMessages[0];
-     }
+      this.checkUrlForMessage();
+  },
+  watch: {
+    messages: {
+        handler() {
+            this.checkUrlForMessage();
+        },
+        immediate: true 
+    }
   },
   methods: {
+    checkUrlForMessage() {
+        if (this.$route.query.message && this.messages.length > 0) {
+             const targetId = this.$route.query.message;
+             const target = this.messages.find(m => m.id === targetId);
+             if (target) {
+                 this.selectMessage(target);
+             }
+        } else if (this.sortedMessages.length > 0 && !this.selectedMessage) {
+             this.selectMessage(this.sortedMessages[0]);
+        }
+    },
     selectMessage(msg) {
       if (window.innerWidth <= 768) {
           this.$oruga.modal.open({

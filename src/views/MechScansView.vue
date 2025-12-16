@@ -67,14 +67,36 @@ export default {
     }
   },
   mounted() {
-     if (this.sortedScans.length > 0) {
-         this.selectedScan = this.sortedScans[0];
-     }
+     this.checkUrlForScan();
+  },
+  watch: {
+      scans: {
+          handler() {
+               this.checkUrlForScan();
+          },
+          immediate: true
+      }
   },
   updated() {
       this.handleImageErrors();
   },
   methods: {
+    checkUrlForScan() {
+        if (this.$route.query.scan && this.scans.length > 0) {
+            // Try ID match first
+            let target = this.scans.find(s => s.id === this.$route.query.scan);
+            // Fallback to name match (case insensitive) if ID fails, just in case
+            if (!target) {
+                target = this.scans.find(s => s.name.toLowerCase() === this.$route.query.scan.toLowerCase());
+            }
+
+            if (target) {
+                this.selectScan(target);
+            }
+        } else if (this.sortedScans.length > 0 && !this.selectedScan) {
+            this.selectedScan = this.sortedScans[0];
+        }
+    },
     selectScan(scan) {
         if (window.innerWidth <= 768) {
             this.$oruga.modal.open({

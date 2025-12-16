@@ -62,27 +62,38 @@ export default {
   },
   mounted() {
     this.animateView = true;
-    if (this.$route.query.highlight) {
-        this.highlightedId = this.$route.query.highlight;
-        
-        this.$nextTick(() => {
-            const container = this.$el.querySelector('.map-container');
-            const target = this.$el.querySelector('.is-highlighted');
-            
-            if (container && target) {
-                const centerX = target.offsetLeft + (target.offsetWidth / 2);
-                const centerY = target.offsetTop + (target.offsetHeight / 2);
-                
-                container.scrollTo({
-                    left: centerX - (container.clientWidth / 2),
-                    top: centerY - (container.clientHeight / 2),
-                    behavior: 'smooth'
-                });
-            }
-        });
+    this.checkHighlight();
+  },
+  watch: {
+    locations: {
+        handler() {
+             this.checkHighlight();
+        },
+        immediate: true
     }
   },
   methods: {
+    checkHighlight() {
+        if (this.$route.query.highlight && this.locations.length > 0) {
+            this.highlightedId = this.$route.query.highlight;
+            
+            this.$nextTick(() => {
+                const container = this.$el.querySelector('.map-container');
+                const target = this.$el.querySelector('.is-highlighted');
+                
+                if (container && target) {
+                    const centerX = target.offsetLeft + (target.offsetWidth / 2);
+                    const centerY = target.offsetTop + (target.offsetHeight / 2);
+                    
+                    container.scrollTo({
+                        left: centerX - (container.clientWidth / 2),
+                        top: centerY - (container.clientHeight / 2),
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        }
+    },
     toggleLabels() {
       this.showAllLabels = !this.showAllLabels;
     },
