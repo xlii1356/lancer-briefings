@@ -1,13 +1,6 @@
 <template>
 	<div class="event-modal">
-		<div class="header-container">
-			<div class="section-header clipped-info-backward">
-				<img src="/icons/protocol.svg" />
-				<h1>DECODED TRANSMISSION</h1>
-			</div>
-			<div class="rhombus-back">&nbsp;</div>
-		</div>
-			<div class="modal-card-head" style="background-color: #0c090d">
+		<div class="modal-card-head" style="background-color: #0c090d">
 				<p class="modal-card-title">{{ message.title }}</p>
                 <div class="meta-info">
                     <span><strong>FROM:</strong> {{ message.sender }}</span>
@@ -15,13 +8,46 @@
                 </div>
 			</div>
 			<div class="modal-card-body content-wrapper" style="background-color: #0c090d">
-				<vue-markdown-it :source="message.content" class="markdown" />
+                <div v-html="renderedContent" class="markdown"></div>
 			</div>
 	</div>
 </template>
 
 <script>
+// 1. Import MarkdownIt
+import MarkdownIt from 'markdown-it'; 
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
+
+// 2. Define the custom video plugin
+const videoPlugin = (md) => {
+    md.renderer.rules.image = (tokens, idx, options, env, self) => {
+        const token = tokens[idx];
+        const srcIndex = token.attrIndex('src');
+        const srcAttr = token.attrs[srcIndex];
+        const src = srcAttr[1];
+        
+        // Check if the source URL is a video file
+        if (src.match(/\.(mp4|webm|ogg)$/i)) {
+            const alt = token.content;
+            
+            const poster = src.replace(/\.(mp4|webm|ogg)$/i, '.png');
+
+            // Render a HTML5 <video> tag
+            return `
+                <div class="video-frame">
+                    <video controls poster="${poster}" style="width: 100%; display: block;">
+                        <source src="${src}" type="video/${src.split('.').pop()}">
+                        Sorry, your browser doesn't support embedded videos.
+                    </video>
+                </div>
+            `;
+        }
+        
+        // Fall back to the default image renderer
+        return self.renderToken(tokens, idx, options);
+    };
+};
+
 
 export default {
 	name: "MessageModal",
@@ -34,6 +60,16 @@ export default {
 			required: true,
 		},
 	},
+    data() {
+        return {
+            markdownItInstance: new MarkdownIt().use(videoPlugin)
+        };
+    },
+    computed: {
+        renderedContent() {
+            return this.markdownItInstance.render(this.message.content);
+        }
+    },
 };
 </script>
 
@@ -111,6 +147,14 @@ export default {
     display: flex;
     gap: 20px;
     margin-top: 5px;
+}
+
+:deep(.video-frame) {
+    border: 1px solid #444;
+    background: #0c0c0c;
+    padding: 4px;
+    margin: 15px 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
 }
 
 .modal-card-title {

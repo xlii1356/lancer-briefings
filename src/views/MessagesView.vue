@@ -39,7 +39,7 @@
              </div>
           </div>
           <hr class="divider"/>
-          <vue-markdown-it :source="selectedMessage.content" class="markdown" />
+          <div v-html="renderedContent" class="markdown"></div>
         </div>
         <div v-else class="empty-state">
             <p>Select a transmission to decode.</p>
@@ -51,9 +51,40 @@
 </template>
 
 <script>
+import MarkdownIt from 'markdown-it'; 
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import Message from "@/components/Message.vue";
 import MessageModal from "@/components/modals/MessageModal.vue";
+
+const videoPlugin = (md) => {
+    // Rule to replace image token renderer
+    md.renderer.rules.image = (tokens, idx, options, env, self) => {
+        const token = tokens[idx];
+        const srcIndex = token.attrIndex('src');
+        const srcAttr = token.attrs[srcIndex];
+        const src = srcAttr[1];
+        
+        // Check if the source URL is a video file (you can add more formats)
+        if (src.match(/\.(mp4|webm|ogg)$/i)) {
+            const alt = token.content;
+            
+            const poster = src.replace(/\.(mp4|webm|ogg)$/i, '.png');
+            
+            // Render a HTML5 <video> tag
+            return `
+                <div class="video-frame">
+                    <video controls poster="${poster}" style="width: 100%; display: block;">
+                        <source src="${src}" type="video/${src.split('.').pop()}">
+                        Sorry, your browser doesn't support embedded videos.
+                    </video>
+                </div>
+            `;
+        }
+        
+        // If it's not a video, fall back to the default image renderer
+        return self.renderToken(tokens, idx, options);
+    };
+};
 
 export default {
   name: "MessagesView",
@@ -70,12 +101,17 @@ export default {
       selectedMessage: null,
       animateView: this.animate,
       animationDelay: "0.5s", // Slightly faster than others
+      markdownItInstance: new MarkdownIt().use(videoPlugin),
     };
   },
   computed: {
     sortedMessages() {
         // Sort by ID descending (newest first)
         return [...this.messages].sort((a, b) => b.id.localeCompare(a.id));
+    },
+    renderedContent() {
+        if (!this.selectedMessage) return '';
+        return this.markdownItInstance.render(this.selectedMessage.content);
     }
   },
   mounted() {
@@ -181,6 +217,15 @@ export default {
     width: 1100px; /* Wider box */
     margin: 50px 30px;
     height: 75vh; /* Use more vertical space on desktop */
+}
+
+:deep(.video-frame) {
+    border: 1px solid #444;
+    background: #0c0c0c;
+    padding: 4px;
+    margin: 20px 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+    border-radius: 2px;
 }
 
 #message-list {
