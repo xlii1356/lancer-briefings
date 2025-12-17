@@ -66,14 +66,17 @@ export default {
     pilots: { type: Array, required: true, default: () => [] }, 
   },
   mounted() {
-      if (this.$route.query.faction) {
-          const targetTitle = this.$route.query.faction;
-          const target = this.factions.find(f => f.title.toUpperCase() === targetTitle.toUpperCase());
-          if (target) {
-              this.selectFaction(target);
-          }
-      }
+      this.checkUrlForFaction();
   },
+  watch: {
+    factions: {
+        handler() {
+            this.checkUrlForFaction();
+        },
+        immediate: true
+    }
+  },
+
   data() {
     return {
       selectedFaction: { type: Object },
@@ -92,6 +95,15 @@ export default {
       }
   },
   methods: {
+    checkUrlForFaction() {
+        if (this.$route.query.faction && this.factions.length > 0 && !this.selectedFaction.title) {
+          const targetTitle = this.$route.query.faction;
+          const target = this.factions.find(f => f.title.toUpperCase() === targetTitle.toUpperCase());
+          if (target) {
+              this.selectFaction(target);
+          }
+      }
+    },
     goToMap() {
         if (this.mappedLocation) {
             this.$router.push({ 

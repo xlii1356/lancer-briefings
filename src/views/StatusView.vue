@@ -151,17 +151,35 @@ export default {
     this.setAnimate();
     this.setClockAnimateDelay();
   },
-  beforeUpdate() {
-    this.selectMission(this.missionSlug);
-  },
   mounted() {
-    if (this.$route.query.mission) {
-      this.selectMission(this.$route.query.mission);
-    } else if (this.missions.length > 0) {
-      this.selectMission(this.missions[0].slug);
+    this.checkUrlForMission();
+  },
+  watch: {
+    missions: {
+        handler() {
+            this.checkUrlForMission();
+        },
+        immediate: true
     }
   },
+
   methods: {
+    checkUrlForMission() {
+        // If we have a query param, try to select it
+        if (this.$route.query.mission) {
+            this.selectMission(this.$route.query.mission);
+        } 
+        // Fallback: If no query param, but we have missions and haven't selected one properly yet
+        // (or if we want default behavior)
+        else if (this.missions.length > 0 && this.missionSlug === this.initialSlug) {
+            this.selectMission(this.missions[0].slug);
+        }
+        
+        // Ensure content is updated if missions loaded after selection
+        if (this.missionSlug && !this.missionMarkdown) {
+             this.selectMission(this.missionSlug);
+        }
+    },
     goToMap() {
         if (this.mappedLocation) {
             this.$router.push({ 
