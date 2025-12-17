@@ -27,7 +27,7 @@
             <img src="/world_map.webp" class="world-map" alt="Tactical Map" /> 
 
             <div 
-                v-for="loc in locations" 
+                v-for="loc in localLocations" 
                 :key="loc.id"
                 class="map-point"
                 :style="{ top: loc.y + '%', left: loc.x + '%', '--point-color': loc.color }"
@@ -58,15 +58,25 @@ export default {
       animationDelay: "0s",
       highlightedId: null,
       showAllLabels: false,
+      localLocations: [],
+      animationFrameId: null,
     };
   },
   mounted() {
     this.animateView = true;
     this.checkHighlight();
+    this.startAnimation();
+  },
+  beforeUnmount() {
+    if (this.animationFrameId) {
+        cancelAnimationFrame(this.animationFrameId);
+    }
   },
   watch: {
     locations: {
-        handler() {
+        handler(newVal) {
+             // Deep copy to break reference for local mutation
+             this.localLocations = JSON.parse(JSON.stringify(newVal));
              this.checkHighlight();
         },
         immediate: true
@@ -103,6 +113,35 @@ export default {
         } else if (loc.type === 'faction') {
             this.$router.push({ path: '/factions', query: { faction: loc.target } }); 
         }
+    },
+    startAnimation() {
+        const animate = () => {
+            let needsUpdate = false;
+            
+            this.localLocations.forEach(loc => {
+                if (loc.isMoving) {
+                    const speedX = loc.speedX || 0;
+                    const speedY = loc.speedY || 0;
+
+                    if (speedX !== 0) {
+                         loc.x += speedX;
+                         if (loc.x > 100) loc.x = 0;
+                         if (loc.x < 0) loc.x = 100;
+                         needsUpdate = true;
+                    }
+
+                    if (speedY !== 0) {
+                        loc.y += speedY;
+                        if (loc.y > 100) loc.y = 0;
+                        if (loc.y < 0) loc.y = 100;
+                        needsUpdate = true;
+                    }
+                }
+            });
+
+            this.animationFrameId = requestAnimationFrame(animate);
+        };
+        this.animationFrameId = requestAnimationFrame(animate);
     }
   }
 };
