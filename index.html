@@ -9,27 +9,24 @@
 	</head>
 
 	<body style="margin: 0px">
+		<video autoplay muted loop playsinline id="bg-video">
+			<source src="/silvershard_spin.webm" type="video/webm">
+		</video>
 		<div id="app"></div>
 		<script type="module" src="/src/main.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-		<script type="module" src="/src/assets/scripts/vanta.globe.min.js"></script>
-		<script type="module">
-			VANTA.GLOBE({
-				el: "body",
-				mouseControls: false,
-				touchControls: false,
-				gyroControls: false,
-				minHeight: 200.0,
-				minWidth: 200.0,
-				scale: 1.0,
-				scaleMobile: 1.0,
-				color: 0x694f5d,
-				color2: 0x68a691,
-				backgroundColor: 0x0c090d,
-				size: 2.0,
-				sphereRotation: -0.002,
-				meshRotation: 0.004,
-			});
-		</script>
+		<style>
+			#bg-video {
+				position: fixed;
+				right: 0;
+				bottom: 0;
+				min-width: 100%;
+				min-height: 100%;
+				width: auto;
+				height: auto;
+				z-index: -1000;
+				background-size: cover;
+				filter: brightness(0.6);
+			}
+		</style>
 	</body>
 </html>
