@@ -1,7 +1,7 @@
 <template>
 	<header>
 		<div class="title clipped-x-large-forward">
-			<img class="logo" src="public/faction-logos/silvershard.webp />
+			<img class="logo" src="public/faction-logos/silvershard.svg/>
 			<div class="title-container">
 				<div id="title-first-line" class="title-row">
 					<span id="title-header">{{ header.headerTitle }}</span>
