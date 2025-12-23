@@ -5,7 +5,7 @@
         <div class="heading h1">TACTICAL PROFILE // {{ pilot.callsign }}</div>
         <div class="heading h2">({{ pilot.name }}) </div>
       </div>
-      <div class="col"><img src="faction-logos/silvershard.svg" style="height: 50px; width: auto;"></div>
+      <div class="col"><img src="/faction-logos/silvershard.svg" style="height: 50px; width: auto;"></div>
     </div>
     <div class="body">
       <div class="add-padding"> Union Administrative RM-4 Pilot Identification Protocol (IDENT) Record
