@@ -275,7 +275,7 @@ html {
     overflow: hidden !important;
     width: 100%;
     height: 100%;
-    background-color: #0c090d; /* Vanta Match */
+    background-color: #0c090d; 
 }
 
 @media (max-width: 768px) {

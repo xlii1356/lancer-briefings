@@ -1,7 +1,7 @@
 <template>
 	<header>
 		<div class="title clipped-x-large-forward">
-			<img class="logo" src="/faction-logos/soteria.svg" />
+			<img class="logo" src="/faction-logos/silvershard_outline.webp" />
 			<div class="title-container">
 				<div id="title-first-line" class="title-row">
 					<span id="title-header">{{ header.headerTitle }}</span>
