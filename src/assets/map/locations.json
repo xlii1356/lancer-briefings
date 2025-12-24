@@ -100,13 +100,13 @@
     },
     {
         "id": "loc_98",
-        "x": 60.5,
-        "y": 63.5,
+        "x": 55,
+        "y": 25,
         "label": "A Team",
         "type": "mission",
         "target": "001",
         "color": "#86f057",
-        "isMoving": true,
+        "isMoving": false,
         "speedX": -0.18,
         "speedY": 0.01
     },
