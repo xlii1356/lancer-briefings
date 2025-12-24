@@ -100,8 +100,8 @@
     },
     {
         "id": "loc_98",
-        "x": 25,
-        "y": 55,
+        "x": 27,
+        "y": 57,
         "label": "A Team",
         "type": "mission",
         "target": "001",
