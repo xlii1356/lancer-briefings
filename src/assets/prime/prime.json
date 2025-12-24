@@ -53,5 +53,10 @@
     "alias": "MYRIOI",
     "echo": "SOPHIST",
     "status": "Neutralized"
+    },
+          {
+    "alias": "TLALOC",
+    "echo": "TLALOC",
+    "status": "Active"
     }
 ]
